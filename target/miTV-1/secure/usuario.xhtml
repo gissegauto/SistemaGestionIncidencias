@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="usuario-form">
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <div align="center">
+                         <p:outputLabel value="Usuarios" class="card-title" />
+                    </div>
+                    <div align="right">
+                        <p:commandButton process="dtUsuario" 
+                                         value="Nuevo" 
+                                         icon="ui-ribbonicon-new"
+                                         update=":form-add:usuarioGr" 
+                                         oncomplete="PF('dlgUsuAdd').show()" 
+                                         actionListener="#{usuarioBean.actionClean}"/>
+                    </div>
+                    <p:dataTable id="dtUsuario" var="usuario" 
+                                 value="#{usuarioBean.usuarioList}"
+                                 rows="10" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 selection="#{usuarioBean.usuario}" 
+                                 rowKey="#{usuario}"
+                                 selectionMode="single">
+
+                        <p:ajax event="rowSelect" listener="#{usuarioBean.onRowSelect}" />
+
+                        <p:column headerText="Usuario" sortBy="#{usuario.username}">
+                            <h:outputText value="#{usuario.username}" />
+                        </p:column>
+                        <p:column headerText="Rol" sortBy="#{usuario.idrol.descripcion}">
+                            <h:outputText value="#{usuario.idrol.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Opciones" >
+                            <p:commandButton process="dtUsuario" icon="ui-icon-pencil" 
+                                             id="botonEditar"
+                                             oncomplete="PF('dlgUsuAdd').show()"
+                                             update=":form-add:usuarioGr" 
+                                             disabled="#{usuarioBean.bloquearBotones}"/>  
+                        </p:column>
+
+                        <f:facet name="footer">
+
+
+                            <p:confirmDialog global="true" showEffect="fade"
+                                             hideEffect="explode">
+                                <p:commandButton value="Si" type="button"
+                                                 styleClass="ui-confirmdialog-yes" 
+                                                 icon="ui-icon-check" ajax="false" />
+                                <p:commandButton value="No" type="button"
+                                                 styleClass="ui-confirmdialog-no" 
+                                                 icon="ui-icon-close" />
+                                <p:commandButton 
+                                    value="Actualizar" 
+                                    action="#{usuarioBean}"
+                                    />
+                            </p:confirmDialog>
+
+                        </f:facet>
+                    </p:dataTable>
+                </h:form>
+
+                <p:dialog header="Usuario" widgetVar="dlgUsuAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <h:form id="form-add">
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                        <p:panelGrid columns="2" columnClasses="column" id="usuarioGr">     
+
+
+                            <p:outputLabel value="Usuario" for="username" />
+                            <h:panelGroup>
+                                <p:inputText id="username" required="true"
+                                             value="#{usuarioBean.usuario.username}" />
+                            </h:panelGroup>  
+                            <p:outputLabel value="Rol" for="roles" />
+                            <p:selectOneMenu id="roles" value="#{usuarioBean.usuario.idrol}" 
+                                             effect="fold" editable="false" 
+                                             converter="rolConverter" >
+                                <f:selectItems value="#{usuarioBean.rolList}" 
+                                               var="rol" itemLabel="#{rol.descripcion}" 
+                                               itemValue="#{rol}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Password" for="password" />
+                            <p:password id="password" match="repassword" required="true"
+                                        value="#{usuarioBean.usuario.password}" />
+                            <p:outputLabel value="Repeatir password" for="repassword" />
+                            <p:password id="repassword" required="true"
+                                        value="#{usuarioBean.repeadPassword}" />
+                            <p:spacer />
+                            <p:commandButton 
+                                value="Guardar" 
+                                update="usuarioGr,:usuario-form:dtUsuario" 
+                                action="#{usuarioBean.addUsuario}"
+                                id='btn-guardar-usuarios'
+                                />
+                        </p:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

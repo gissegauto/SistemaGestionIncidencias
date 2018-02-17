@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GranalladoPagar_subreport1" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="13667ad3-7e6d-472d-a18b-566ab70ab259">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/josmor/NetBeansProjects/SGOTFS/src/main/webapp/resources/rpt/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     facturas."factura_id" AS facturas_factura_id,
+     facturas."cliente_id" AS facturas_cliente_id,
+     facturas."orden" AS facturas_orden,
+     facturas."fecha_emision" AS facturas_fecha_emision,
+     facturas."estado_impresion" AS facturas_estado_impresion,
+     facturas_detalle."factura_detalle_id" AS facturas_detalle_factura_detalle_id,
+     facturas_detalle."factura_id" AS facturas_detalle_factura_id,
+     facturas_detalle."sub_total" AS facturas_detalle_sub_total,
+     facturas_detalle."servicio_id" AS facturas_detalle_servicio_id,
+     cliente."cliente_id" AS cliente_cliente_id,
+     cliente."nombre" AS cliente_nombre,
+     cliente."telefono" AS cliente_telefono,
+     cliente."celular" AS cliente_celular,
+     servicios."servicio_id" AS servicios_servicio_id,
+     servicios."servicio" AS servicios_servicio,
+      (SELECT sum( fd."sub_total") FROM facturas_detalle fd WHERE servicios."servicio_id" = 4 and facturas."estado_impresion" = 1 ) as Granallado_Pendiente,
+     (SELECT sum( fd."sub_total") FROM facturas_detalle fd WHERE servicios."servicio_id" = 4 and facturas."estado_impresion" = 2 ) as Granallado_Terminado,
+     (SELECT sum( fd."sub_total") FROM facturas_detalle fd WHERE servicios."servicio_id" = 4  ) as Granallado_Total
+FROM
+     "public"."facturas" facturas INNER JOIN "public"."facturas_detalle" facturas_detalle ON facturas."factura_id" = facturas_detalle."factura_id"
+     INNER JOIN "public"."cliente" cliente ON facturas."cliente_id" = cliente."cliente_id"
+     INNER JOIN "public"."servicios" servicios ON facturas_detalle."servicio_id" = servicios."servicio_id"
+WHERE servicios."servicio_id" = 4 and facturas."estado_impresion" = 2]]>
+	</queryString>
+	<field name="facturas_factura_id" class="java.lang.Integer"/>
+	<field name="facturas_cliente_id" class="java.lang.Integer"/>
+	<field name="facturas_orden" class="java.lang.Integer"/>
+	<field name="facturas_fecha_emision" class="java.sql.Date"/>
+	<field name="facturas_estado_impresion" class="java.lang.Integer"/>
+	<field name="facturas_detalle_factura_detalle_id" class="java.lang.Integer"/>
+	<field name="facturas_detalle_factura_id" class="java.lang.Integer"/>
+	<field name="facturas_detalle_sub_total" class="java.lang.Double"/>
+	<field name="facturas_detalle_servicio_id" class="java.lang.Integer"/>
+	<field name="cliente_cliente_id" class="java.lang.Integer"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="cliente_telefono" class="java.lang.String"/>
+	<field name="cliente_celular" class="java.lang.String"/>
+	<field name="servicios_servicio_id" class="java.lang.Integer"/>
+	<field name="servicios_servicio" class="java.lang.String"/>
+	<field name="granallado_pendiente" class="java.lang.Double"/>
+	<field name="granallado_terminado" class="java.lang.Double"/>
+	<field name="granallado_total" class="java.lang.Double"/>
+	<variable name="granallado_terminado_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{granallado_terminado}]]></variableExpression>
+	</variable>
+	<variable name="granallado_total_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{granallado_total}]]></variableExpression>
+	</variable>
+	<variable name="facturas_detalle_sub_total_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{facturas_detalle_sub_total}]]></variableExpression>
+	</variable>
+	<variable name="facturas_detalle_sub_total_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{facturas_detalle_sub_total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="9" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="3" width="100" height="20" uuid="b0f8efd5-e932-495d-a826-f2241da009f8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERMINADO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="11" y="4" width="31" height="20" uuid="fad9251d-8dfc-48b7-870e-9df929b4fb2e"/>
+				<textFieldExpression><![CDATA[$F{facturas_detalle_factura_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="4" width="106" height="20" uuid="81e99685-0617-4243-8651-e5a684c5a3ac"/>
+				<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="155" y="4" width="73" height="20" uuid="bb36a7ed-b5d1-4d58-ba48-d2feef23d158"/>
+				<textFieldExpression><![CDATA[$F{facturas_orden}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="309" y="4" width="69" height="20" uuid="aa841408-d938-4cf7-a43b-c7623471cd89"/>
+				<textFieldExpression><![CDATA[$F{facturas_detalle_sub_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="381" y="4" width="95" height="20" uuid="991c0c71-3a22-4ecc-9d16-9ad8895cba22"/>
+				<textFieldExpression><![CDATA[$F{cliente_telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="4" width="83" height="20" uuid="a17ee3cc-1663-443f-95f7-e69489993102"/>
+				<textFieldExpression><![CDATA[$F{cliente_celular}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="228" y="4" width="81" height="20" uuid="643227e0-594a-4b8b-a9f5-3cb6a1525063"/>
+				<textFieldExpression><![CDATA[$F{facturas_fecha_emision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="8" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="8" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement x="135" y="0" width="120" height="20" uuid="3289655b-b589-437d-bd6d-9baec8dfcc2e"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Terminado:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="7" y="24" width="565" height="1" uuid="27abe494-fcee-459c-b81e-ce9546d42a7e"/>
+			</line>
+			<textField pattern="#,##0" isBlankWhenNull="true">
+				<reportElement x="309" y="0" width="82" height="20" uuid="5a987d6b-f975-43d6-abc5-d34ab8ff2d45"/>
+				<textFieldExpression><![CDATA[$V{facturas_detalle_sub_total_2}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement stretchType="RelativeToTallestObject" x="1" y="27" width="571" height="22" uuid="8a2fe367-d9b4-4268-8858-2c4a2690253b"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "GranalladoPagar_subreport1_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

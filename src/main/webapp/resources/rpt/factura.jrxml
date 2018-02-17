@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="factura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="79e370ab-9616-4456-8678-984b7f686569">
+	<property name="ireport.zoom" value="1.0000000000000058"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="218"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#FFFFFF" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="total_Letras" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+facturas."factura_id" AS factura_id,
+facturas."nro_factura" AS facturas_nro_factura,
+facturas."cliente_id" AS facturas_cliente_id,
+facturas."orden" AS facturas_orden,
+facturas."fecha_emision" AS facturas_fecha_emision,
+extract(year from facturas."fecha_emision") as anho,
+extract(day from facturas."fecha_emision") as dia,
+extract(month from facturas."fecha_emision") as mes,
+facturas."fecha_vencimiento" AS facturas_fecha_vencimiento,
+facturas."tipo_factura" AS facturas_tipo_factura,
+facturas,"forma_pago" AS facturas_forma_pago,
+facturas."total_letras" AS facturas_totalLetras,
+facturas_detalle."factura_id" AS facturas_detalle_factura_id,
+facturas_detalle."producto_id" AS facturas_detalle_producto_id,
+facturas_detalle."cantidad" AS facturas_detalle_catidad,
+facturas_detalle."iva_id" AS facturas_detalle_iva_id,
+facturas_detalle."total_iva" AS facturas_detalle_total_iva,
+facturas_detalle."sub_total" AS facturas_detalle_sub_total,
+facturas_detalle."total_a_pagar_en_letras",
+cliente."nombre" AS cliente_nombre,
+cliente."direccion" AS ciente_direccion,
+cliente."ruc" AS ciente_ruc,
+cliente."dv" as ciente_dv,
+producto."descripcion" AS producto_descripcion,
+producto."codigo" AS producto_codigo,
+producto."precio" AS producto_precio,
+iva."iva" AS iva_iva,
+coalesce((SELECT sum(fd.precio_unitario * fd.cantidad) FROM facturas_detalle fd left join iva i on i.iva_id = fd.iva_id where i.porcentaje = 0 and fd.factura_id = facturas."factura_id"),0) as iva_sub_0,
+coalesce((SELECT sum(fd.precio_unitario * fd.cantidad) FROM facturas_detalle fd left join iva i on i.iva_id = fd.iva_id where i.porcentaje = 5 and fd.factura_id = facturas."factura_id"),0) as iva_sub_5,
+coalesce((SELECT sum(fd.precio_unitario * fd.cantidad) FROM facturas_detalle fd left join iva i on i.iva_id = fd.iva_id where i.porcentaje = 10 and fd.factura_id = facturas."factura_id"),0) as iva_sub_10
+
+FROM
+"public"."facturas" facturas
+INNER JOIN "public"."facturas_detalle" facturas_detalle ON facturas."factura_id" = facturas_detalle."factura_id"
+INNER JOIN "public"."cliente" cliente ON facturas."cliente_id" = cliente."cliente_id"
+LEFT JOIN "public"."producto" producto ON facturas_detalle."producto_id" = producto."producto_id"
+LEFT JOIN"public"."servicios" servicios ON facturas_detalle."servicio_id" = servicios."servicio_id"
+INNER JOIN "public"."iva" iva ON facturas_detalle."iva_id" = iva."iva_id"
+
+WHERE
+facturas."factura_id" =$P{id}]]>
+	</queryString>
+	<field name="factura_id" class="java.lang.Integer"/>
+	<field name="facturas_nro_factura" class="java.lang.String"/>
+	<field name="facturas_cliente_id" class="java.lang.Integer"/>
+	<field name="facturas_orden" class="java.lang.Integer"/>
+	<field name="facturas_fecha_emision" class="java.sql.Date"/>
+	<field name="anho" class="java.lang.Integer"/>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.Integer"/>
+	<field name="facturas_fecha_vencimiento" class="java.sql.Date"/>
+	<field name="facturas_tipo_factura" class="java.lang.String"/>
+	<field name="facturas" class="java.lang.Object"/>
+	<field name="facturas_forma_pago" class="java.lang.String"/>
+	<field name="facturas_totalLetras" class="java.lang.String"/>
+	<field name="facturas_detalle_factura_id" class="java.lang.Integer"/>
+	<field name="facturas_detalle_producto_id" class="java.lang.Integer"/>
+	<field name="facturas_detalle_catidad" class="java.lang.Integer"/>
+	<field name="facturas_detalle_iva_id" class="java.lang.Integer"/>
+	<field name="facturas_detalle_total_iva" class="java.lang.Double"/>
+	<field name="facturas_detalle_sub_total" class="java.lang.Double"/>
+	<field name="total_a_pagar_en_letras" class="java.lang.String"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="ciente_direccion" class="java.lang.String"/>
+	<field name="ciente_ruc" class="java.lang.String"/>
+	<field name="ciente_dv" class="java.math.BigDecimal"/>
+	<field name="producto_descripcion" class="java.lang.String"/>
+	<field name="producto_codigo" class="java.lang.String"/>
+	<field name="producto_precio" class="java.math.BigDecimal"/>
+	<field name="iva_iva" class="java.lang.String"/>
+	<field name="iva_sub_0" class="java.lang.Double"/>
+	<field name="iva_sub_5" class="java.lang.Double"/>
+	<field name="iva_sub_10" class="java.lang.Double"/>
+	<variable name="total_pagar" class="java.math.BigDecimal" calculation="Sum"/>
+	<variable name="total" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{total}]]></variableExpression>
+	</variable>
+	<variable name="iva_final_5" class="java.lang.String">
+		<variableExpression><![CDATA[(null != $F{iva_sub_5} && !$F{iva_sub_5}.equals(0.0))?String.valueOf(NumberFormat.getInstance(Locale.GERMAN).format($F{iva_sub_5}/21)):""]]></variableExpression>
+	</variable>
+	<variable name="iva_final_10" class="java.lang.String">
+		<variableExpression><![CDATA[(null != $F{iva_sub_10} && !$F{iva_sub_10}.equals(0.0))?String.valueOf(NumberFormat.getInstance(Locale.GERMAN).format($F{iva_sub_10}/11)):""]]></variableExpression>
+	</variable>
+	<title>
+		<band height="88" splitType="Stretch">
+			<image>
+				<reportElement x="2" y="0" width="195" height="57" uuid="1c97d518-799b-4b37-9e71-147764af54e8"/>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="36" y="69" width="175" height="18" uuid="b4e472ff-9a14-4e2a-a21d-024bb7b338ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="374" y="94" width="100" height="14" uuid="39a1b5bf-49cc-4a96-99f0-d46883183068"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ciente_ruc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="474" y="94" width="29" height="14" uuid="ad060411-efe7-49aa-9599-010cfe3fe2ca"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ciente_dv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="49" y="89" width="175" height="17" uuid="570c6835-d059-430a-8401-a14554a2543d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ciente_direccion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="418" y="52" width="10" height="14" uuid="b9db0c2a-4686-4613-8b8c-877d5b399492"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(null != $F{facturas_forma_pago} && $F{facturas_tipo_factura}.equals("CONTADO"))?"X":""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="457" y="51" width="13" height="14" uuid="bc62af54-f2aa-4c04-8b85-cbba083cdb8a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(null != $F{facturas_tipo_factura} && $F{facturas_forma_pago}.equals("CREDITO"))?"":"X"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="52" width="35" height="14" uuid="32112f5c-f4b4-4121-8501-21196d61b55f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="126" y="52" width="58" height="14" uuid="ad298a7c-69aa-418a-a263-a39036438bce"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="257" y="52" width="59" height="14" uuid="bc2ceb2c-5106-4d9d-be47-18373c8d367f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anho}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="352">
+			<textField pattern="#,##0">
+				<reportElement x="256" y="260" width="85" height="19" uuid="713c1e0d-c225-4383-9bf7-a46cf1d617b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(null != $F{iva_sub_5} && !$F{iva_sub_5}.equals(0.0))?
+(null != $F{iva_sub_10} && !$F{iva_sub_10}.equals(0.0))?
+($F{iva_sub_5}/21)+($F{iva_sub_10}/11):
+($F{iva_sub_5}/21):
+(null != $F{iva_sub_10} && !$F{iva_sub_10}.equals(0.0))?($F{iva_sub_10}/11):0.0]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="12" y="23" width="498" height="22" uuid="cd463f0d-7217-4b0b-8523-d38137ec7baf"/>
+				<subreportParameter name="id_factura">
+					<subreportParameterExpression><![CDATA[$P{id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "factura_detalle.jasper"]]></subreportExpression>
+			</subreport>
+			<textField pattern="#,##0">
+				<reportElement key="TOTAL_ID" x="409" y="260" width="100" height="19" uuid="e450d7f0-4a33-4c6e-ad11-66883c9353ac"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iva_sub_0}+$F{iva_sub_5}+$F{iva_sub_10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="299" y="219" width="41" height="20" uuid="9b3e118c-be1d-45e1-b4b2-44d5874f40d2"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturas_detalle_sub_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="355" y="220" width="45" height="20" uuid="83cebc78-8164-44a5-8f32-174235eaaad7"/>
+				<textElement textAlignment="Justified">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iva_sub_0}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="463" y="219" width="53" height="20" uuid="440ec68b-1a30-4cd3-8064-888d05f14383"/>
+				<textElement textAlignment="Justified">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iva_sub_10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="411" y="220" width="41" height="20" uuid="f3d31131-0d51-4943-8d98-f6ca3840d303"/>
+				<textElement textAlignment="Justified">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iva_sub_5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="153" y="260" width="80" height="19" uuid="7394f2f7-4b59-4f1b-871e-bc998a8321d1"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{iva_final_10}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="63" y="260" width="79" height="19" uuid="aaa6490b-bdb0-4193-8bf7-71e44dae5025"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{iva_final_5}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="240" width="335" height="14" uuid="a95ff065-2854-4664-876b-d51d5a30fdf7"/>
+				<textFieldExpression><![CDATA[$P{total_Letras}==null?"":$P{total_Letras}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

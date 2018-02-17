@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aeb31901-23bc-4ed1-9a82-705ad2874af6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     ordenes_trabajo."orden_id" AS ordenes_trabajo_orden_id,
+     ordenes_trabajo."orden_nro" AS ordenes_trabajo_orden_nro,
+     ordenes_trabajo."fecha" AS ordenes_trabajo_fecha,
+     OT."total" AS ordenes_trabajo_total,
+     ordenes_trabajo."cliente_id" AS ordenes_trabajo_cliente_id,
+     
+     cliente."cliente_id" AS cliente_cliente_id,
+     cliente."nombre" AS cliente_nombre,
+     servicios."servicio_id" AS servicios_servicio_id,
+     servicios."servicio" AS servicios_servicio
+FROM
+     "public"."cliente" cliente INNER JOIN "public"."ordenes_trabajo" ordenes_trabajo ON cliente."cliente_id" = ordenes_trabajo."cliente_id"
+     INNER JOIN "public".orden_trabajo_detalle OT ON ordenes_trabajo."orden_id" = OT."orden_id"
+     INNER JOIN  "public"."servicios" servicios ON OT."servicio_id" = servicios."servicio_id"
+     where servicios.servicio_id = 1]]>
+	</queryString>
+	<field name="ordenes_trabajo_orden_id" class="java.lang.Integer"/>
+	<field name="ordenes_trabajo_orden_nro" class="java.lang.Integer"/>
+	<field name="ordenes_trabajo_fecha" class="java.sql.Date"/>
+	<field name="ordenes_trabajo_total" class="java.math.BigDecimal"/>
+	<field name="ordenes_trabajo_cliente_id" class="java.lang.Integer"/>
+	<field name="cliente_cliente_id" class="java.lang.Integer"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="servicios_servicio_id" class="java.lang.Integer"/>
+	<field name="servicios_servicio" class="java.lang.String"/>
+	<variable name="ordenes_trabajo_total_1" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{ordenes_trabajo_total}]]></variableExpression>
+	</variable>
+	<variable name="ordenes_trabajo_total_2" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{ordenes_trabajo_total}]]></variableExpression>
+	</variable>
+	<variable name="ordenes_trabajo_total_3" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ordenes_trabajo_total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="134" splitType="Stretch">
+			<staticText>
+				<reportElement x="235" y="0" width="119" height="36" uuid="792bcc22-4373-463d-9457-c64604fa2cc0"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[HIDROSA S.A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="18" width="175" height="28" uuid="10ba7dc5-6d4d-4c37-85dc-8970eb9aa9f1"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de Arenado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="46" width="110" height="20" uuid="fb42d8d3-7a4d-4a83-8760-d068e861d06d"/>
+				<text><![CDATA[Fecha de Impresion: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="66" width="100" height="20" uuid="6a5a5b0f-01e2-40ce-82c3-7d172a5ef518"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="66" width="41" height="20" uuid="113f36d3-239f-48db-bd20-02ba4ff52f46"/>
+				<text><![CDATA[Pagina:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="118" width="555" height="1" uuid="c9e22e8b-fcab-482d-bcaf-ee12939f30d1"/>
+			</line>
+			<staticText>
+				<reportElement x="61" y="99" width="49" height="20" uuid="99eaa00b-332f-414c-a0cc-79793844b873"/>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="141" y="99" width="52" height="20" uuid="9f266e5a-1dc7-489a-9988-4ae1bd3201ed"/>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="329" y="98" width="100" height="20" uuid="170a99e4-244f-4f72-9113-94ca5a9cd0cf"/>
+				<text><![CDATA[Nro. Orden ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="99" width="51" height="20" uuid="2b0e5f3f-49fb-44b2-b42d-35fea489c4ce"/>
+				<text><![CDATA[Servicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="99" width="100" height="20" uuid="620a7a21-70d8-4558-94d1-24e6c35a6fb5"/>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="110" y="46" width="100" height="20" uuid="0ae573d9-61c1-4c0b-9348-b25f5560ccdd"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="329" y="15" width="100" height="20" uuid="e601be11-8949-45e5-a9b6-026f2300717c"/>
+				<textFieldExpression><![CDATA[$F{ordenes_trabajo_orden_nro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="15" width="49" height="20" uuid="0fe23158-8df4-4b3b-a423-54fea66cdfe9"/>
+				<textFieldExpression><![CDATA[$F{ordenes_trabajo_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="141" y="15" width="84" height="20" uuid="18cadf64-a177-401c-a176-4520827ea34f"/>
+				<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="15" width="51" height="20" uuid="1357a04a-9cdb-4f43-9c64-4d76d581838a"/>
+				<textFieldExpression><![CDATA[$F{servicios_servicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="455" y="15" width="100" height="20" uuid="c36da776-041c-4308-b1f3-c560fa0d1c1c"/>
+				<textFieldExpression><![CDATA[$F{ordenes_trabajo_total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="131" splitType="Stretch">
+			<staticText>
+				<reportElement x="378" y="22" width="56" height="20" uuid="7d518f4d-9033-4924-889b-43e18db9e327"/>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="445" y="22" width="100" height="20" uuid="c01cf20d-7ab4-46aa-9559-3862b7e6256d"/>
+				<textFieldExpression><![CDATA[$V{ordenes_trabajo_total_3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

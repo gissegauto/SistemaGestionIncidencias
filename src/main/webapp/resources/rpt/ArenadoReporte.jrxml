@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35cfc9f4-fb81-405a-a095-57aa5195cd12">
+	<property name="ireport.zoom" value="1.6105100000000079"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha_Desde" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_Hasta" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     ordenes_trabajo."orden_id" AS ordenes_trabajo_orden_id,
+     ordenes_trabajo."orden_nro" AS ordenes_trabajo_orden_nro,
+     ordenes_trabajo."fecha" AS ordenes_trabajo_fecha,
+     OT."total" AS ordenes_trabajo_total,
+     ordenes_trabajo."cliente_id" AS ordenes_trabajo_cliente_id,
+     
+     cliente."cliente_id" AS cliente_cliente_id,
+     cliente."nombre" AS cliente_nombre,
+     servicios."servicio_id" AS servicios_servicio_id,
+     servicios."servicio" AS servicios_servicio
+FROM
+     "public"."cliente" cliente INNER JOIN "public"."ordenes_trabajo" ordenes_trabajo ON cliente."cliente_id" = ordenes_trabajo."cliente_id"
+     INNER JOIN "public".orden_trabajo_detalle OT ON ordenes_trabajo."orden_id" = OT."orden_id"
+     INNER JOIN  "public"."servicios" servicios ON OT."servicio_id" = servicios."servicio_id"
+     where servicios.servicio_id = 1 and  ordenes_trabajo."fecha" between $P{fecha_Desde} and $P{fecha_Hasta}]]>
+	</queryString>
+	<field name="ordenes_trabajo_orden_id" class="java.lang.Integer"/>
+	<field name="ordenes_trabajo_orden_nro" class="java.lang.Integer"/>
+	<field name="ordenes_trabajo_fecha" class="java.sql.Date"/>
+	<field name="ordenes_trabajo_total" class="java.math.BigDecimal"/>
+	<field name="ordenes_trabajo_cliente_id" class="java.lang.Integer"/>
+	<field name="cliente_cliente_id" class="java.lang.Integer"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="servicios_servicio_id" class="java.lang.Integer"/>
+	<field name="servicios_servicio" class="java.lang.String"/>
+	<variable name="ordenes_trabajo_total_1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ordenes_trabajo_total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="145" height="20" uuid="7472cad0-a06e-4e0e-81f2-8b312383a1a0"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" size="17" isBold="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[HIDROSA S.A]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="20" width="145" height="18" uuid="f50af502-4abe-4207-86c7-8d26d862fcc1"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resumen de Arenado]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="124" y="38" width="100" height="20" uuid="09e0ccfe-3efd-48ca-b2f3-870ce86e8e8a"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="38" width="114" height="20" uuid="8fe919b8-4745-48be-a799-8b3d19c95f43"/>
+				<textElement>
+					<font fontName="DejaVu Sans Mono"/>
+				</textElement>
+				<text><![CDATA[Fecha de Impresion]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="435" y="0" width="80" height="20" uuid="e51bac28-cb19-47e4-ba6e-4b86a9d20f90"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="20" uuid="82262f15-00af-41a8-9ed1-611da35f6ab9"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="284" y="1" width="100" height="20" uuid="5d0e504e-69ad-4f56-8526-9685912172ca"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Orden ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="1" width="49" height="20" uuid="675362cf-d5e8-4054-8e12-e795fb8a35f3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="1" width="81" height="20" uuid="2b695b8f-dc61-4a28-81e0-4c1741d007ac"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Servicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="59" y="1" width="144" height="20" uuid="9805d98a-600e-458c-b164-66dea3493fb1"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="384" y="1" width="100" height="20" uuid="e9177077-395f-4bd0-9b91-3823a57f806a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="1" width="49" height="20" forecolor="#333333" uuid="2841e500-7fbb-4827-8f0e-be75d849cb78"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordenes_trabajo_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="59" y="1" width="144" height="20" forecolor="#333333" uuid="4ce6e11f-44c9-4e35-acad-0ad999e9b008"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="203" y="1" width="81" height="20" forecolor="#333333" uuid="f12e4238-07b0-4050-86ef-65c65832b5a7"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{servicios_servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="284" y="1" width="100" height="20" forecolor="#333333" uuid="eff1900c-62d5-4c65-b718-c417f2cbc766"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordenes_trabajo_orden_nro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="384" y="1" width="100" height="20" forecolor="#333333" uuid="fd237d5e-0132-4e17-9259-1770c6d427ba"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans Mono"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordenes_trabajo_total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="35" splitType="Stretch"/>
+	</summary>
+</jasperReport>

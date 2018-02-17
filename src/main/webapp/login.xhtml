@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html class="no-js" lang=""
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>miTV</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link rel="apple-touch-icon" href="apple-icon.png"></link>
+        <link rel="shortcut icon" href="#{resource['favicon.ico']}" />
+
+        <link rel="stylesheet" href="#{resource['assets/css/normalize.css']}" />
+        <link rel="stylesheet" href="#{resource['assets/css/bootstrap.min.css']}"/>
+        <link rel="stylesheet" href="#{resource['assets/css/font-awesome.min.css']}"/>
+        <link rel="stylesheet" href="#{resource['assets/css/themify-icons.css']}"/>    
+        <link rel="stylesheet" href="#{resource['assets/css/flag-icon.min.css']}"/>    
+        <link rel="stylesheet" href="#{resource['assets/css/cs-skin-elastic.css']}"/> 
+        <link rel="stylesheet" href="#{resource['assets/scss/style.css']}"/> 
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'/>
+
+    </h:head>
+    <h:body style="background-color:#201234" class="bg-dark">
+        <div style="left:0px; height:90px;">&nbsp;</div>
+        <p:growl id="mensajes" showDetail="true" life="2000" />
+
+        <div class="sufee-login d-flex align-content-center flex-wrap">
+            <div class="container">
+                <div class="login-content">
+                    <div class="login-logo">
+                        <!--<img class="align-content" src="#{resource['img/mitv.jpg']}" alt="" />-->
+                    </div>
+                    <div class="login-form">
+                        <div align="center"> <label>#{msg['login.title']}</label>  </div>
+                        <h:form>
+                            <div class="form-group">
+                                <label>#{msg['login.user']}</label>
+                                <p:inputText type="user" 
+                                             id="username"
+                                             value="#{loginBean.username}"  
+                                             class="form-control" 
+                                             required="true"
+                                             requiredMessage="#{msg['login.user.requiredMessage']}"
+                                             placeholder="#{msg['login.user']}" />
+                            </div>
+                            <div class="form-group">
+                                <label>#{msg['login.pass']}</label>
+                                <p:password  id="password"
+                                             value="#{loginBean.password}"  
+                                             class="form-control"
+                                             required="true"
+                                             requiredMessage="#{msg['login.password.requiredMessage']}"
+                                             placeholder="#{msg['login.pass']}"/>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"> Recordarme </input>
+                                </label>
+                                <!--                                <label class="pull-right">
+                                                                    <a href="#">Forgotten Password?</a>
+                                                                </label>-->
+                            </div>
+                            <p:commandButton class="btn btn-success btn-flat m-b-30 m-t-30"
+                                             id="loginButton" 
+                                             update=":mensajes"
+                                             value="#{msg['login.btnSubmit']}"
+                                             action="#{loginBean.login}" 
+                                             />
+                            <!--<button type="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Iniciar</button>-->
+                            <!--                            <div class="social-login-content">
+                                                            <div class="social-button">
+                                                                <button type="button" class="btn social facebook btn-flat btn-addon mb-3"><i class="ti-facebook"></i>Sign in with facebook</button>
+                                                                <button type="button" class="btn social twitter btn-flat btn-addon mt-2"><i class="ti-twitter"></i>Sign in with twitter</button>
+                                                            </div>
+                                                        </div>-->
+                            <!--                            <div class="register-link m-t-15 text-center">
+                                                            <p>Don't have account ? <a href="#"> Sign Up Here</a></p>
+                                                        </div>-->
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="#{resource['assets/js/vendor/jquery-2.1.4.min.js']}"></script>
+        <script src="#{resource['assets/js/popper.min.js']}"></script>
+        <script src="#{resource['assets/js/plugins.js']}"></script>
+        <script src="#{resource['assets/js/main.js']}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".username").focus();
+            });
+        </script>
+    </h:body>
+</html>

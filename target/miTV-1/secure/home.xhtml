@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <style>
+
+                    .nuevo.fc-event {
+                        background-color: orange !important;
+                    }
+                    .enCurso.fc-event {
+                        background-color:  darkgreen !important;
+                    }
+                    .retrazado.fc-event {
+                        background-color: red !important;
+                    }
+                    .finalizado.fc-event {
+                        background-color:  darkslateblue !important;
+                    }
+                    .anulado.fc-event {
+                        background-color: darkslategrey !important;
+                    }
+                </style>  
+                <p:panel >
+                    <h:form>
+                        <p:growl id="messages" showDetail="true" />
+                        <h5 style="margin-top: 0">#{msg['generic.welcome']} </h5>
+
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</html>
