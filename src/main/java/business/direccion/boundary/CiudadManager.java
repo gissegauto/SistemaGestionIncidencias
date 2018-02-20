@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.usuario.boundary;
+package business.direccion.boundary;
 
-import business.usuario.entity.Pantalla;
 import business.dao.GenericImpl;
+import business.direccion.entity.Ciudad;
 import javax.ejb.Stateless;
-
 /**
  *
  * @author ggauto
  */
 @Stateless
-public class PantallaManager extends GenericImpl<Pantalla, Integer>{
+public class CiudadManager extends GenericImpl<Ciudad, Integer>{
     
 }
