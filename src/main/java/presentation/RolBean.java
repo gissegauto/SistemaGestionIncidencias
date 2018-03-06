@@ -18,6 +18,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -30,30 +31,23 @@ public class RolBean implements Serializable {
 
     private Rol rol;
     private List<Rol> rolesList;
-    private boolean bloquearBotones = true;
+    FacesContext context = FacesContext.getCurrentInstance();
 
     @Inject
-    RolManager rolesMgr;
-
-    public RolBean() {
-    }
+    RolManager rolMgr;
 
     @PostConstruct
     public void init() {
-        UtilLogger.info("Rol init: obteniendo lista de los roles ");
         limpiar();
-        UtilLogger.info("Rol init: se encontraron " + rolesList.size());
     }
 
     public void limpiar() {
         rol = new Rol();
-        rolesList = rolesMgr.getAll();
+        rolesList = rolMgr.getAll();
     }
 
-    public String agregarRol() {
-        FacesContext context = FacesContext.getCurrentInstance();
+    public String addRol() {
         try {
-
             if (null != rol) {
                 for (Rol roles : rolesList) {
                     if (roles.getDescripcion().trim().equalsIgnoreCase(rol.getDescripcion().trim())
@@ -61,14 +55,18 @@ public class RolBean implements Serializable {
                         context.addMessage(null, new FacesMessage("Advertencia",
                                 "La rol " + rol.getDescripcion()
                                 + " ya se encuentra registrado"));
-                        RequestContext.getCurrentInstance().execute("PF('dlgRolAdd').hide()");
+//                        RequestContext.getCurrentInstance().execute("PF('dlgRolAdd').hide()");
                         return "rol";
                     }
                 }
                 if (rol != null & rol.getIdrol() == null) {
-                    rol = rolesMgr.add(rol);
+                    rol = rolMgr.add(rol);
+                    context.addMessage(null, new FacesMessage("Se agregó correctamente",
+                            "Rol: " + rol.getDescripcion()));
                 } else if (rol != null & rol.getIdrol() > 0) {
-                    rol = rolesMgr.update(rol);
+                    rol = rolMgr.update(rol);
+                    context.addMessage(null, new FacesMessage("Se actualizó correctamente",
+                            "Rol: " + rol.getDescripcion()));
                 }
             }
         } catch (Exception e) {
@@ -76,20 +74,37 @@ public class RolBean implements Serializable {
                     "Ocurrió un error al intentar guardar el rol "));
             UtilLogger.error("Problemas al insertar el rol", e);
         }
+        RequestContext.getCurrentInstance().update("rolForm:dtRol");
         return "rol";
+    }
+
+    public String delete() {
+        try {
+            rolMgr.delete(rol);
+            context.addMessage(null, new FacesMessage("Se borró Rol"));
+            RequestContext.getCurrentInstance().update("rolForm:dtRol");
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("Error",
+                    "Ocurrió un error al intentar guardar el rol"));
+            UtilLogger.error("Problemas al insertar el rol", e);
+            return null;
+        }
+        return "rol";
+    }
+
+    public void onCellEdit(CellEditEvent event) {
+        String oldValue = event.getOldValue().toString();
+        String newValue = event.getNewValue().toString();
+        Rol newRol = rolMgr.getByName(oldValue);
+        newRol.setDescripcion(newValue);
+        rolMgr.update(newRol);
+        RequestContext.getCurrentInstance().update("rolForm:dtRol");
+
     }
 
     public void actionClean(ActionEvent actionEvent) {
         this.rol = new Rol();
-        RequestContext.getCurrentInstance().update("rol-form:dtRol");
-    }
-
-    public void alSeleccionarRol(SelectEvent event) {
-        this.rol = (Rol) event.getObject();
-
-        this.bloquearBotones = false;
-        RequestContext.getCurrentInstance().update("rol-form:dtRol");
-        RequestContext.getCurrentInstance().update("rol-form:dtRol:botonEditar");
+        RequestContext.getCurrentInstance().update("rolForm:dtRol");
     }
 
     public Rol getRol() {
@@ -108,11 +123,4 @@ public class RolBean implements Serializable {
         this.rolesList = rolesList;
     }
 
-    public boolean isBloquearBotones() {
-        return bloquearBotones;
-    }
-
-    public void setBloquearBotones(boolean bloquearBotones) {
-        this.bloquearBotones = bloquearBotones;
-    }
 }

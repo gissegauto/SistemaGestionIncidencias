@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="servicioForm">
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['servicio.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <facelets>
+                        <div align="right">
+                            <p:commandButton process="dtServicio" 
+                                             icon="fa fa-plus-circle" 
+                                             update=":form-add:servicioGr" 
+                                             oncomplete="PF('dlgServicioAdd').show()" 
+                                             actionListener="#{servicioBean.actionClean}"/>
+                        </div>
+                    </facelets>
+                    <p:dataTable id="dtServicio" var="rol" 
+                                 value="#{servicioBean.servicioList}"
+                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 rowKey="#{servicio}"
+                                 editable="true" 
+                                 editMode="cell"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:ajax event="cellEdit" listener="#{servicioBean.onCellEdit}" update=":servicioForm:growl" />
+                        <p:column headerText="ID" 
+                                  width="20%"
+                                  sortBy="#{servicio.idServicio}">
+                            <h:outputText value="#{servicio.idServicio}" />
+                        </p:column>
+                        <p:column headerText="Descripción" 
+                                  width="20%"
+                                  sortBy="#{servicio.servicio}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{servicio.servicio}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{servicio.servicio}" style="width:96%" label="descripcion"/></f:facet>
+                            </p:cellEditor>
+
+                        </p:column>
+                        <p:column headerText="Opciones" 
+                                  width="20%">
+                            <p:commandButton 
+                                icon="ui-icon-trash" 
+                                id="botonEditar"
+                                action="#{servicioBean.delete}"
+                                />   
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:dialog header="Servicio" widgetVar="dlgServicioAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <h:form id="form-add">
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                        <h:panelGrid columns="2" columnClasses="column" id="servicioGr">   
+                            <p:outputLabel value="Servicio" for="servicio" style="right: 20%"/>
+                            <p:inputText id="servicio" required="true" requiredMessage="#{msg['requerid.descripcion']}"
+                                         value="#{servicioBean.servicio.servicio}" />
+                           
+                            <br />
+                            <br />
+                            <div style="align-content: center" >
+                                <p:commandButton 
+                                    value="Guardar" 
+                                    update=":servicioForm:dtServicio" 
+                                    action="#{servicioBean.add}"
+                                    id='btn-guardar-rol'
+                                    />
+                            </div>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

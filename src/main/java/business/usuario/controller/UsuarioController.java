@@ -43,4 +43,15 @@ public class UsuarioController {
             return null;
         }
     }
+
+    public Usuario resetearPassword(Usuario usuario) {
+        try {
+            String newPassword = MD5Generator.MD5("12345");
+            usuario.setPassword(newPassword);            
+            return usuarioMgr.update(usuario);
+        } catch (Exception ex) {
+            UtilLogger.error("UsuarioController.resetearPassword", ex);
+            return null;
+        }
+    }
 }

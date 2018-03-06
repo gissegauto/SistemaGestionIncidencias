@@ -12,25 +12,32 @@ import java.util.List;
  *
  * @author ggauto
  */
- 
-public interface GenericDao<T,K extends Serializable> {
-    /***
-     * Add Entity
-     * @param entity
-     * @return 
-     */
-T add (T entity);
-/***
- * Update Entity
- * @param entity
- * @return 
- */
-T update (T entity);
-void delete (T entity);
-T getById (K key);        
-List<T> getAll();
+public interface GenericDao<T, K extends Serializable> {
 
+    /**
+     * Add Entity
+     *
+     * @param entity
+     * @return T
+     */
+    T add(T entity);
+
+    /**
+     * Update Entity
+     *
+     * @param entity
+     * @return T
+     */
+    T update(T entity);
+
+    /**
+     * Delete Entity
+     *
+     * @param entity
+     */
+    void delete(T entity);
+
+    T getById(K key);
+    List<T> getAll();
 
 }
-    
-

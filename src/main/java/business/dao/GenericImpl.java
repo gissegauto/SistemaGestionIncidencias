@@ -13,22 +13,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templtes
- * and open the template in the editor.
- */
 /**
  *
- * @author cbustamante
+ * @author ggauto
  * @param <ET>
  * @param <PK>
  */
 public class GenericImpl<ET, PK extends Serializable>
-    implements GenericDao<ET, PK> {
-   
-    
+        implements GenericDao<ET, PK> {
+
     @PersistenceContext
     public EntityManager em;
 
@@ -57,8 +50,7 @@ public class GenericImpl<ET, PK extends Serializable>
     @Override
     public ET getById(PK key) {
         try {
-            //findByPersonalId
-            Query query = em.createNamedQuery(getEntityName()  + ".findById").setParameter("id", key);
+            Query query = em.createNamedQuery(getEntityName() + ".findById").setParameter("id", key);
             return ((ET) query.getSingleResult());
         } catch (Exception e) {
             UtilLogger.error(getEntityName() + ".getById", e);
@@ -69,7 +61,7 @@ public class GenericImpl<ET, PK extends Serializable>
     @Override
     public List<ET> getAll() {
         try {
-            
+
             UtilLogger.info("GetAll >" + getEntityName() + ".findAll");
             return (List<ET>) em.createNamedQuery(getEntityName() + ".findAll").getResultList();
         } catch (Exception ex) {
@@ -81,19 +73,21 @@ public class GenericImpl<ET, PK extends Serializable>
     @Override
     public void delete(ET entity) {
         try {
+            if (!em.contains(entity)) {
+                entity = em.merge(entity);
+            }
             em.remove(entity);
         } catch (Exception e) {
-            UtilLogger.error(this.getClass().getName() + ".update", e);
+            UtilLogger.error(this.getClass().getName() + ".delete", e);
         }
     }
 
     private String getEntityName() {
-        
         return this.getGenericName().replace("Manager", "");
     }
 
     protected String getGenericName() {
         return ((Class<ET>) ((ParameterizedType) getClass()
-        .getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
+                .getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
     }
 }

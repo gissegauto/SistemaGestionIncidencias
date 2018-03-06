@@ -10,6 +10,7 @@ import business.usuario.entity.Pantalla;
 import business.utils.UtilLogger;
 import java.io.Serializable;
 import java.util.List;
+import org.primefaces.event.CellEditEvent;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -28,6 +29,7 @@ import org.primefaces.context.RequestContext;
 public class PantallaBean implements Serializable {
 
     private Pantalla pantallaSelected;
+    private Pantalla pantalla;
     private List<Pantalla> pantallaList;
     FacesContext context = FacesContext.getCurrentInstance();
 
@@ -65,7 +67,7 @@ public class PantallaBean implements Serializable {
                     pantallaSelected = pantallaManager.update(pantallaSelected);
                 }
             }
-            RequestContext.getCurrentInstance().execute("PF('dlgPantallaAdd').hide()");            
+            RequestContext.getCurrentInstance().execute("PF('dlgPantallaAdd').hide()");
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar la pantalla "));
@@ -74,9 +76,34 @@ public class PantallaBean implements Serializable {
         return "pantalla";
     }
 
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+
+        if (newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+
     public void actionClean(ActionEvent actionEvent) {
         this.pantallaSelected = new Pantalla();
-        RequestContext.getCurrentInstance().update("pantalla-form:dtPantalla");
+        RequestContext.getCurrentInstance().update("pantallaForm:dtPantalla");
+    }
+
+    public String delete() {
+        try {
+            if (pantalla.getIdpantalla() > 0) {
+                pantallaManager.delete(pantalla);
+                context.addMessage(null, new FacesMessage("Se borró la Pantalla"));
+                RequestContext.getCurrentInstance().update("pantallaForm:dtPantalla");
+            }
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage("Error",
+                    "Ocurrió un error al intentar guardar la pantalla "));
+            UtilLogger.error("Problemas al insertar la pantalla", e);
+        }
+        return "pantalla";
     }
 
     public Pantalla getPantallaSelected() {
@@ -93,6 +120,14 @@ public class PantallaBean implements Serializable {
 
     public void setPantallaList(List<Pantalla> pantallaList) {
         this.pantallaList = pantallaList;
+    }
+
+    public Pantalla getPantalla() {
+        return pantalla;
+    }
+
+    public void setPantalla(Pantalla pantalla) {
+        this.pantalla = pantalla;
     }
 
 }

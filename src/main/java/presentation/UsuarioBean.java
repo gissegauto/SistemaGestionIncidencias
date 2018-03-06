@@ -5,6 +5,7 @@
  */
 package presentation;
 
+import business.usuario.controller.UsuarioController;
 import business.usuario.boundary.RolManager;
 import business.utils.MD5Generator;
 import business.utils.UtilLogger;
@@ -12,27 +13,28 @@ import business.usuario.boundary.UsuarioManager;
 import business.usuario.entity.Rol;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
+import org.primefaces.event.CellEditEvent;
 
 /**
  *
- * @author pinchi
+ * @author ggauto
  */
-@Model
+@Named
+@SessionScoped
 public class UsuarioBean implements Serializable {
 
     private Usuario usuario;
+    private Usuario usuarioSelected;
     private List<Usuario> usuarioList;
-    private boolean bloquearBotones = true;
     private String password;
     private String repeadPassword;
     private List<Rol> rolesList;
@@ -41,6 +43,8 @@ public class UsuarioBean implements Serializable {
     UsuarioManager usuariosMgr;
     @Inject
     RolManager rolesMgr;
+    @Inject
+    UsuarioController usuariosController;
 
     public UsuarioBean() {
 
@@ -48,33 +52,38 @@ public class UsuarioBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        UtilLogger.info("Usuario init: obteniendo lista de usuarios ");
+        limpiar();
+    }
+
+    public void limpiar() {
         usuario = new Usuario();
-        usuarioList = new ArrayList<>();
+        usuarioSelected = new Usuario();
         usuarioList = usuariosMgr.getAll();
-        rolesList = new ArrayList<>();
         rolesList = rolesMgr.getAll();
-        UtilLogger.info("Usuario init: se encontraron " + usuarioList.size());
     }
 
     public String addUsuario() {
         try {
             context = FacesContext.getCurrentInstance();
             if (null != usuario) {
-                /*for (Usuario usr : usuarioList) {
-                    if ((usuario.getIdusuario() == null || usuario.getIdusuario() == 0
-                            && usuario.getUsername() ==  usr.getUsername())) {
+                for (Usuario user : usuarioList) {
+                    if ((usuario.getIdusuario() == null || usuario.getIdusuario() == 0)
+                            && usuario.getUsername().trim().equalsIgnoreCase(user.getUsername().trim())) {
                         context.addMessage(null, new FacesMessage("Advertencia",
                                 "El usuario " + usuario.getUsername()
                                 + " ya se encuentra registrado"));
                         RequestContext.getCurrentInstance().execute("PF('dlgUsuAdd').hide()");
                         return "usuario";
                     }
-                }*/
+                }
                 if (usuario != null & usuario.getIdusuario() == null) {
                     usuario = usuariosMgr.add(usuario);
+                    context.addMessage(null, new FacesMessage("Se agregó correctamente",
+                            "Usuario: " + usuario.getUsername()));
                 } else if (usuario != null & usuario.getIdusuario() > 0) {
                     usuario = usuariosMgr.update(usuario);
+                    context.addMessage(null, new FacesMessage("Se actualizó correctamente",
+                            "Usuario: " + usuario.getUsername()));
                 }
 
                 if (usuario != null) {
@@ -88,8 +97,6 @@ public class UsuarioBean implements Serializable {
                         usuario = usuariosMgr.update(usuario);
                         usuarioList = usuariosMgr.getAll();
                     }
-
-                    return "usuario";
                 }
                 RequestContext.getCurrentInstance().execute("PF('dlgUsuAdd').hide()");
             }
@@ -102,44 +109,52 @@ public class UsuarioBean implements Serializable {
         return "usuario";
     }
 
-    public void borrar() {
-        try {
-            context = FacesContext.getCurrentInstance();
-            usuariosMgr.delete(usuario);
-            usuarioList = usuariosMgr.getAll();
-            context.addMessage(null, new FacesMessage("Se borró Usuario"));
-        } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("Error",
-                    "Ocurrió un error al intentar guardar el usuario "));
-            UtilLogger.error("Problemas al insertar la ciudad", e);
-        }
-    }
-
     public String delete() {
         try {
-            context = FacesContext.getCurrentInstance();
-            usuariosMgr.delete(usuario);
-            
-            FacesContext.getCurrentInstance().getExternalContext().redirect("usuario.jsf");
+            if (usuario.getIdusuario() > 0) {
+                usuariosMgr.delete(usuario);
+                context.addMessage(null, new FacesMessage("Se borró Usuario"));
+//                RequestContext.getCurrentInstance().update("usuariocForm:dtUsuario");
+            }
         } catch (Exception e) {
             context.addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el usuario "));
-            UtilLogger.error("Problemas al insertar la ciudad", e);
+            UtilLogger.error("Problemas al insertar el usuario", e);
         }
         return "usuario";
     }
 
-    public void actionClean(ActionEvent actionEvent) {
-        usuario = new Usuario();
-        RequestContext.getCurrentInstance().update("usuario-form:dtUsuario");
+    public void resetearPass() {
+        if (!usuarioSelected.getPassword().equals("")) {
+            usuariosController.resetearPassword(usuarioSelected);
+            context.addMessage(null, new FacesMessage("Se reseteó el  password", "Usuario : " + usuarioSelected.getUsername()));
+        }
     }
 
-    public void onRowSelect(SelectEvent event) {
-        this.usuario = (Usuario) event.getObject();
+    public void actionClean(ActionEvent actionEvent) {
+        usuario = new Usuario();
+        RequestContext.getCurrentInstance().update("usuarioForm:dtUsuario");
+    }
 
-        this.bloquearBotones = false;
-        RequestContext.getCurrentInstance().update("usuario-form:dtUsuario");
-        RequestContext.getCurrentInstance().update("usuario-form:dtUsuario:botonEditar");
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+//        Usuario newRolName = usuariosMgr.getByName(oldValue.toString());
+        for (Usuario user : usuarioList) {
+            if (user.getUsername().equals(oldValue.toString())) {
+                user.setUsername(newValue.toString());
+                usuariosMgr.update(user);
+            }
+
+            if (user.getIdrol() == oldValue) {
+                Rol newUserRol = user.getIdrol();
+                newUserRol.setIdrol(((Rol) newValue).getIdrol());
+                user.setIdrol(newUserRol);
+                usuariosMgr.update(user);
+            }
+        }
+        RequestContext.getCurrentInstance().update("usuarioForm:dtUsuario");
+
     }
 
     public Usuario getUsuario() {
@@ -150,20 +165,20 @@ public class UsuarioBean implements Serializable {
         this.usuario = usuario;
     }
 
+    public Usuario getUsuarioSelected() {
+        return usuarioSelected;
+    }
+
+    public void setUsuarioSelected(Usuario usuarioSelected) {
+        this.usuarioSelected = usuarioSelected;
+    }
+
     public List<Usuario> getUsuarioList() {
         return usuarioList;
     }
 
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
-    }
-
-    public boolean isBloquearBotones() {
-        return bloquearBotones;
-    }
-
-    public void setBloquearBotones(boolean bloquearBotones) {
-        this.bloquearBotones = bloquearBotones;
     }
 
     public String getPassword() {

@@ -6,7 +6,6 @@
 package business.direccion.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +14,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -51,8 +48,6 @@ public class Zona implements Serializable {
     @NotNull
     @Column(name = "estado")
     private int estado;
-    @OneToMany(mappedBy = "idZona")
-    private Collection<Barrio> barrioCollection;
 
     public Zona() {
     }
@@ -89,15 +84,6 @@ public class Zona implements Serializable {
 
     public void setEstado(int estado) {
         this.estado = estado;
-    }
-
-    @XmlTransient
-    public Collection<Barrio> getBarrioCollection() {
-        return barrioCollection;
-    }
-
-    public void setBarrioCollection(Collection<Barrio> barrioCollection) {
-        this.barrioCollection = barrioCollection;
     }
 
     @Override

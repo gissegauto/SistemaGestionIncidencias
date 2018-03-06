@@ -6,7 +6,9 @@
 package business.direccion.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,10 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,6 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Ciudad.findByCiudad", query = "SELECT c FROM Ciudad c WHERE c.ciudad = :ciudad")
     , @NamedQuery(name = "Ciudad.findByEstado", query = "SELECT c FROM Ciudad c WHERE c.estado = :estado")})
 public class Ciudad implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCiudad")
+    private Collection<Barrio> barrioCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -119,6 +126,15 @@ public class Ciudad implements Serializable {
     @Override
     public String toString() {
         return "business.direccion.entity.Ciudad[ idCiudad=" + idCiudad + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Barrio> getBarrioCollection() {
+        return barrioCollection;
+    }
+
+    public void setBarrioCollection(Collection<Barrio> barrioCollection) {
+        this.barrioCollection = barrioCollection;
     }
     
 }

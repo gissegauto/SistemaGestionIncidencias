@@ -5,7 +5,9 @@
  */
 package business.direccion.entity;
 
+import business.cliente.entity.Cliente;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,10 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,9 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Barrio.findAll", query = "SELECT b FROM Barrio b")
     , @NamedQuery(name = "Barrio.findByIdBarrio", query = "SELECT b FROM Barrio b WHERE b.idBarrio = :idBarrio")
-    , @NamedQuery(name = "Barrio.findByBarrio", query = "SELECT b FROM Barrio b WHERE b.barrio = :barrio")
-    , @NamedQuery(name = "Barrio.findByIdCiudad", query = "SELECT b FROM Barrio b WHERE b.idCiudad = :idCiudad")})
+    , @NamedQuery(name = "Barrio.findByCiudad", query = "SELECT b FROM Barrio b WHERE b.idCiudad = :idCiudad")
+    , @NamedQuery(name = "Barrio.findByBarrio", query = "SELECT b FROM Barrio b WHERE b.barrio = :barrio")})
 public class Barrio implements Serializable {
+
+    @OneToMany(mappedBy = "idBarrio")
+    private Collection<Cliente> clienteCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,13 +53,9 @@ public class Barrio implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "barrio")
     private String barrio;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idCiudad")
-    private int idCiudad;
-    @JoinColumn(name = "idZona", referencedColumnName = "idZona")
-    @ManyToOne
-    private Zona idZona;
+    @JoinColumn(name = "idCiudad", referencedColumnName = "idCiudad")
+    @ManyToOne(optional = false)
+    private Ciudad idCiudad;
 
     public Barrio() {
     }
@@ -61,10 +64,9 @@ public class Barrio implements Serializable {
         this.idBarrio = idBarrio;
     }
 
-    public Barrio(Integer idBarrio, String barrio, int idCiudad) {
+    public Barrio(Integer idBarrio, String barrio) {
         this.idBarrio = idBarrio;
         this.barrio = barrio;
-        this.idCiudad = idCiudad;
     }
 
     public Integer getIdBarrio() {
@@ -83,20 +85,12 @@ public class Barrio implements Serializable {
         this.barrio = barrio;
     }
 
-    public int getIdCiudad() {
+    public Ciudad getIdCiudad() {
         return idCiudad;
     }
 
-    public void setIdCiudad(int idCiudad) {
+    public void setIdCiudad(Ciudad idCiudad) {
         this.idCiudad = idCiudad;
-    }
-
-    public Zona getIdZona() {
-        return idZona;
-    }
-
-    public void setIdZona(Zona idZona) {
-        this.idZona = idZona;
     }
 
     @Override
@@ -122,6 +116,15 @@ public class Barrio implements Serializable {
     @Override
     public String toString() {
         return "business.direccion.entity.Barrio[ idBarrio=" + idBarrio + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Cliente> getClienteCollection() {
+        return clienteCollection;
+    }
+
+    public void setClienteCollection(Collection<Cliente> clienteCollection) {
+        this.clienteCollection = clienteCollection;
     }
     
 }

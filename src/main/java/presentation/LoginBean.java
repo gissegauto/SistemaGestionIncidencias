@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -26,7 +25,7 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author pinchi
+ * @author ggauto
  */
 @SessionScoped
 public class LoginBean implements Serializable {
