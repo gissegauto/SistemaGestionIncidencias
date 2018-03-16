@@ -6,9 +6,12 @@
 package business.direccion.entity;
 
 import business.cliente.entity.Cliente;
+import business.funcionario.entity.Funcionario;
+import business.solicitudes.entity.SolicitudConexion;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,6 +41,15 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Barrio.findByCiudad", query = "SELECT b FROM Barrio b WHERE b.idCiudad = :idCiudad")
     , @NamedQuery(name = "Barrio.findByBarrio", query = "SELECT b FROM Barrio b WHERE b.barrio = :barrio")})
 public class Barrio implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBarrio")
+    private Collection<ZonaBarrio> zonaBarrioCollection;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBarrio")
+    private Collection<SolicitudConexion> solicitudConexionCollection;
+
+    @OneToMany(mappedBy = "idBarrio")
+    private Collection<Funcionario> funcionarioCollection;
 
     @OneToMany(mappedBy = "idBarrio")
     private Collection<Cliente> clienteCollection;
@@ -125,6 +137,33 @@ public class Barrio implements Serializable {
 
     public void setClienteCollection(Collection<Cliente> clienteCollection) {
         this.clienteCollection = clienteCollection;
+    }
+
+    @XmlTransient
+    public Collection<Funcionario> getFuncionarioCollection() {
+        return funcionarioCollection;
+    }
+
+    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection) {
+        this.funcionarioCollection = funcionarioCollection;
+    }
+
+    @XmlTransient
+    public Collection<SolicitudConexion> getSolicitudConexionCollection() {
+        return solicitudConexionCollection;
+    }
+
+    public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
+        this.solicitudConexionCollection = solicitudConexionCollection;
+    }
+
+    @XmlTransient
+    public Collection<ZonaBarrio> getZonaBarrioCollection() {
+        return zonaBarrioCollection;
+    }
+
+    public void setZonaBarrioCollection(Collection<ZonaBarrio> zonaBarrioCollection) {
+        this.zonaBarrioCollection = zonaBarrioCollection;
     }
     
 }

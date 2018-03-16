@@ -19,7 +19,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -30,9 +29,8 @@ import org.primefaces.event.SelectEvent;
 public class RolBean implements Serializable {
 
     private Rol rol;
-    private List<Rol> rolesList;
+    private List<Rol> rolList;
     FacesContext context = FacesContext.getCurrentInstance();
-
     @Inject
     RolManager rolMgr;
 
@@ -43,13 +41,14 @@ public class RolBean implements Serializable {
 
     public void limpiar() {
         rol = new Rol();
-        rolesList = rolMgr.getAll();
+        rolList = rolMgr.getAll();
     }
 
     public String addRol() {
         try {
+            FacesContext context = FacesContext.getCurrentInstance();
             if (null != rol) {
-                for (Rol roles : rolesList) {
+                for (Rol roles : rolList) {
                     if (roles.getDescripcion().trim().equalsIgnoreCase(rol.getDescripcion().trim())
                             && (rol.getIdrol() == null || rol.getIdrol() == 0)) {
                         context.addMessage(null, new FacesMessage("Advertencia",
@@ -70,6 +69,7 @@ public class RolBean implements Serializable {
                 }
             }
         } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el rol "));
             UtilLogger.error("Problemas al insertar el rol", e);
@@ -116,11 +116,11 @@ public class RolBean implements Serializable {
     }
 
     public List<Rol> getRolList() {
-        return rolesList;
+        return rolList;
     }
 
-    public void setRolList(List<Rol> rolesList) {
-        this.rolesList = rolesList;
+    public void setRolList(List<Rol> rolList) {
+        this.rolList = rolList;
     }
 
 }

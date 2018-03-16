@@ -5,7 +5,6 @@
  */
 package business.cliente.controller;
 
-import business.configuracion.controller.*;
 import javax.ejb.Stateless;
 
 /**

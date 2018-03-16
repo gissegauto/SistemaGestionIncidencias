@@ -48,7 +48,7 @@ public class PantallaBean implements Serializable {
         pantallaList = pantallaManager.getAll();
     }
 
-    public String agregarPantalla() {
+    public String add() {
         try {
             if (null != pantallaSelected) {
                 for (Pantalla pantalla : pantallaList) {

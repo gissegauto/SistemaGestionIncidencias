@@ -18,7 +18,7 @@ and open the template in the editor.
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
                 <h:form id="pantallaForm">
-                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
                     <div align="center">
                         <p:outputLabel value="#{msg['pantalla.title']}" class="card-title" style="color: #0056b3"/>
                     </div>
@@ -47,13 +47,13 @@ and open the template in the editor.
                         <p:column headerText="#{msg['generic.id']}" sortBy="#{pantalla.idpantalla}" width="20%">
                             <h:outputText value="#{pantalla.idpantalla}" />
                         </p:column>
-                        <p:column headerText="Pantalla" sortBy="#{pantalla.descripcion}" width="30%">
+                        <p:column headerText="#{msg['pantalla.pantalla']}" sortBy="#{pantalla.descripcion}" width="30%">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{pantalla.descripcion}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{pantalla.descripcion}" style="width:96%" label="descripcion"/></f:facet>
                             </p:cellEditor>
                         </p:column>                        
-                        <p:column headerText="Codigo Pantalla" sortBy="#{pantalla.codigoPantalla}" width="30%" >
+                        <p:column headerText="#{msg['pantalla.codigo']}" sortBy="#{pantalla.codigoPantalla}" width="30%" >
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{pantalla.codigoPantalla}" /></f:facet>
                                 <f:facet name="input"><p:inputText value="#{pantalla.codigoPantalla}" style="width:96%" label="descripcion"/></f:facet>
@@ -69,17 +69,17 @@ and open the template in the editor.
                         </p:column>
 s                    </p:dataTable>
                 </h:form>
-                <p:dialog header="Rol" widgetVar="dlgPantallaAdd"
+                <p:dialog header="#{msg['pantalla.add']}" widgetVar="dlgPantallaAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <h:form id="form-add">
                         <p:messages id="messages" showDetail="true" autoUpdate="true" />
                         <h:panelGrid columns="2" columnClasses="column" id="rolGr">   
 
-                            <p:outputLabel value="Descripcion : "/>
+                            <p:outputLabel value="#{msg['pantalla.add.pantalla']}"/>
                             <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
                                          value="#{pantallaBean.pantallaSelected.descripcion}" />
                             <p:spacer /><p:spacer />                  
-                            <p:outputLabel value="Codigo Pantalla : " />
+                            <p:outputLabel value="#{msg['pantalla.add.codigo']}" />
                             <p:inputText id="cod_pantalla" required="true" requiredMessage="#{msg['requerid.codPantalla']}"
                                          value="#{pantallaBean.pantallaSelected.codigoPantalla}" />
                             <br />
@@ -88,7 +88,7 @@ s                    </p:dataTable>
                                 <p:commandButton 
                                     value="Guardar" 
                                     update=":pantallaForm:dtPantalla" 
-                                    action="#{rolBean.agregarRol}"
+                                    action="#{pantallaBean.add}"
                                     id='btn-guardar-rol'
                                     />
                             </div>

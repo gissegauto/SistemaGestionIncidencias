@@ -5,12 +5,177 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="clienteForm">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['cliente.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <facelets>
+                        <div align="right">
+                            <p:commandButton process="dtCliente" 
+                                             icon="fa fa-plus-circle" 
+                                             update=":form-add:ClienteGr" 
+                                             oncomplete="PF('dlgClienteAdd').show()" 
+                                             actionListener="#{clienteBean.actionClean}"/>
+                        </div>
+                    </facelets>
+                    <p:dataTable id="dtCliente" var="cliente" 
+                                 value="#{clienteBean.clienteList}"
+                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 rowKey="#{cliente.idCliente}"
+                                 emptyMessage="#{msg['generic.empty']}">
+
+                        <p:column headerText="#{msg['generic.id']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.idCliente}">
+                            <h:outputText value="#{cliente.idCliente}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['cliente.nombre']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.nombre}">
+                            <h:outputText value="#{cliente.nombre}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['cliente.apellido']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.apellido}">
+                        </p:column>
+
+                        <p:column headerText="#{msg['cliente.ciudad']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.idBarrio.idCiudad.ciudad}">
+                            <h:outputText value="#{cliente.idBarrio.idCiudad.ciudad}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['cliente.barrio']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.idBarrio.barrio}">
+                            <h:outputText value="#{cliente.idBarrio.barrio}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['cliente.telefono']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.telefono}">
+                            <h:outputText value="#{cliente.telefono}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg['cliente.celular']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.celular}">
+                            <h:outputText value="#{cliente.celular}" />
+                        </p:column>
+                        <p:column headerText="#{msg['cliente.estado']}" 
+                                  width="10%"
+                                  sortBy="#{cliente.estado}">
+                            <h:outputText value="#{cliente.estado}" />
+                        </p:column>
+                        <p:column headerText="Opciones" 
+                                  width="10%">
+                            <p:commandButton 
+                                icon="ui-icon-view" 
+                                id="botonVer">
+                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
+                            </p:commandButton>
+                            <p:commandButton 
+                                icon="ui-icon-trash" 
+                                action="#{clienteBean.delete}"
+                                id="botonEditar">
+                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:dialog header="Cliente" widgetVar="dlgClienteAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset title="Datos Personales" style="margin-bottom:10px">
+                        <h:form id="form-add" class="form-inline">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <h:panelGroup>
+                                <h:panelGrid columns="4" columnClasses="column" id="ClienteGr">   
+                                    <p:outputLabel value="#{msg['cliente.add.nombre']}" for="nombre" style="left:10%"/>
+                                    <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
+                                                 value="#{clienteBean.cliente.nombre}" />
+
+                                    <p:outputLabel value="#{msg['cliente.add.apellido']}" for="apellido" style="right: 10%"/>
+                                    <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
+                                                 value="#{clienteBean.cliente.apellido}" />
+
+                                    <p:outputLabel for="tipoDocumento" value="#{msg['cliente.add.tipoDocumento']}" />
+                                    <p:selectOneMenu id="tipoDocumento" value="#{clienteBean.cliente.tipoDocumento}" style="width:125px">
+                                        <f:selectItem itemLabel="Cédula de Identidad" itemValue="CI" />
+                                        <f:selectItem itemLabel="RUC" itemValue="RUC" />
+                                        <f:selectItem itemLabel="DNI" itemValue="DNI" />
+                                        <f:selectItem itemLabel="Otro" itemValue="Otro" />
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel for="nroDocumento" value="#{msg['cliente.add.nroDocumento']}" />
+                                    <p:inputText id="nroDocumento"  value="#{clienteBean.cliente.nroDocumento}" />
+
+                                    <p:outputLabel value="#{msg['cliente.add.direccion']}" for="direccion" style="right: 10%"/>
+                                    <p:inputText id="direccion" required="true" requiredMessage="#{msg['requerid.direccion']}"
+                                                 value="#{clienteBean.cliente.direccion}" />
+
+                                    <p:outputLabel value="#{msg['cliente.add.telefono']}" for="telefono" style="right: 10%"/>
+                                    <p:inputText id="telefono" 
+                                                 value="#{clienteBean.cliente.telefono}" />
+
+                                    <p:outputLabel value="#{msg['cliente.add.celular']}" for="celular" style="right: 10%"/>
+                                    <p:inputText id="celular" 
+                                                 value="#{clienteBean.cliente.celular}" />
+
+                                    <p:outputLabel value="Ciudad" for="ciudad" />
+                                    <p:selectOneMenu id="ciudad" value="#{clienteBean.ciudad.idCiudad}" 
+                                                     effect="fold" editable="false" 
+                                                     valueChangeListener="#{clienteBean.buscarBarrios}"
+                                                     converter="ciudadConverter" >
+                                        <f:selectItems value="#{clienteBean.ciudadList}" 
+                                                       var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                       itemValue="#{ciudad}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="#{msg['cliente.add.estado']}" for="estado" style="right: 10%"/>
+                                    <p:inputText id="estado" 
+                                                 value="#{clienteBean.cliente.estado}" />
+                                    <p:outputLabel value="Barrio" for="barrio" />
+                                    <p:selectOneMenu id="barrio" value="#{clienteBean.barrio.idBarrio}" 
+                                                     effect="fold" editable="false" 
+                                                     converter="barrioConverter" >
+                                        <f:selectItems value="#{clienteBean.barrioList}" 
+                                                       var="barrio" itemLabel="#{barrio.barrio}" 
+                                                       itemValue="#{barrio}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="Observaciones : " for="observaciones" style="right: 10%"/>
+                                    <p:inputText id="observaciones" 
+                                                 value="#{clienteBean.cliente.observaciones}" />
+                                </h:panelGrid>
+                                <h:panelGrid id="GuardarClienteGr">
+                                    <div style="align-content: center" >
+                                        <p:commandButton 
+                                            value="Guardar" 
+                                            update="ClienteGr,:clienteForm:dtCliente" 
+                                            action="#{clienteBean.add}"
+                                            id='btn-guardar-cliente'
+                                            />
+                                    </div>
+                                </h:panelGrid>
+                            </h:panelGroup>
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
 </html>

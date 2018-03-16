@@ -15,7 +15,7 @@ and open the template in the editor.
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
                 <h:form id="servicioForm">
-                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
                     <div align="center">
                         <p:outputLabel value="#{msg['servicio.title']} " class="card-title" style="color: #0056b3"/>
                     </div>
@@ -28,7 +28,7 @@ and open the template in the editor.
                                              actionListener="#{servicioBean.actionClean}"/>
                         </div>
                     </facelets>
-                    <p:dataTable id="dtServicio" var="rol" 
+                    <p:dataTable id="dtServicio" var="servicio" 
                                  value="#{servicioBean.servicioList}"
                                  rows="5" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -38,27 +38,33 @@ and open the template in the editor.
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:ajax event="cellEdit" listener="#{servicioBean.onCellEdit}" update=":servicioForm:growl" />
-                        <p:column headerText="ID" 
+                        <p:column headerText="#{msg['generic.id']}" 
                                   width="20%"
                                   sortBy="#{servicio.idServicio}">
                             <h:outputText value="#{servicio.idServicio}" />
                         </p:column>
-                        <p:column headerText="Descripción" 
+                        <p:column headerText="#{msg['servicio.servicio']}" 
                                   width="20%"
                                   sortBy="#{servicio.servicio}">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{servicio.servicio}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{servicio.servicio}" style="width:96%" label="descripcion"/></f:facet>
+                                <f:facet name="input"><p:inputText value="#{servicio.servicio}" style="width:96%" label="servicio"/></f:facet>
                             </p:cellEditor>
 
                         </p:column>
-                        <p:column headerText="Opciones" 
-                                  width="20%">
-                            <p:commandButton 
-                                icon="ui-icon-trash" 
-                                id="botonEditar"
-                                action="#{servicioBean.delete}"
-                                />   
+                        <p:column headerText="#{msg['cliente.estado']}" 
+                                  sortBy="#{servicio.estado}" 
+                                  width="10%" >
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="Activado" rendered="#{servicio.estado eq 0}" /></f:facet>
+                                <f:facet name="output2"><h:outputText value="Desactivado" rendered="#{servicio.estado eq 1}" /></f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneListbox id="estado" value="#{servicio.estado}" >
+                                        <f:selectItem itemLabel="Activo" itemValue="0" />
+                                        <f:selectItem itemLabel="Inactivo" itemValue="1" />
+                                    </p:selectOneListbox>
+                                </f:facet>
+                            </p:cellEditor>
                         </p:column>
                     </p:dataTable>
                 </h:form>
@@ -68,10 +74,10 @@ and open the template in the editor.
                     <h:form id="form-add">
                         <p:messages id="messages" showDetail="true" autoUpdate="true" />
                         <h:panelGrid columns="2" columnClasses="column" id="servicioGr">   
-                            <p:outputLabel value="Servicio" for="servicio" style="right: 20%"/>
+                            <p:outputLabel value="#{msg['servicio.add.servicio']}" for="servicio" style="right: 20%"/>
                             <p:inputText id="servicio" required="true" requiredMessage="#{msg['requerid.descripcion']}"
                                          value="#{servicioBean.servicio.servicio}" />
-                           
+
                             <br />
                             <br />
                             <div style="align-content: center" >

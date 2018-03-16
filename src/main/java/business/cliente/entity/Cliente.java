@@ -82,6 +82,18 @@ public class Cliente implements Serializable {
     @Column(name = "fechaActualizacion")
     @Temporal(TemporalType.DATE)
     private Date fechaActualizacion;
+    @Size(max = 100)
+    @Column(name = "direccion")
+    private String direccion;
+    @Size(max = 255)
+    @Column(name = "observaciones")
+    private String observaciones;
+    @Size(max = 30)
+    @Column(name = "telefono")
+    private String telefono;
+    @Size(max = 15)
+    @Column(name = "celular")
+    private String celular;
     @JoinColumn(name = "idBarrio", referencedColumnName = "idBarrio")
     @ManyToOne
     private Barrio idBarrio;
@@ -226,5 +238,37 @@ public class Cliente implements Serializable {
     public String toString() {
         return "business.cliente.entity.Cliente[ idCliente=" + idCliente + " ]";
     }
-    
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
 }

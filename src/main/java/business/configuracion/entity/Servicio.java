@@ -5,8 +5,11 @@
  */
 package business.configuracion.entity;
 
+import business.solicitudes.entity.SolicitudConexion;
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,10 +17,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Servicio.findByServicio", query = "SELECT s FROM Servicio s WHERE s.servicio = :servicio")
     , @NamedQuery(name = "Servicio.findByEstado", query = "SELECT s FROM Servicio s WHERE s.estado = :estado")})
 public class Servicio implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idServicio")
+    private Collection<SolicitudConexion> solicitudConexionCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,7 +56,6 @@ public class Servicio implements Serializable {
     @NotNull
     @Column(name = "estado")
     private int estado;
-
     public Servicio() {
     }
 
@@ -109,6 +116,15 @@ public class Servicio implements Serializable {
     @Override
     public String toString() {
         return "business.configuraciones.entity.Servicio[ idServicio=" + idServicio + " ]";
+    }
+
+    @XmlTransient
+    public Collection<SolicitudConexion> getSolicitudConexionCollection() {
+        return solicitudConexionCollection;
+    }
+
+    public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
+        this.solicitudConexionCollection = solicitudConexionCollection;
     }
     
 }

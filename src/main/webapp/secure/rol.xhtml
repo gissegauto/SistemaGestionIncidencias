@@ -15,7 +15,7 @@ and open the template in the editor.
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
                 <h:form id="rolForm">
-                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
                     <div align="center">
                         <p:outputLabel value="#{msg['rol.title']} " class="card-title" style="color: #0056b3"/>
                     </div>
@@ -55,14 +55,14 @@ and open the template in the editor.
                         <p:column headerText="Opciones" 
                                   width="20%">
                             <p:commandButton 
-                                icon="ui-icon-trash" 
+                                icon="ui-icon-trash"
+                                action="#{rolBean.delete}"
                                 id="botonEditar">
                                 <f:setPropertyActionListener target="#{rolBean.rol}" value="rol" />
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
                 </h:form>
-
                 <p:dialog header="Rol" widgetVar="dlgRolAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <h:form id="form-add">

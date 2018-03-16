@@ -8,7 +8,7 @@
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
                 <h:form id="rolPantallaForm">
-                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
                     <div align="center">
                         <p:outputLabel value="#{msg['rolPantalla.title']} " class="card-title" style="color: #0056b3"/>
                     </div>
@@ -32,10 +32,10 @@
                         <p:column headerText="#{msg['generic.id']}" sortBy="#{rolPantalla.idrolPantalla}" width="20%">
                             <h:outputText value="#{rolPantalla.idrolPantalla}" />
                         </p:column>
-                        <p:column headerText="Pantalla" sortBy="#{rolPantalla.idpantalla.descripcion}" width="30%">
+                        <p:column headerText="#{msg['rolPantalla.pantalla']}" sortBy="#{rolPantalla.idpantalla.descripcion}" width="30%">
                             <h:outputText value="#{rolPantalla.idpantalla.descripcion}" />
                         </p:column>
-                        <p:column headerText="Rol" sortBy="#{rolPantalla.idRol.descripcion}" width="30%">
+                        <p:column headerText="#{msg['rolPantalla.rol']}" sortBy="#{rolPantalla.idRol.descripcion}" width="30%">
                             <h:outputText value="#{rolPantalla.idRol.descripcion}" />
                         </p:column>
                         <p:column headerText="Opciones" width="20%">
@@ -51,20 +51,20 @@
                     </p:dataTable>
                 </h:form>
 
-                <p:dialog header="Agregar Rol Pantalla" widgetVar="dlgRolPantallaAdd"
+                <p:dialog header="#{msg['rolPantalla.add']}" widgetVar="dlgRolPantallaAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="false">
                     <h:form id="form-add">
                         <p:messages id="messages" showDetail="true" autoUpdate="true" />
                         <h:panelGrid columns="2" columnClasses="column" id="rolPantallaGr">   
 
-                            <p:outputLabel value="Rol : " for="listaRoles" />
+                            <p:outputLabel value="#{msg['rolPantalla.add.rol']}" for="listaRoles" />
                             <h:panelGroup>
                                 <p:selectOneMenu   id="listaRoles"  value="#{rolPantallaBean.rolPantalla.idRol}"  style="width:100%;z-index: 1000;" converter="rolConverter" >
                                     <f:selectItems value="#{rolPantallaBean.rolList}" var="rol" itemLabel="#{rol.descripcion} " itemDescription=" #{rol.descripcion}" itemValue="#{rol}" />                                        
                                 </p:selectOneMenu>                                
                             </h:panelGroup>
                             <p:spacer /><p:spacer />  
-                            <p:outputLabel value="Pantalla :" for="listaPantallas" />
+                            <p:outputLabel value="#{msg['rolPantalla.add.pantalla']}" for="listaPantallas" />
                             <h:panelGroup>
                                 <p:selectOneMenu   id="listaPantallas"  value="#{rolPantallaBean.rolPantalla.idpantalla}"  style="width:100%;z-index: 1000;" converter="pantallaConverter" >
                                     <f:selectItems value="#{rolPantallaBean.pantallaList}" var="pantalla" itemLabel="#{pantalla.descripcion} " itemDescription=" #{pantalla.descripcion}" itemValue="#{pantalla}" />                                        

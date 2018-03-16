@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ import org.primefaces.context.RequestContext;
  *
  * @author ggauto
  */
+@Model
 @SessionScoped
 public class LoginBean implements Serializable {
 
@@ -76,7 +78,6 @@ public class LoginBean implements Serializable {
 
         if (loggedIn) {
             UtilLogger.info("Se inició sesión como " + username);
-            // FacesContext.getCurrentInstance().getExternalContext().redirect("secure/home.xhtml");
             redirect();
             return "usuario";
         } else {
@@ -84,7 +85,6 @@ public class LoginBean implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error de acceso", "El usuario y la contraseña no coinciden");
             FacesContext.getCurrentInstance().addMessage(null, message);
             UtilLogger.info("Se intentó ingresar como " + username);
-            UtilLogger.error("Se intentó ingresar como " + username);
             username = null;
             password = null;
             RequestContext.getCurrentInstance().update("loginPage");

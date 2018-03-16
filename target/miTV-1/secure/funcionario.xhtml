@@ -5,12 +5,137 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="funcionarioForm">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['funcionario.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <facelets>
+                        <div align="right">
+                            <p:commandButton process="dtFuncionario" 
+                                             icon="fa fa-plus-circle" 
+                                             update=":form-add:FuncionarioGr" 
+                                             oncomplete="PF('dlgFuncionarioAdd').show()" 
+                                             actionListener="#{funcionarioBean.actionClean}"/>
+                        </div>
+                    </facelets>
+                    <p:dataTable id="dtFuncionario" var="funcionario" 
+                                 value="#{funcionarioBean.funcionarioList}"
+                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 rowKey="#{funcionario.idFuncionario}"
+                                 editable="true" 
+                                 editMode="cell"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:ajax event="cellEdit" listener="#{funcionarioBean.onCellEdit}" update=":funcionarioForm:growl" />
+                        <p:column headerText="#{msg['generic.id']}" 
+                                  width="20%"
+                                  sortBy="#{funcionario.idFuncionario}">
+                            <h:outputText value="#{funcionario.idFuncionario}" />
+                        </p:column>
+                        <p:column headerText="#{msg['funcionario.nombre']}" 
+                                  width="20%"
+                                  sortBy="#{funcionario.nombreFuncionario}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{funcionario.nombreFuncionario}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{funcionario.nombreFuncionario}" style="width:10%" label="nombre"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['funcionario.apellido']}" 
+                                  width="20%"
+                                  sortBy="#{funcionario.apellidoFuncionario}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{funcionario.apellidoFuncionario}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{funcionario.apellidoFuncionario}" style="width:10%" label="apellido"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['funcionario.direccion']}" 
+                                  width="20%"
+                                  sortBy="#{funcionario.direccion}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{funcionario.direccion}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{funcionario.direccion}" style="width:10%" label="direccion"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['funcionario.telefono']}" 
+                                  width="20%"
+                                  sortBy="#{funcionario.telefono}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{funcionario.telefono}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{funcionario.telefono}" style="width:10%" label="telefono"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="#{msg['funcionario.estado']}" 
+                                  width="20%"
+                                  sortBy="#{funcionario.estado}">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{funcionario.estado}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{funcionario.estado}" style="width:10%" label="estado"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                        <p:column headerText="Opciones" 
+                                  width="20%">
+                            <p:commandButton 
+                                icon="ui-icon-trash" 
+                                id="botonEditar">
+                                <f:setPropertyActionListener target="#{funcionarioBean.funcionario}" value="funcionario" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:dialog header="Funcionario" widgetVar="dlgFuncionarioAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <h:form id="form-add">
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                        <h:panelGroup>
+                                <h:panelGrid columns="4" columnClasses="column" id="FuncionarioGr">   
+                                    <p:outputLabel value="#{msg['funcionario.nombre']}" for="nombre" style="left:  20%"/>
+                                    <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
+                                                 value="#{funcionarioBean.funcionario.nombreFuncionario}" />
+                                    <p:outputLabel value="Apellido : " for="apellido" style="right: 20%"/>
+                                    <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
+                                                 value="#{funcionarioBean.funcionario.apellidoFuncionario}" />
+                                    <p:outputLabel value="Dirección : " for="direccion" style="right: 20%"/>
+                                    <p:inputText id="direccion" required="true" requiredMessage="#{msg['requerid.direccion']}"
+                                                 value="#{funcionarioBean.funcionario.direccion}" />
+                                    <p:outputLabel value="Teléfono : " for="telefono" style="right: 20%"/>
+                                    <p:inputText id="telefono" 
+                                                 value="#{funcionarioBean.funcionario.telefono}" />
+                                    <p:outputLabel value="Celular : " for="celular" style="right: 20%"/>
+                                    <p:inputText id="celular" 
+                                                 value="#{funcionarioBean.funcionario.celular}" />
+                                    <p:outputLabel value="Nro Documento : " for="nroDocumento" style="right: 20%"/>
+                                    <p:inputText id="nroDocumento" 
+                                                 value="#{funcionarioBean.funcionario.nroDocumento}" />
+                                    <p:outputLabel value="Estado : " for="estado" style="right: 20%"/>
+                                    <p:inputText id="estado" 
+                                                 value="#{funcionarioBean.funcionario.estado}" />
+                                    <br />
+                                    <br />
+                                    <div style="align-content: center" >
+                                        <p:commandButton 
+                                            value="Guardar" 
+                                            update="FuncionarioGr,:funcionarioForm:dtFuncionario" 
+                                            action="#{funcionarioBean.add}"
+                                            id='btn-guardar-funcionario'
+                                            />
+                                    </div>
+                                </h:panelGrid>
+                        </h:panelGroup>
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
 </html>
