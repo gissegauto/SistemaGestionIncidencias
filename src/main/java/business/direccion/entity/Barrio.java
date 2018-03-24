@@ -7,6 +7,7 @@ package business.direccion.entity;
 
 import business.cliente.entity.Cliente;
 import business.funcionario.entity.Funcionario;
+import business.solicitudes.entity.HistorialSolicitudConexion;
 import business.solicitudes.entity.SolicitudConexion;
 import java.io.Serializable;
 import java.util.Collection;
@@ -38,21 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Barrio.findAll", query = "SELECT b FROM Barrio b")
     , @NamedQuery(name = "Barrio.findByIdBarrio", query = "SELECT b FROM Barrio b WHERE b.idBarrio = :idBarrio")
-    , @NamedQuery(name = "Barrio.findByCiudad", query = "SELECT b FROM Barrio b WHERE b.idCiudad = :idCiudad")
     , @NamedQuery(name = "Barrio.findByBarrio", query = "SELECT b FROM Barrio b WHERE b.barrio = :barrio")})
 public class Barrio implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBarrio")
-    private Collection<ZonaBarrio> zonaBarrioCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBarrio")
-    private Collection<SolicitudConexion> solicitudConexionCollection;
-
     @OneToMany(mappedBy = "idBarrio")
-    private Collection<Funcionario> funcionarioCollection;
-
-    @OneToMany(mappedBy = "idBarrio")
-    private Collection<Cliente> clienteCollection;
+    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,6 +59,14 @@ public class Barrio implements Serializable {
     @JoinColumn(name = "idCiudad", referencedColumnName = "idCiudad")
     @ManyToOne(optional = false)
     private Ciudad idCiudad;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBarrio")
+    private Collection<Cliente> clienteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBarrio")
+    private Collection<SolicitudConexion> solicitudConexionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBarrio")
+    private Collection<ZonaBarrio> zonaBarrioCollection;
+    @OneToMany(mappedBy = "idBarrio")
+    private Collection<Funcionario> funcionarioCollection;
 
     public Barrio() {
     }
@@ -105,6 +104,42 @@ public class Barrio implements Serializable {
         this.idCiudad = idCiudad;
     }
 
+    @XmlTransient
+    public Collection<Cliente> getClienteCollection() {
+        return clienteCollection;
+    }
+
+    public void setClienteCollection(Collection<Cliente> clienteCollection) {
+        this.clienteCollection = clienteCollection;
+    }
+
+    @XmlTransient
+    public Collection<SolicitudConexion> getSolicitudConexionCollection() {
+        return solicitudConexionCollection;
+    }
+
+    public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
+        this.solicitudConexionCollection = solicitudConexionCollection;
+    }
+
+    @XmlTransient
+    public Collection<ZonaBarrio> getZonaBarrioCollection() {
+        return zonaBarrioCollection;
+    }
+
+    public void setZonaBarrioCollection(Collection<ZonaBarrio> zonaBarrioCollection) {
+        this.zonaBarrioCollection = zonaBarrioCollection;
+    }
+
+    @XmlTransient
+    public Collection<Funcionario> getFuncionarioCollection() {
+        return funcionarioCollection;
+    }
+
+    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection) {
+        this.funcionarioCollection = funcionarioCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,39 +166,12 @@ public class Barrio implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Cliente> getClienteCollection() {
-        return clienteCollection;
+    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection() {
+        return historialSolicitudConexionCollection;
     }
 
-    public void setClienteCollection(Collection<Cliente> clienteCollection) {
-        this.clienteCollection = clienteCollection;
-    }
-
-    @XmlTransient
-    public Collection<Funcionario> getFuncionarioCollection() {
-        return funcionarioCollection;
-    }
-
-    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection) {
-        this.funcionarioCollection = funcionarioCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolicitudConexion> getSolicitudConexionCollection() {
-        return solicitudConexionCollection;
-    }
-
-    public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
-        this.solicitudConexionCollection = solicitudConexionCollection;
-    }
-
-    @XmlTransient
-    public Collection<ZonaBarrio> getZonaBarrioCollection() {
-        return zonaBarrioCollection;
-    }
-
-    public void setZonaBarrioCollection(Collection<ZonaBarrio> zonaBarrioCollection) {
-        this.zonaBarrioCollection = zonaBarrioCollection;
+    public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
+        this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
     }
     
 }

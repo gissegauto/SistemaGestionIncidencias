@@ -6,7 +6,8 @@
 package business.usuario.entity;
 
 import business.cliente.entity.Cliente;
-import business.funcionario.entity.Funcionario;
+import business.cliente.entity.HistorialCliente;
+import business.solicitudes.entity.HistorialSolicitudConexion;
 import business.solicitudes.entity.SolicitudConexion;
 import java.io.Serializable;
 import java.util.Collection;
@@ -23,6 +24,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -42,21 +44,22 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "idUsuarioActualizacion")
-    private Collection<SolicitudConexion> solicitudConexionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarioRegistro")
-    private Collection<SolicitudConexion> solicitudConexionCollection1;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
-    private Collection<Funcionario> funcionarioCollection;
-    @OneToMany(mappedBy = "idUsuarioActualizacion")
-    private Collection<Funcionario> funcionarioCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarioRegistro")
-    private Collection<Funcionario> funcionarioCollection2;
-
-    @OneToMany(mappedBy = "idUsuarioActualizacion")
     private Collection<Cliente> clienteCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarioRegistro")
     private Collection<Cliente> clienteCollection1;
+    @OneToMany(mappedBy = "idUsuarioActualizacion")
+    private Collection<HistorialCliente> historialClienteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarioRegistro")
+    private Collection<HistorialCliente> historialClienteCollection1;
+
+    @OneToMany(mappedBy = "idUsuarioActualizacion")
+    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarioRegistro")
+    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection1;
+    @OneToMany(mappedBy = "idUsuarioActualizacion")
+    private Collection<SolicitudConexion> solicitudConexionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuarioRegistro")
+    private Collection<SolicitudConexion> solicitudConexionCollection1;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -64,14 +67,18 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @Column(name = "idusuario")
     private Integer idusuario;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "username")
     private String username;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "password")
     private String password;
     @JoinColumn(name = "idrol", referencedColumnName = "idrol")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Rol idrol;
 
     public Usuario() {
@@ -79,6 +86,12 @@ public class Usuario implements Serializable {
 
     public Usuario(Integer idusuario) {
         this.idusuario = idusuario;
+    }
+
+    public Usuario(Integer idusuario, String username, String password) {
+        this.idusuario = idusuario;
+        this.username = username;
+        this.password = password;
     }
 
     public Integer getIdusuario() {
@@ -135,7 +148,43 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "business.usuarios.entity.Usuario[ idusuario=" + idusuario + " ]";
+        return "business.usuario.entity.Usuario[ idusuario=" + idusuario + " ]";
+    }
+
+    @XmlTransient
+    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection() {
+        return historialSolicitudConexionCollection;
+    }
+
+    public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
+        this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
+    }
+
+    @XmlTransient
+    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection1() {
+        return historialSolicitudConexionCollection1;
+    }
+
+    public void setHistorialSolicitudConexionCollection1(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection1) {
+        this.historialSolicitudConexionCollection1 = historialSolicitudConexionCollection1;
+    }
+
+    @XmlTransient
+    public Collection<SolicitudConexion> getSolicitudConexionCollection() {
+        return solicitudConexionCollection;
+    }
+
+    public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
+        this.solicitudConexionCollection = solicitudConexionCollection;
+    }
+
+    @XmlTransient
+    public Collection<SolicitudConexion> getSolicitudConexionCollection1() {
+        return solicitudConexionCollection1;
+    }
+
+    public void setSolicitudConexionCollection1(Collection<SolicitudConexion> solicitudConexionCollection1) {
+        this.solicitudConexionCollection1 = solicitudConexionCollection1;
     }
 
     @XmlTransient
@@ -157,48 +206,21 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Funcionario> getFuncionarioCollection() {
-        return funcionarioCollection;
+    public Collection<HistorialCliente> getHistorialClienteCollection() {
+        return historialClienteCollection;
     }
 
-    public void setFuncionarioCollection(Collection<Funcionario> funcionarioCollection) {
-        this.funcionarioCollection = funcionarioCollection;
-    }
-
-    @XmlTransient
-    public Collection<Funcionario> getFuncionarioCollection1() {
-        return funcionarioCollection1;
-    }
-
-    public void setFuncionarioCollection1(Collection<Funcionario> funcionarioCollection1) {
-        this.funcionarioCollection1 = funcionarioCollection1;
+    public void setHistorialClienteCollection(Collection<HistorialCliente> historialClienteCollection) {
+        this.historialClienteCollection = historialClienteCollection;
     }
 
     @XmlTransient
-    public Collection<Funcionario> getFuncionarioCollection2() {
-        return funcionarioCollection2;
+    public Collection<HistorialCliente> getHistorialClienteCollection1() {
+        return historialClienteCollection1;
     }
 
-    public void setFuncionarioCollection2(Collection<Funcionario> funcionarioCollection2) {
-        this.funcionarioCollection2 = funcionarioCollection2;
-    }
-
-    @XmlTransient
-    public Collection<SolicitudConexion> getSolicitudConexionCollection() {
-        return solicitudConexionCollection;
-    }
-
-    public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
-        this.solicitudConexionCollection = solicitudConexionCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolicitudConexion> getSolicitudConexionCollection1() {
-        return solicitudConexionCollection1;
-    }
-
-    public void setSolicitudConexionCollection1(Collection<SolicitudConexion> solicitudConexionCollection1) {
-        this.solicitudConexionCollection1 = solicitudConexionCollection1;
+    public void setHistorialClienteCollection1(Collection<HistorialCliente> historialClienteCollection1) {
+        this.historialClienteCollection1 = historialClienteCollection1;
     }
     
 }

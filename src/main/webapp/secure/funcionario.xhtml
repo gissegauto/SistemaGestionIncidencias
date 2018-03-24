@@ -32,19 +32,19 @@ and open the template in the editor.
                                  value="#{funcionarioBean.funcionarioList}"
                                  rows="5" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15"
+                                 rowsPerPageTemplate="5,10,15"  style="font-size:12px"
                                  rowKey="#{funcionario.idFuncionario}"
                                  editable="true" 
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:ajax event="cellEdit" listener="#{funcionarioBean.onCellEdit}" update=":funcionarioForm:growl" />
                         <p:column headerText="#{msg['generic.id']}" 
-                                  width="20%"
+                                  width="5%"
                                   sortBy="#{funcionario.idFuncionario}">
                             <h:outputText value="#{funcionario.idFuncionario}" />
                         </p:column>
                         <p:column headerText="#{msg['funcionario.nombre']}" 
-                                  width="20%"
+                                  width="10%" filterBy="#{funcionario.nombreFuncionario}"
                                   sortBy="#{funcionario.nombreFuncionario}">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{funcionario.nombreFuncionario}" /></f:facet>
@@ -52,7 +52,7 @@ and open the template in the editor.
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="#{msg['funcionario.apellido']}" 
-                                  width="20%"
+                                  width="10%" filterBy="#{funcionario.apellidoFuncionario}"
                                   sortBy="#{funcionario.apellidoFuncionario}">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{funcionario.apellidoFuncionario}" /></f:facet>
@@ -60,7 +60,7 @@ and open the template in the editor.
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="#{msg['funcionario.direccion']}" 
-                                  width="20%"
+                                  width="10%" filterBy="#{funcionario.direccion}"
                                   sortBy="#{funcionario.direccion}">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{funcionario.direccion}" /></f:facet>
@@ -68,7 +68,7 @@ and open the template in the editor.
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="#{msg['funcionario.telefono']}" 
-                                  width="20%"
+                                  width="10%" filterBy="#{funcionario.telefono}"
                                   sortBy="#{funcionario.telefono}">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{funcionario.telefono}" /></f:facet>
@@ -76,7 +76,7 @@ and open the template in the editor.
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="#{msg['funcionario.estado']}" 
-                                  width="20%"
+                                  width="10%" filterBy="#{funcionario.estado}"
                                   sortBy="#{funcionario.estado}">
                             <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{funcionario.estado}" /></f:facet>
@@ -94,12 +94,13 @@ and open the template in the editor.
                     </p:dataTable>
                 </h:form>
 
-                <p:dialog header="Funcionario" widgetVar="dlgFuncionarioAdd"
+                <p:dialog header="#{msg['funcionario.add']}" widgetVar="dlgFuncionarioAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
-                    <h:form id="form-add">
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                        <h:panelGroup>
-                                <h:panelGrid columns="4" columnClasses="column" id="FuncionarioGr">   
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <h:panelGroup>
+                                <h:panelGrid columns="2" columnClasses="column" id="FuncionarioGr">   
                                     <p:outputLabel value="#{msg['funcionario.nombre']}" for="nombre" style="left:  20%"/>
                                     <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
                                                  value="#{funcionarioBean.funcionario.nombreFuncionario}" />
@@ -132,8 +133,9 @@ and open the template in the editor.
                                             />
                                     </div>
                                 </h:panelGrid>
-                        </h:panelGroup>
-                    </h:form>
+                            </h:panelGroup>
+                        </h:form>
+                    </p:fieldset>
                 </p:dialog>
             </ui:define>
         </ui:composition>

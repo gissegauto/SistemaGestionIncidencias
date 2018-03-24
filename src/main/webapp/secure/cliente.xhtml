@@ -23,7 +23,7 @@ and open the template in the editor.
                         <div align="right">
                             <p:commandButton process="dtCliente" 
                                              icon="fa fa-plus-circle" 
-                                             update=":form-add:ClienteGr" 
+                                             update=":form-add:clienteGr" 
                                              oncomplete="PF('dlgClienteAdd').show()" 
                                              actionListener="#{clienteBean.actionClean}"/>
                         </div>
@@ -33,145 +33,211 @@ and open the template in the editor.
                                  rows="5" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
+                                 style="font-size:12px"
                                  rowKey="#{cliente.idCliente}"
                                  emptyMessage="#{msg['generic.empty']}">
 
                         <p:column headerText="#{msg['generic.id']}" 
-                                  width="10%"
+                                  width="5%"
                                   sortBy="#{cliente.idCliente}">
                             <h:outputText value="#{cliente.idCliente}" />
                         </p:column>
 
                         <p:column headerText="#{msg['cliente.nombre']}" 
-                                  width="10%"
+                                  width="10%" filterBy="#{cliente.nombre}"
                                   sortBy="#{cliente.nombre}">
                             <h:outputText value="#{cliente.nombre}" />
                         </p:column>
 
                         <p:column headerText="#{msg['cliente.apellido']}" 
-                                  width="10%"
+                                  width="10%" filterBy="#{cliente.apellido}"
                                   sortBy="#{cliente.apellido}">
+                            <h:outputText value="#{cliente.apellido}" />
                         </p:column>
 
                         <p:column headerText="#{msg['cliente.ciudad']}" 
-                                  width="10%"
+                                  width="10%" filterBy="#{cliente.idBarrio.idCiudad.ciudad}"
                                   sortBy="#{cliente.idBarrio.idCiudad.ciudad}">
                             <h:outputText value="#{cliente.idBarrio.idCiudad.ciudad}" />
                         </p:column>
 
                         <p:column headerText="#{msg['cliente.barrio']}" 
-                                  width="10%"
+                                  width="10%" filterBy="#{cliente.idBarrio.barrio}"
                                   sortBy="#{cliente.idBarrio.barrio}">
                             <h:outputText value="#{cliente.idBarrio.barrio}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['cliente.telefono']}" 
-                                  width="10%"
-                                  sortBy="#{cliente.telefono}">
-                            <h:outputText value="#{cliente.telefono}" />
-                        </p:column>
-
                         <p:column headerText="#{msg['cliente.celular']}" 
-                                  width="10%"
+                                  width="10%" filterBy="#{cliente.celular}"
                                   sortBy="#{cliente.celular}">
                             <h:outputText value="#{cliente.celular}" />
                         </p:column>
                         <p:column headerText="#{msg['cliente.estado']}" 
-                                  width="10%"
+                                  width="10%" filterBy="#{cliente.estado}"
                                   sortBy="#{cliente.estado}">
                             <h:outputText value="#{cliente.estado}" />
                         </p:column>
                         <p:column headerText="Opciones" 
-                                  width="10%">
+                                  width="20%">
+                            <p:column style="width:32px;text-align: center">
+                                <p:commandButton update=":clienteForm:clienteDetail"
+                                                 oncomplete="PF('dlgVerCliente').show('#{component.clientId}')"
+                                                 icon="ui-icon-search" title="Ver">
+                                    <f:setPropertyActionListener value="#{cliente}" 
+                                                                 target="#{clienteBean.cliente}" />
+                                </p:commandButton>
+                            </p:column>
                             <p:commandButton 
-                                icon="ui-icon-view" 
-                                id="botonVer">
+                                icon="ui-icon-close"
+                                update=":form-add:clienteGr" 
+                                oncomplete="PF('dlgClienteAdd').show()" 
+                                id="botonEditar">
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                             <p:commandButton 
                                 icon="ui-icon-trash" 
                                 action="#{clienteBean.delete}"
-                                id="botonEditar">
+                                id="botonEliminar">
+                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
+                            </p:commandButton>
+                            <p:commandButton 
+                                icon="ui-icon-contact" 
+                                oncomplete="PF('dlgContratoAdd').show()"
+                                id="botonContrato">
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
+                    <p:overlayPanel widgetVar="dlgVerCliente" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+                        <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                            <p:outputPanel id="clienteDetail">
+                                <h:panelGrid  columns="2" rendered="#{not empty clienteBean.cliente}" columnClasses="label,value">
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.id']}"  style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.idCliente}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.solicitante']}"  style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.nombre} #{clienteBean.cliente.apellido}" />
+                                    <p:outputLabel value="#{msg['cliente.add.direccion']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.direccion}" />
+                                    <p:outputLabel value="#{msg['cliente.add.ciudad']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.idBarrio.idCiudad.ciudad}" />
+                                    <p:outputLabel value="#{msg['cliente.add.barrio']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.idBarrio.barrio}" />
+                                    <p:outputLabel value="#{msg['cliente.add.celular']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.celular}" />
+                                    <p:outputLabel value="#{msg['cliente.add.telefono']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.telefono}" />
+                                    <p:outputLabel value="#{msg['cliente.add.sexo']}"  style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.sexo}" />
+                                    <p:outputLabel value="#{msg['cliente.add.usuarioR']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.idUsuarioRegistro.username}" />
+                                    <p:outputLabel value="#{msg['cliente.add.fechaR']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.fechaRegistro}"  >
+                                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm" /></h:outputText>
+                                    <p:outputLabel value="#{msg['cliente.add.usuarioA']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.idUsuarioActualizacion.username}" />
+                                    <p:outputLabel value="#{msg['cliente.add.fechaA']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.fechaActualizacion}"  >
+                                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm" /></h:outputText>
+                                    <p:outputLabel value="#{msg['cliente.add.estado']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteBean.cliente.estado}" />
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <br />
+                            <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="Cerrar" 
+                                    oncomplete="PF('dlgVerCliente').hide()" 
+                                    id='btn-volver' />
+                            </div>
+                        </p:fieldset>
+                    </p:overlayPanel>
                 </h:form>
 
                 <p:dialog header="Cliente" widgetVar="dlgClienteAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
-                    <p:fieldset title="Datos Personales" style="margin-bottom:10px">
-                        <h:form id="form-add" class="form-inline">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                            <h:panelGroup>
-                                <h:panelGrid columns="4" columnClasses="column" id="ClienteGr">   
-                                    <p:outputLabel value="#{msg['cliente.add.nombre']}" for="nombre" style="left:10%"/>
-                                    <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
-                                                 value="#{clienteBean.cliente.nombre}" />
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add" >
+                            <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
+                            <h:panelGrid id="clienteGr" columns="3" columnClasses="column" >
+                                <p:outputLabel value="#{msg['cliente.add.nombre']}" for="nombre" style="left:10%"/>
+                                <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
+                                             value="#{clienteBean.cliente.nombre}" />
+                                <p:spacer/>
 
-                                    <p:outputLabel value="#{msg['cliente.add.apellido']}" for="apellido" style="right: 10%"/>
-                                    <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
-                                                 value="#{clienteBean.cliente.apellido}" />
+                                <p:outputLabel value="#{msg['cliente.add.apellido']}" for="apellido" style="right: 10%"/>
+                                <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
+                                             value="#{clienteBean.cliente.apellido}" />
+                                <p:spacer/>
 
-                                    <p:outputLabel for="tipoDocumento" value="#{msg['cliente.add.tipoDocumento']}" />
-                                    <p:selectOneMenu id="tipoDocumento" value="#{clienteBean.cliente.tipoDocumento}" style="width:125px">
-                                        <f:selectItem itemLabel="Cédula de Identidad" itemValue="CI" />
-                                        <f:selectItem itemLabel="RUC" itemValue="RUC" />
-                                        <f:selectItem itemLabel="DNI" itemValue="DNI" />
-                                        <f:selectItem itemLabel="Otro" itemValue="Otro" />
-                                    </p:selectOneMenu>
+                                <p:outputLabel value="#{msg['cliente.add.tipoDocumento']}" for="tipoDocumento"  />
+                                <p:selectOneMenu id="tipoDocumento" value="#{clienteBean.cliente.tipoDocumento}" style="width:125px">
+                                    <f:selectItem itemLabel="CI" itemValue="CI" />
+                                    <f:selectItem itemLabel="RUC" itemValue="RUC" />
+                                    <f:selectItem itemLabel="DNI" itemValue="DNI" />
+                                    <f:selectItem itemLabel="Otro" itemValue="Otro" />
+                                </p:selectOneMenu>
+                                <p:spacer/>
 
-                                    <p:outputLabel for="nroDocumento" value="#{msg['cliente.add.nroDocumento']}" />
-                                    <p:inputText id="nroDocumento"  value="#{clienteBean.cliente.nroDocumento}" />
+                                <p:outputLabel value="#{msg['cliente.add.nroDocumento']}" for="nroDocumento" />
+                                <p:inputText id="nroDocumento"  value="#{clienteBean.cliente.nroDocumento}" />
+                                <p:spacer/>
 
-                                    <p:outputLabel value="#{msg['cliente.add.direccion']}" for="direccion" style="right: 10%"/>
-                                    <p:inputText id="direccion" required="true" requiredMessage="#{msg['requerid.direccion']}"
-                                                 value="#{clienteBean.cliente.direccion}" />
+                                <p:outputLabel value="#{msg['cliente.add.direccion']}" for="direccion" style="right: 10%"/>
+                                <p:inputText id="direccion" 
+                                             value="#{clienteBean.cliente.direccion}" />
+                                <p:spacer/>
 
-                                    <p:outputLabel value="#{msg['cliente.add.telefono']}" for="telefono" style="right: 10%"/>
-                                    <p:inputText id="telefono" 
-                                                 value="#{clienteBean.cliente.telefono}" />
+                                <p:outputLabel value="#{msg['cliente.add.telefono']}" for="telefono" style="right: 10%"/>
+                                <p:inputText id="telefono" 
+                                             value="#{clienteBean.cliente.telefono}" />
+                                <p:spacer/>
 
-                                    <p:outputLabel value="#{msg['cliente.add.celular']}" for="celular" style="right: 10%"/>
-                                    <p:inputText id="celular" 
-                                                 value="#{clienteBean.cliente.celular}" />
+                                <p:outputLabel value="#{msg['cliente.add.celular']}" for="celular" style="right: 10%"/>
+                                <p:inputMask id="celular" mask="(9999) 999-999"
+                                             value="#{clienteBean.cliente.celular}" />
+                                <p:spacer/>
 
-                                    <p:outputLabel value="Ciudad" for="ciudad" />
-                                    <p:selectOneMenu id="ciudad" value="#{clienteBean.ciudad.idCiudad}" 
-                                                     effect="fold" editable="false" 
-                                                     valueChangeListener="#{clienteBean.buscarBarrios}"
-                                                     converter="ciudadConverter" >
-                                        <f:selectItems value="#{clienteBean.ciudadList}" 
-                                                       var="ciudad" itemLabel="#{ciudad.ciudad}" 
-                                                       itemValue="#{ciudad}"/>
-                                    </p:selectOneMenu>
-                                    <p:outputLabel value="#{msg['cliente.add.estado']}" for="estado" style="right: 10%"/>
-                                    <p:inputText id="estado" 
-                                                 value="#{clienteBean.cliente.estado}" />
-                                    <p:outputLabel value="Barrio" for="barrio" />
-                                    <p:selectOneMenu id="barrio" value="#{clienteBean.barrio.idBarrio}" 
-                                                     effect="fold" editable="false" 
-                                                     converter="barrioConverter" >
-                                        <f:selectItems value="#{clienteBean.barrioList}" 
-                                                       var="barrio" itemLabel="#{barrio.barrio}" 
-                                                       itemValue="#{barrio}"/>
-                                    </p:selectOneMenu>
+                                <p:outputLabel value="#{msg['cliente.add.ciudad']}" for="ciudad" />
+                                <p:selectOneMenu id="ciudad" value="#{clienteBean.ciudad}" 
+                                                 effect="fold" editable="false"
+                                                 validatorMessage="Debe seleccionar una ciudad"
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 converter="ciudadConverter" >
+                                    <f:selectItems value="#{clienteBean.ciudadList}" 
+                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                   itemValue="#{ciudad}" />
+                                    <p:ajax  process="ciudad"  event="change"
+                                             update=":form-add:barrio"
+                                             listener="#{clienteBean.buscarBarrios}"/> 
+                                </p:selectOneMenu>                                                             
+                                <p:spacer/>     
 
-                                    <p:outputLabel value="Observaciones : " for="observaciones" style="right: 10%"/>
-                                    <p:inputText id="observaciones" 
-                                                 value="#{clienteBean.cliente.observaciones}" />
-                                </h:panelGrid>
-                                <h:panelGrid id="GuardarClienteGr">
-                                    <div style="align-content: center" >
-                                        <p:commandButton 
-                                            value="Guardar" 
-                                            update="ClienteGr,:clienteForm:dtCliente" 
-                                            action="#{clienteBean.add}"
-                                            id='btn-guardar-cliente'
-                                            />
-                                    </div>
-                                </h:panelGrid>
-                            </h:panelGroup>
+                                <p:outputLabel value="#{msg['cliente.add.barrio']}" for="barrio" />
+                                <p:selectOneMenu id="barrio" value="#{clienteBean.barrio.idBarrio}" 
+                                                 effect="fold" editable="false" 
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 converter="barrioConverter" >
+                                    <f:selectItems value="#{clienteBean.barrioList}" 
+                                                   var="barrio" itemLabel="#{barrio.barrio}" 
+                                                   itemValue="#{barrio}"/>
+                                </p:selectOneMenu>
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.observaciones']}" for="observaciones" style="right: 10%"/>
+                                <p:inputText id="observaciones" 
+                                             value="#{clienteBean.cliente.observaciones}" />
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.estado']}" />
+                                <p:inputText id="estado" value="Activo" disabled="true" />
+                                <p:spacer/>
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="Guardar" 
+                                        oncomplete="PF('dlgClienteAdd').hide()" 
+                                        update="clienteGr,:clienteForm:dtCliente" 
+                                        action="#{clienteBean.add}"
+                                        id='btn-guardar-cliente' />
+                                </div>
+                            </h:panelGrid>
                         </h:form>
                     </p:fieldset>
                 </p:dialog>

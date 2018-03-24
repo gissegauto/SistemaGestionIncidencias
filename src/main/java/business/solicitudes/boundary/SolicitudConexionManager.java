@@ -7,9 +7,7 @@ package business.solicitudes.boundary;
 
 import business.dao.GenericImpl;
 import business.solicitudes.entity.SolicitudConexion;
-import business.utils.UtilLogger;
 import javax.ejb.Stateless;
-import javax.persistence.Query;
 
 /**
  *

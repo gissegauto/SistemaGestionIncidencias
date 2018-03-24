@@ -5,12 +5,15 @@
  */
 package business.solicitudes.entity;
 
+import business.cliente.entity.ClienteSolicitud;
 import business.configuracion.entity.Servicio;
 import business.direccion.entity.Barrio;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,12 +23,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -49,6 +54,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SolicitudConexion.findByEstado", query = "SELECT s FROM SolicitudConexion s WHERE s.estado = :estado")})
 public class SolicitudConexion implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
+    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
+    private Collection<ClienteSolicitud> clienteSolicitudCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,24 +67,21 @@ public class SolicitudConexion implements Serializable {
     @Column(name = "idSolicitudConexion")
     private Integer idSolicitudConexion;
     @Basic(optional = false)
-    @NotNull(message="Ingrese Nombre")
     @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @NotNull(message="Ingrese Apellido")
     @Size(min = 1, max = 45)
     @Column(name = "apellido")
     private String apellido;
     @Basic(optional = false)
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "direccion")
     private String direccion;
     @Size(max = 100)
     @Column(name = "referencia")
     private String referencia;
     @Basic(optional = false)
-    @NotNull(message="Ingrese Fecha de Registro")
     @Column(name = "fechaRegistro")
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
@@ -90,8 +98,7 @@ public class SolicitudConexion implements Serializable {
     @Column(name = "observacion")
     private String observacion;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
+    @Size(min = 1, max = 10)
     @Column(name = "estado")
     private String estado;
     @JoinColumn(name = "idBarrio", referencedColumnName = "idBarrio")
@@ -266,6 +273,24 @@ public class SolicitudConexion implements Serializable {
     @Override
     public String toString() {
         return "business.solicitudes.entity.SolicitudConexion[ idSolicitudConexion=" + idSolicitudConexion + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ClienteSolicitud> getClienteSolicitudCollection() {
+        return clienteSolicitudCollection;
+    }
+
+    public void setClienteSolicitudCollection(Collection<ClienteSolicitud> clienteSolicitudCollection) {
+        this.clienteSolicitudCollection = clienteSolicitudCollection;
+    }
+
+    @XmlTransient
+    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection() {
+        return historialSolicitudConexionCollection;
+    }
+
+    public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
+        this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
     }
     
 }

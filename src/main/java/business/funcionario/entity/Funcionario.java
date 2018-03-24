@@ -5,11 +5,14 @@
  */
 package business.funcionario.entity;
 
+import business.cliente.entity.ClienteSolicitud;
 import business.direccion.entity.Barrio;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,12 +20,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,6 +50,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Funcionario.findByTelefono", query = "SELECT f FROM Funcionario f WHERE f.telefono = :telefono")
     , @NamedQuery(name = "Funcionario.findByCelular", query = "SELECT f FROM Funcionario f WHERE f.celular = :celular")})
 public class Funcionario implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFuncionario")
+    private Collection<PermisoFuncionario> permisoFuncionarioCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFuncionario")
+    private Collection<FuncionarioHorario> funcionarioHorarioCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFuncionario")
+    private Collection<HistorialFuncionario> historialFuncionarioCollection;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idFuncionario")
+    private Collection<ClienteSolicitud> clienteSolicitudCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -261,6 +276,43 @@ public class Funcionario implements Serializable {
     @Override
     public String toString() {
         return "business.cliente.entity.Funcionario[ idFuncionario=" + idFuncionario + " ]";
+    }
+
+  
+    @XmlTransient
+    public Collection<ClienteSolicitud> getClienteSolicitudCollection() {
+        return clienteSolicitudCollection;
+    }
+
+    public void setClienteSolicitudCollection(Collection<ClienteSolicitud> clienteSolicitudCollection) {
+        this.clienteSolicitudCollection = clienteSolicitudCollection;
+    }
+
+    @XmlTransient
+    public Collection<PermisoFuncionario> getPermisoFuncionarioCollection() {
+        return permisoFuncionarioCollection;
+    }
+
+    public void setPermisoFuncionarioCollection(Collection<PermisoFuncionario> permisoFuncionarioCollection) {
+        this.permisoFuncionarioCollection = permisoFuncionarioCollection;
+    }
+
+    @XmlTransient
+    public Collection<FuncionarioHorario> getFuncionarioHorarioCollection() {
+        return funcionarioHorarioCollection;
+    }
+
+    public void setFuncionarioHorarioCollection(Collection<FuncionarioHorario> funcionarioHorarioCollection) {
+        this.funcionarioHorarioCollection = funcionarioHorarioCollection;
+    }
+
+    @XmlTransient
+    public Collection<HistorialFuncionario> getHistorialFuncionarioCollection() {
+        return historialFuncionarioCollection;
+    }
+
+    public void setHistorialFuncionarioCollection(Collection<HistorialFuncionario> historialFuncionarioCollection) {
+        this.historialFuncionarioCollection = historialFuncionarioCollection;
     }
     
 }

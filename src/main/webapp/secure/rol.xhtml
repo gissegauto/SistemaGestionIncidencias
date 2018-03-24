@@ -34,7 +34,7 @@ and open the template in the editor.
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
                                  rowKey="#{rol.idrol}"
-                                 editable="true" 
+                                 editable="true"  style="font-size:12px"
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:ajax event="cellEdit" listener="#{rolBean.onCellEdit}" update=":rolForm:growl" />
@@ -65,24 +65,26 @@ and open the template in the editor.
                 </h:form>
                 <p:dialog header="Rol" widgetVar="dlgRolAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
-                    <h:form id="form-add">
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                        <h:panelGrid columns="2" columnClasses="column" id="rolGr">   
-                            <p:outputLabel value="Descripcion : " for="descripcion" style="right: 20%"/>
-                            <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
-                                         value="#{rolBean.rol.descripcion}" />
-                            <br />
-                            <br />
-                            <div style="align-content: center" >
-                                <p:commandButton 
-                                    value="Guardar" 
-                                    update="rolGr,:rolForm:dtRol" 
-                                    action="#{rolBean.addRol}"
-                                    id='btn-guardar-rol'
-                                    />
-                            </div>
-                        </h:panelGrid>
-                    </h:form>
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="rolGr">   
+                                <p:outputLabel value="Descripcion : " for="descripcion" style="right: 20%"/>
+                                <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
+                                             value="#{rolBean.rol.descripcion}" />
+                                <br />
+                                <br />
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="Guardar" 
+                                        update="rolGr,:rolForm:dtRol" 
+                                        action="#{rolBean.addRol}"
+                                        id='btn-guardar-rol'
+                                        />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
                 </p:dialog>
             </ui:define>
         </ui:composition>

@@ -7,7 +7,7 @@ package business.cliente.controller;
 
 import business.cliente.boundary.HistorialClienteManager;
 import business.cliente.entity.Cliente;
-import business.cliente.entity.HistorialCliente;
+import business.cliente.entity.*;
 import business.utils.UtilLogger;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -37,10 +37,10 @@ public class HistorialClienteController {
                 history.setIdBarrio(cliente.getIdBarrio().getIdBarrio());
             }
             if (cliente.getIdUsuarioRegistro() != null) {
-                history.setIdUsuarioRegistro(cliente.getIdUsuarioRegistro().getIdusuario());
+                history.setIdUsuarioRegistro(cliente.getIdUsuarioRegistro());
             }
             if (cliente.getIdUsuarioActualizacion() != null) {
-                history.setIdUsuarioActualizacion(cliente.getIdUsuarioActualizacion().getIdusuario());
+                history.setIdUsuarioActualizacion(cliente.getIdUsuarioActualizacion());
             }
             historialClienteManager.add(history);
             UtilLogger.info(HistorialClienteController.class + ".addHistory : Insertado correcatemente en histórico");

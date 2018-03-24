@@ -33,7 +33,7 @@ and open the template in the editor.
                                  rows="5" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
-                                 rowKey="#{servicio}"
+                                 rowKey="#{servicio}"  style="font-size:12px"
                                  editable="true" 
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
@@ -71,25 +71,27 @@ and open the template in the editor.
 
                 <p:dialog header="Servicio" widgetVar="dlgServicioAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
-                    <h:form id="form-add">
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                        <h:panelGrid columns="2" columnClasses="column" id="servicioGr">   
-                            <p:outputLabel value="#{msg['servicio.add.servicio']}" for="servicio" style="right: 20%"/>
-                            <p:inputText id="servicio" required="true" requiredMessage="#{msg['requerid.descripcion']}"
-                                         value="#{servicioBean.servicio.servicio}" />
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="servicioGr">   
+                                <p:outputLabel value="#{msg['servicio.add.servicio']}" for="servicio" style="right: 20%"/>
+                                <p:inputText id="servicio" required="true" requiredMessage="#{msg['requerid.descripcion']}"
+                                             value="#{servicioBean.servicio.servicio}" />
 
-                            <br />
-                            <br />
-                            <div style="align-content: center" >
-                                <p:commandButton 
-                                    value="Guardar" 
-                                    update=":servicioForm:dtServicio" 
-                                    action="#{servicioBean.add}"
-                                    id='btn-guardar-rol'
-                                    />
-                            </div>
-                        </h:panelGrid>
-                    </h:form>
+                                <br />
+                                <br />
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="Guardar" 
+                                        update=":servicioForm:dtServicio" 
+                                        action="#{servicioBean.add}"
+                                        id='btn-guardar-rol'
+                                        />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
                 </p:dialog>
             </ui:define>
         </ui:composition>

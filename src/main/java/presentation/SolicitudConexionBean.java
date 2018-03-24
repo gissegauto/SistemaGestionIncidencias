@@ -36,19 +36,24 @@ public class SolicitudConexionBean implements Serializable {
 
     private SolicitudConexion solicitudConexion;
     private List<SolicitudConexion> solicitudConexionList;
+    private List<SolicitudConexion> solicitudConexionFilter;
     private List<Servicio> servicioList;
     private List<Servicio> servicioListSelected;
     private List<Ciudad> ciudadList;
     private Ciudad ciudad;
     private List<Barrio> barrioList;
+    private boolean editar;
     @Inject
     SolicitudConexionManager solicitudConexionMgr;
     @Inject
     ServicioManager servicioMgr;
     @Inject
+    ClienteSolicitudBean clienteSolicitudBean;
+    @Inject
     BarrioManager barrioMgr;
     @Inject
     CiudadManager ciudadMgr;
+
     @Inject
     LoginBean session;
 
@@ -58,13 +63,14 @@ public class SolicitudConexionBean implements Serializable {
     }
 
     public void limpiar() {
+        editar = false;
         solicitudConexion = new SolicitudConexion();
         servicioList = servicioMgr.getAll();
         ciudadList = ciudadMgr.getAll();
         solicitudConexionList = solicitudConexionMgr.getAll();
     }
 
-    public String add() {
+    public void add() {
         try {
             if (null != solicitudConexion) {
                 if (solicitudConexion.getIdSolicitudConexion() == null) {
@@ -73,10 +79,13 @@ public class SolicitudConexionBean implements Serializable {
                             solicitudConexion.setIdServicio(servicio);
                             solicitudConexion.setFechaRegistro(new Date());
                             solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
+                            solicitudConexion.setEstado("Pendiente");
                             solicitudConexion = solicitudConexionMgr.add(solicitudConexion);
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                                     "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
                         }
+                        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+                        limpiar();
                     }
                 }
 
@@ -93,8 +102,7 @@ public class SolicitudConexionBean implements Serializable {
                     "Ocurrió un error al intentar guardar la solicitud de conexión "));
             UtilLogger.error("Problemas al insertar la solicitud de conexión", e);
         }
-        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
-        return "solicitudConexion";
+//        return "solicitudConexion";
     }
 
     public String desactivar() {
@@ -112,13 +120,39 @@ public class SolicitudConexionBean implements Serializable {
         return "solicitudConexion";
     }
 
+    public String clienteSolicitud(SolicitudConexion solicitudC) {
+        clienteSolicitudBean.setSolicitudConexion(solicitudC);
+        return "clienteSolicitud";
+    }
+
+    public void cargarClienteSolicitud() {
+//        this.solicitudConexion = solicitudC;
+        RequestContext.getCurrentInstance().update("form-add:solicitudConexionGr");
+    }
+
     public void buscarBarrios() {
         barrioList = barrioMgr.getBarriosByCiudad(ciudad);
     }
 
-    public void actionClean(ActionEvent actionEvent) {
+    public String addFuncionario() {
+        solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
+        solicitudConexion.setFechaActualizacion(new Date());
+        solicitudConexion.setEstado("En Curso");
+        solicitudConexionMgr.update(solicitudConexion);
+        return "solicitudConexion";
+    }
+
+    public void actionClean() {
         this.solicitudConexion = new SolicitudConexion();
         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+    }
+
+    public void edicion() {
+        editar = true;
+    }
+
+    public void agregar() {
+        limpiar();
     }
 
     public SolicitudConexion getSolicitudConexion() {
@@ -175,6 +209,22 @@ public class SolicitudConexionBean implements Serializable {
 
     public void setServicioListSelected(List<Servicio> servicioListSelected) {
         this.servicioListSelected = servicioListSelected;
+    }
+
+    public List<SolicitudConexion> getSolicitudConexionFilter() {
+        return solicitudConexionFilter;
+    }
+
+    public void setSolicitudConexionFilter(List<SolicitudConexion> solicitudConexionFilter) {
+        this.solicitudConexionFilter = solicitudConexionFilter;
+    }
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
     }
 
 }

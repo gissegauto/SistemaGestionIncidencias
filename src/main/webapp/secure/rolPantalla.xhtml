@@ -24,19 +24,19 @@
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
                                  rowKey="#{rolPantalla}"
-                                 editable="true" 
+                                 editable="true"  style="font-size:12px"
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:ajax event="cellEdit" listener="#{rolPantallaBean.onCellEdit}" update=":rolPantallaForm:growl" />
 
-                        <p:column headerText="#{msg['generic.id']}" sortBy="#{rolPantalla.idrolPantalla}" width="20%">
-                            <h:outputText value="#{rolPantalla.idrolPantalla}" />
+                        <p:column headerText="#{msg['generic.id']}" sortBy="#{rolPantalla.idRolPantalla}" width="20%">
+                            <h:outputText value="#{rolPantalla.idRolPantalla}" />
                         </p:column>
                         <p:column headerText="#{msg['rolPantalla.pantalla']}" sortBy="#{rolPantalla.idpantalla.descripcion}" width="30%">
                             <h:outputText value="#{rolPantalla.idpantalla.descripcion}" />
                         </p:column>
-                        <p:column headerText="#{msg['rolPantalla.rol']}" sortBy="#{rolPantalla.idRol.descripcion}" width="30%">
-                            <h:outputText value="#{rolPantalla.idRol.descripcion}" />
+                        <p:column headerText="#{msg['rolPantalla.rol']}" sortBy="#{rolPantalla.idrol.descripcion}" width="30%">
+                            <h:outputText value="#{rolPantalla.idrol.descripcion}" />
                         </p:column>
                         <p:column headerText="Opciones" width="20%">
                             <p:commandButton process="dtRolPantalla" icon="ui-icon-trash" 
@@ -53,35 +53,37 @@
 
                 <p:dialog header="#{msg['rolPantalla.add']}" widgetVar="dlgRolPantallaAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                    <h:form id="form-add">
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                        <h:panelGrid columns="2" columnClasses="column" id="rolPantallaGr">   
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="rolPantallaGr">   
 
-                            <p:outputLabel value="#{msg['rolPantalla.add.rol']}" for="listaRoles" />
-                            <h:panelGroup>
-                                <p:selectOneMenu   id="listaRoles"  value="#{rolPantallaBean.rolPantalla.idRol}"  style="width:100%;z-index: 1000;" converter="rolConverter" >
-                                    <f:selectItems value="#{rolPantallaBean.rolList}" var="rol" itemLabel="#{rol.descripcion} " itemDescription=" #{rol.descripcion}" itemValue="#{rol}" />                                        
-                                </p:selectOneMenu>                                
-                            </h:panelGroup>
-                            <p:spacer /><p:spacer />  
-                            <p:outputLabel value="#{msg['rolPantalla.add.pantalla']}" for="listaPantallas" />
-                            <h:panelGroup>
-                                <p:selectOneMenu   id="listaPantallas"  value="#{rolPantallaBean.rolPantalla.idpantalla}"  style="width:100%;z-index: 1000;" converter="pantallaConverter" >
-                                    <f:selectItems value="#{rolPantallaBean.pantallaList}" var="pantalla" itemLabel="#{pantalla.descripcion} " itemDescription=" #{pantalla.descripcion}" itemValue="#{pantalla}" />                                        
-                                </p:selectOneMenu>
-                            </h:panelGroup>
-                            <br />
-                            <br />
-                            <div style="align-content: center" >
-                                <p:commandButton 
-                                    value="Guardar" 
-                                    update="rolPantallaGr,:rolPantallaForm:dtRolPantalla" 
-                                    action="#{rolPantallaBean.agregarRolPantala}"
-                                    id='btn-guardar-rolPantalla'
-                                    />
-                            </div>
-                        </h:panelGrid>
-                    </h:form>
+                                <p:outputLabel value="#{msg['rolPantalla.add.rol']}" for="listaRoles" />
+                                <h:panelGroup>
+                                    <p:selectOneMenu   id="listaRoles"  value="#{rolPantallaBean.rolPantalla.idrol}"  style="width:100%;z-index: 1000;" converter="rolConverter" >
+                                        <f:selectItems value="#{rolPantallaBean.rolList}" var="rol" itemLabel="#{rol.descripcion} " itemDescription=" #{rol.descripcion}" itemValue="#{rol}" />                                        
+                                    </p:selectOneMenu>                                
+                                </h:panelGroup>
+                                <p:spacer /><p:spacer />  
+                                <p:outputLabel value="#{msg['rolPantalla.add.pantalla']}" for="listaPantallas" />
+                                <h:panelGroup>
+                                    <p:selectOneMenu   id="listaPantallas"  value="#{rolPantallaBean.rolPantalla.idpantalla}"  style="width:100%;z-index: 1000;" converter="pantallaConverter" >
+                                        <f:selectItems value="#{rolPantallaBean.pantallaList}" var="pantalla" itemLabel="#{pantalla.descripcion} " itemDescription=" #{pantalla.descripcion}" itemValue="#{pantalla}" />                                        
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+                                <br />
+                                <br />
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="Guardar" 
+                                        update="rolPantallaGr,:rolPantallaForm:dtRolPantalla" 
+                                        action="#{rolPantallaBean.agregarRolPantala}"
+                                        id='btn-guardar-rolPantalla'
+                                        />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
                 </p:dialog>
             </ui:define>
         </ui:composition>

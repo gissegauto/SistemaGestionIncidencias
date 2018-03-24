@@ -6,10 +6,13 @@
 package business.cliente.entity;
 
 import business.direccion.entity.Barrio;
+import business.direccion.entity.Zona;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,12 +22,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,8 +48,21 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Cliente.findBySexo", query = "SELECT c FROM Cliente c WHERE c.sexo = :sexo")
     , @NamedQuery(name = "Cliente.findByEstado", query = "SELECT c FROM Cliente c WHERE c.estado = :estado")
     , @NamedQuery(name = "Cliente.findByFechaRegistro", query = "SELECT c FROM Cliente c WHERE c.fechaRegistro = :fechaRegistro")
-    , @NamedQuery(name = "Cliente.findByFechaActualizacion", query = "SELECT c FROM Cliente c WHERE c.fechaActualizacion = :fechaActualizacion")})
+    , @NamedQuery(name = "Cliente.findByFechaActualizacion", query = "SELECT c FROM Cliente c WHERE c.fechaActualizacion = :fechaActualizacion")
+    , @NamedQuery(name = "Cliente.findByDireccion", query = "SELECT c FROM Cliente c WHERE c.direccion = :direccion")
+    , @NamedQuery(name = "Cliente.findByObservaciones", query = "SELECT c FROM Cliente c WHERE c.observaciones = :observaciones")
+    , @NamedQuery(name = "Cliente.findByTelefono", query = "SELECT c FROM Cliente c WHERE c.telefono = :telefono")
+    , @NamedQuery(name = "Cliente.findByCelular", query = "SELECT c FROM Cliente c WHERE c.celular = :celular")})
 public class Cliente implements Serializable {
+
+    @Size(max = 255)
+    @Column(name = "contrato")
+    private String contrato;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    private Collection<HistorialCliente> historialClienteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCliente")
+    private Collection<ClienteSolicitud> clienteSolicitudCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -95,7 +113,7 @@ public class Cliente implements Serializable {
     @Column(name = "celular")
     private String celular;
     @JoinColumn(name = "idBarrio", referencedColumnName = "idBarrio")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Barrio idBarrio;
     @JoinColumn(name = "idUsuarioActualizacion", referencedColumnName = "idusuario")
     @ManyToOne
@@ -103,6 +121,9 @@ public class Cliente implements Serializable {
     @JoinColumn(name = "idUsuarioRegistro", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
+    @JoinColumn(name = "idZona", referencedColumnName = "idZona")
+    @ManyToOne
+    private Zona idZona;
 
     public Cliente() {
     }
@@ -190,55 +211,6 @@ public class Cliente implements Serializable {
         this.fechaActualizacion = fechaActualizacion;
     }
 
-    public Barrio getIdBarrio() {
-        return idBarrio;
-    }
-
-    public void setIdBarrio(Barrio idBarrio) {
-        this.idBarrio = idBarrio;
-    }
-
-    public Usuario getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-    }
-
-    public Usuario getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idCliente != null ? idCliente.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cliente)) {
-            return false;
-        }
-        Cliente other = (Cliente) object;
-        if ((this.idCliente == null && other.idCliente != null) || (this.idCliente != null && !this.idCliente.equals(other.idCliente))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.cliente.entity.Cliente[ idCliente=" + idCliente + " ]";
-    }
-
     public String getDireccion() {
         return direccion;
     }
@@ -271,4 +243,87 @@ public class Cliente implements Serializable {
         this.celular = celular;
     }
 
+    public Barrio getIdBarrio() {
+        return idBarrio;
+    }
+
+    public void setIdBarrio(Barrio idBarrio) {
+        this.idBarrio = idBarrio;
+    }
+
+    public Usuario getIdUsuarioActualizacion() {
+        return idUsuarioActualizacion;
+    }
+
+    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
+        this.idUsuarioActualizacion = idUsuarioActualizacion;
+    }
+
+    public Usuario getIdUsuarioRegistro() {
+        return idUsuarioRegistro;
+    }
+
+    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
+        this.idUsuarioRegistro = idUsuarioRegistro;
+    }
+
+    public Zona getIdZona() {
+        return idZona;
+    }
+
+    public void setIdZona(Zona idZona) {
+        this.idZona = idZona;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idCliente != null ? idCliente.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Cliente)) {
+            return false;
+        }
+        Cliente other = (Cliente) object;
+        if ((this.idCliente == null && other.idCliente != null) || (this.idCliente != null && !this.idCliente.equals(other.idCliente))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "business.cliente.entity.Cliente[ idCliente=" + idCliente + " ]";
+    }
+
+    @XmlTransient
+    public Collection<HistorialCliente> getHistorialClienteCollection() {
+        return historialClienteCollection;
+    }
+
+    public void setHistorialClienteCollection(Collection<HistorialCliente> historialClienteCollection) {
+        this.historialClienteCollection = historialClienteCollection;
+    }
+
+    @XmlTransient
+    public Collection<ClienteSolicitud> getClienteSolicitudCollection() {
+        return clienteSolicitudCollection;
+    }
+
+    public void setClienteSolicitudCollection(Collection<ClienteSolicitud> clienteSolicitudCollection) {
+        this.clienteSolicitudCollection = clienteSolicitudCollection;
+    }
+
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
+    }
+    
 }

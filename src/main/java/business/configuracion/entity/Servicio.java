@@ -5,6 +5,7 @@
  */
 package business.configuracion.entity;
 
+import business.solicitudes.entity.HistorialSolicitudConexion;
 import business.solicitudes.entity.SolicitudConexion;
 import java.io.Serializable;
 import java.util.Collection;
@@ -37,6 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Servicio.findByServicio", query = "SELECT s FROM Servicio s WHERE s.servicio = :servicio")
     , @NamedQuery(name = "Servicio.findByEstado", query = "SELECT s FROM Servicio s WHERE s.estado = :estado")})
 public class Servicio implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idServicio")
+    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idServicio")
     private Collection<SolicitudConexion> solicitudConexionCollection;
@@ -125,6 +129,15 @@ public class Servicio implements Serializable {
 
     public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
         this.solicitudConexionCollection = solicitudConexionCollection;
+    }
+
+    @XmlTransient
+    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection() {
+        return historialSolicitudConexionCollection;
+    }
+
+    public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
+        this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
     }
     
 }

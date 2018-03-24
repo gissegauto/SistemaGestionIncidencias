@@ -23,6 +23,7 @@ and open the template in the editor.
                         <div align="right">
                             <p:commandButton process="dtSolicitudConexion" 
                                              icon="fa fa-plus-circle" 
+                                             title="Agregar Solicitud"
                                              update=":form-add:solicitudConexionGr" 
                                              oncomplete="PF('dlgSolicitudConexionAdd').show()" 
                                              actionListener="#{solicitudConexionBean.actionClean}"/>
@@ -30,60 +31,134 @@ and open the template in the editor.
                     </facelets>
                     <p:dataTable id="dtSolicitudConexion" var="solicitudConexion" 
                                  value="#{solicitudConexionBean.solicitudConexionList}"
-                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 rows="10" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
-                                 rowKey="#{solicitudConexion.idSolicitudConexion}"
-                                 editable="true" 
-                                 editMode="cell"
+                                 style="font-size:12px"
+                                 rowKey="#{solicitudConexion}"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:column headerText="#{msg['generic.id']}" 
-                                  width="20%"
+                                  width="5%"
                                   sortBy="#{solicitudConexion.idSolicitudConexion}">
                             <h:outputText value="#{solicitudConexion.idSolicitudConexion}" />
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.nombre']}" 
-                                  width="20%"
+                                  width="15%" filterBy="#{solicitudConexion.nombre}" 
                                   sortBy="#{solicitudConexion.nombre}">
                             <h:outputText value="#{solicitudConexion.nombre}" />
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.apellido']}" 
-                                  width="20%"
+                                  width="15%" filterBy="#{solicitudConexion.apellido}"
                                   sortBy="#{solicitudConexion.apellido}">
                             <h:outputText value="#{solicitudConexion.apellido}" />
                         </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.ciudad']}" 
+                                  width="12%" filterBy="#{solicitudConexion.idBarrio.idCiudad.ciudad}"
+                                  sortBy="#{solicitudConexion.idBarrio.idCiudad.ciudad}">
+                            <h:outputText value="#{solicitudConexion.idBarrio.idCiudad.ciudad}" />
+                        </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.barrio']}" 
-                                  width="20%"
+                                  width="10%" filterBy="#{solicitudConexion.idBarrio.barrio}"
                                   sortBy="#{solicitudConexion.idBarrio.barrio}">
                             <h:outputText value="#{solicitudConexion.idBarrio.barrio}" />
                         </p:column>
-                        <p:column headerText="#{msg['solicitud.conexion.direccion']}" 
-                                  width="20%"
-                                  sortBy="#{solicitudConexion.direccion}">
-                            <h:outputText value="#{solicitudConexion.direccion}" />
+                        <p:column headerText="#{msg['solicitud.conexion.fecha']}" 
+                                  width="10%" filterBy="#{solicitudConexion.fechaRegistro}"
+                                  sortBy="#{solicitudConexion.fechaRegistro}">
+                            <h:outputText value="#{solicitudConexion.fechaRegistro}" >
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.hora']}" 
+                                  width="8%" filterBy="#{solicitudConexion.fechaRegistro}"
+                                  sortBy="#{solicitudConexion.fechaRegistro}">
+                            <h:outputText value="#{solicitudConexion.fechaRegistro}" >
+                                <f:convertDateTime pattern="hh:mm" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.estado']}" 
-                                  width="20%"
+                                  width="10%" filterBy="#{solicitudConexion.estado}"
                                   sortBy="#{solicitudConexion.estado}">
                             <h:outputText value="#{solicitudConexion.estado}" />
                         </p:column>
                         <p:column headerText="#{msg['generic.opciones']}" 
-                                  width="20%">
+                                  width="12%">
+                            <p:column style="width:32px;text-align: center">
+                                <p:commandButton update=":solicitudConexionForm:solicitudConexionDetail"
+                                                 oncomplete="PF('verSolicitudConexion').show('#{component.clientId}')"
+                                                 icon="ui-icon-search" title="Ver">
+                                    <f:setPropertyActionListener value="#{solicitudConexion}" 
+                                                                 target="#{solicitudConexionBean.solicitudConexion}" />
+                                </p:commandButton>
+                            </p:column>
+
                             <p:commandButton 
-                                icon="ui-icon-trash"
-                                action="#{solicitudConexionBean.desactivar}"
-                                id="botonEditar">
-                                <f:setPropertyActionListener target="#{solicitudConexionBean.solicitudConexion}" value="solicitudConexion" />
+                                icon="ui-icon-pencil"
+                                update=":form-add:solicitudConexionGr"
+                                title="Editar"
+                                action="#{solicitudConexionBean.edicion}"
+                                oncomplete="PF('dlgSolicitudConexionAdd').show('#{component.clientId}')"
+                                id="botonEditar" >
+                                <f:setPropertyActionListener value="#{solicitudConexion}" 
+                                                             target="#{solicitudConexionBean.solicitudConexion}" />
                             </p:commandButton>
+                            <p:commandButton 
+                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"
+                                icon="ui-icon-check"
+                                process="dtSolicitudConexion"
+                                title="Cambiar de estado"
+                                action="#{solicitudConexionBean.clienteSolicitud(solicitudConexion)}"
+                                id="botonCambiarEstado" />
                         </p:column>
                     </p:dataTable>
+                    <p:overlayPanel widgetVar="verSolicitudConexion" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+                        <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                            <p:outputPanel id="solicitudConexionDetail">
+                                <h:panelGrid  columns="2" rendered="#{not empty solicitudConexionBean.solicitudConexion}" columnClasses="label,value">
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.id']}"  style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.idSolicitudConexion}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.solicitante']}"  style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{clienteSolicitudBean.solicitudConexion.nombre} #{clienteSolicitudBean.solicitudConexion.apellido}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.direccion']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.direccion}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.referencia']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.referencia}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.ciudad']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.idBarrio.idCiudad.ciudad}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.barrio']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.idBarrio.barrio}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.celular']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.celular}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.telefono}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}"  style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.observacion}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.estado}" />
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <br />
+                            <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="Cerrar" 
+                                    oncomplete="PF('verSolicitudConexion').hide()" 
+                                    id='btn-volver' />
+                            </div>
+                        </p:fieldset>
+                    </p:overlayPanel>
                 </h:form>
+
                 <p:dialog header="#{msg['solicitud.conexion.add.title']}"  widgetVar="dlgSolicitudConexionAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                         <h:form id="form-add" >
                             <p:messages id="messages" showDetail="true" autoUpdate="true" />
                             <h:panelGrid columns="3" columnClasses="column" id="solicitudConexionGr">
+                                <p:outputLabel value="#{msg['solicitud.conexion.add.id']}" for="id" 
+                                               style="right: 10%" rendered="#{solicitudConexionBean.editar}"/>
+                                <p:inputText id="id" disabled="true" rendered="#{solicitudConexionBean.editar}"
+                                             value="#{solicitudConexionBean.solicitudConexion.idSolicitudConexion}" />
+                                <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.nombre']}" for="nombre" style="right: 10%"/>
                                 <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
                                              value="#{solicitudConexionBean.solicitudConexion.nombre}" />
@@ -93,7 +168,7 @@ and open the template in the editor.
                                              value="#{solicitudConexionBean.solicitudConexion.apellido}" />
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.direccion']}" for="direccion" style="right: 10%"/>
-                                <p:inputText id="direccion" required="true" requiredMessage="#{msg['requerid.direccion']}"
+                                <p:inputText id="direccion" 
                                              value="#{solicitudConexionBean.solicitudConexion.direccion}" />
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.referencia']}" for="referencia" style="right: 10%"/>
@@ -102,7 +177,7 @@ and open the template in the editor.
                                 <p:tooltip id="toolTipFocus" for="referencia" showEvent="focus" hideEvent="blur" />
 
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.celular']}" for="celular" style="right: 10%"/>
-                                <p:inputText id="celular" value="#{solicitudConexionBean.solicitudConexion.celular}" />
+                                <p:inputMask id="celular" value="#{solicitudConexionBean.solicitudConexion.celular}" mask="(9999) 999-999"/>
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" for="telefono" style="right: 10%"/>
                                 <p:inputText id="telefono" value="#{solicitudConexionBean.solicitudConexion.telefono}" />
@@ -129,6 +204,7 @@ and open the template in the editor.
                                                  effect="fold" editable="false" 
                                                  filter="true" filterMatchMode="startsWith"
                                                  converter="barrioConverter" >
+                                    <p:autoUpdate />
                                     <f:selectItems value="#{solicitudConexionBean.barrioList}" 
                                                    var="barrio" itemLabel="#{barrio.barrio}" 
                                                    itemValue="#{barrio}"/>
@@ -140,7 +216,7 @@ and open the template in the editor.
                                 </p:selectManyCheckbox>
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" />
-                                <p:inputText id="estado" value="Activo" disabled="true" />
+                                <p:inputText id="estado" value="Pendiente" disabled="true" />
                                 <p:spacer/>
                                 <br />
                                 <br />
@@ -149,6 +225,7 @@ and open the template in the editor.
                                         value="Guardar" 
                                         update="solicitudConexionGr,:solicitudConexionForm:dtSolicitudConexion" 
                                         action="#{solicitudConexionBean.add}"
+                                        oncomplete="PF('dlgSolicitudConexionAdd').hide()" 
                                         id='btn-guardar-conexion' />
                                 </div>
                             </h:panelGrid> 

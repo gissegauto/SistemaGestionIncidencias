@@ -35,7 +35,7 @@ and open the template in the editor.
                                  rows="5" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
-                                 rowKey="#{pantalla}"
+                                 rowKey="#{pantalla}" style="font-size:12px"
                                  editable="true" 
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
@@ -67,33 +67,35 @@ and open the template in the editor.
                                 <f:setPropertyActionListener target="#{pantallaBean.pantalla}" value="pantalla" />
                             </p:commandButton>
                         </p:column>
-s                    </p:dataTable>
+                        s                    </p:dataTable>
                 </h:form>
                 <p:dialog header="#{msg['pantalla.add']}" widgetVar="dlgPantallaAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
-                    <h:form id="form-add">
-                        <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                        <h:panelGrid columns="2" columnClasses="column" id="rolGr">   
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="rolGr">   
 
-                            <p:outputLabel value="#{msg['pantalla.add.pantalla']}"/>
-                            <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
-                                         value="#{pantallaBean.pantallaSelected.descripcion}" />
-                            <p:spacer /><p:spacer />                  
-                            <p:outputLabel value="#{msg['pantalla.add.codigo']}" />
-                            <p:inputText id="cod_pantalla" required="true" requiredMessage="#{msg['requerid.codPantalla']}"
-                                         value="#{pantallaBean.pantallaSelected.codigoPantalla}" />
-                            <br />
-                            <br />
-                            <div style="align-content: center" >
-                                <p:commandButton 
-                                    value="Guardar" 
-                                    update=":pantallaForm:dtPantalla" 
-                                    action="#{pantallaBean.add}"
-                                    id='btn-guardar-rol'
-                                    />
-                            </div>
-                        </h:panelGrid>
-                    </h:form>
+                                <p:outputLabel value="#{msg['pantalla.add.pantalla']}"/>
+                                <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
+                                             value="#{pantallaBean.pantallaSelected.descripcion}" />
+                                <p:spacer /><p:spacer />                  
+                                <p:outputLabel value="#{msg['pantalla.add.codigo']}" />
+                                <p:inputText id="cod_pantalla" required="true" requiredMessage="#{msg['requerid.codPantalla']}"
+                                             value="#{pantallaBean.pantallaSelected.codigoPantalla}" />
+                                <br />
+                                <br />
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="Guardar" 
+                                        update=":pantallaForm:dtPantalla" 
+                                        action="#{pantallaBean.add}"
+                                        id='btn-guardar-rol'
+                                        />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
                 </p:dialog>
             </ui:define>
         </ui:composition>

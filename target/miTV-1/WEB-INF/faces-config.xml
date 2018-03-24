@@ -95,6 +95,14 @@
     <navigation-rule>
         <from-view-id>/secure/*</from-view-id>
         <navigation-case>
+            <from-outcome>clienteSolicitud</from-outcome>
+            <to-view-id>/secure/clienteSolicitud.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/secure/*</from-view-id>
+        <navigation-case>
             <from-outcome>funcionario</from-outcome>
             <to-view-id>/secure/funcionario.xhtml</to-view-id>
             <redirect />

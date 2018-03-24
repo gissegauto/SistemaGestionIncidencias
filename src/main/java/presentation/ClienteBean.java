@@ -20,11 +20,15 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FlowEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -39,7 +43,10 @@ public class ClienteBean implements Serializable {
     private List<Ciudad> ciudadList;
     private Ciudad ciudad;
     private List<Barrio> barrioList;
-    Barrio barrio;
+    private Barrio barrio;
+    private boolean editar;
+    private boolean skip;
+
     @Inject
     ClienteManager clienteMgr;
     @Inject
@@ -59,6 +66,7 @@ public class ClienteBean implements Serializable {
     }
 
     public void limpiar() {
+        editar = false;
         cliente = new Cliente();
         clienteList = clienteMgr.getAll();
         ciudadList = ciudadMgr.getAll();
@@ -71,8 +79,7 @@ public class ClienteBean implements Serializable {
             if (null != cliente) {
                 for (Cliente clie : clienteList) {
                     if ((cliente.getIdCliente() == null || cliente.getIdCliente() == 0)
-                            && cliente.getNombre().trim().equalsIgnoreCase(clie.getNombre().trim())
-                            && cliente.getApellido().trim().equalsIgnoreCase(clie.getApellido().trim())) {
+                            && cliente.getNroDocumento().trim().equalsIgnoreCase(clie.getNroDocumento().trim())) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
                                 "El cliente " + cliente.getNombre() + " " + cliente.getApellido()
                                 + " ya se encuentra registrado"));
@@ -83,7 +90,8 @@ public class ClienteBean implements Serializable {
                 if (cliente != null & cliente.getIdCliente() == null) {
                     cliente.setFechaRegistro(new Date());
                     cliente.setIdUsuarioRegistro(session.getUsuario());
-                    clienteMgr.add(cliente);
+                    cliente.setEstado("Activo");
+                    cliente = clienteMgr.add(cliente);
                     historialClienteController.addHistory(cliente);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
@@ -122,36 +130,43 @@ public class ClienteBean implements Serializable {
         return "cliente";
     }
 
+    public void handleFileUpload(FileUploadEvent event) throws Exception {
+        event.getFile().write("/home/ggauto/Escritorio");
+        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void edicion() {
+        editar = true;
+    }
+
     public void actionClean(ActionEvent actionEvent) {
         cliente = new Cliente();
         RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
     }
+    
+    public boolean isSkip() {
+        return skip;
+    }
+ 
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+     
+    public String onFlowProcess(FlowEvent event) {
+        if(skip) {
+            skip = false;   //reset in case user goes back
+            return "confirm";
+        }
+        else {
+            return event.getNewStep();
+        }
+    }
 
     public void buscarBarrios() {
         barrioList = barrioMgr.getBarriosByCiudad(ciudad);
-        RequestContext.getCurrentInstance().update("form-add:ClienteGr:barrio");
     }
 
-//    public void onCellEdit(CellEditEvent event) {
-//        Object oldValue = event.getOldValue();
-//        Object newValue = event.getNewValue();
-//        for (Cliente clien : clienteList) {
-//            if (clien.getNombre().equals(oldValue.toString())) {
-//                clien.setNombre(newValue.toString());
-//                clienteMgr.update(clien);
-//            }
-//            if (clien.getApellido().equals(oldValue.toString())) {
-//                clien.setApellido(newValue.toString());
-//                clienteMgr.update(clien);
-//            }
-//            if (clien.getApellido().equals(oldValue.toString())) {
-//                clien.setApellido(newValue.toString());
-//                clienteMgr.update(clien);
-//            }
-//        }
-//        RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
-//
-//    }
     public Cliente getCliente() {
         return cliente;
     }
@@ -198,6 +213,14 @@ public class ClienteBean implements Serializable {
 
     public void setBarrio(Barrio barrio) {
         this.barrio = barrio;
+    }
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
     }
 
 }

@@ -8,6 +8,7 @@ package business.usuario.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -40,17 +42,26 @@ public class Rol implements Serializable {
     @Basic(optional = false)
     @Column(name = "idrol")
     private Integer idrol;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(mappedBy = "idrol")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idrol")
     private Collection<Usuario> usuarioCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idrol")
+    private Collection<RolPantalla> rolPantallaCollection;
 
     public Rol() {
     }
 
     public Rol(Integer idrol) {
         this.idrol = idrol;
+    }
+
+    public Rol(Integer idrol, String descripcion) {
+        this.idrol = idrol;
+        this.descripcion = descripcion;
     }
 
     public Integer getIdrol() {
@@ -78,6 +89,15 @@ public class Rol implements Serializable {
         this.usuarioCollection = usuarioCollection;
     }
 
+    @XmlTransient
+    public Collection<RolPantalla> getRolPantallaCollection() {
+        return rolPantallaCollection;
+    }
+
+    public void setRolPantallaCollection(Collection<RolPantalla> rolPantallaCollection) {
+        this.rolPantallaCollection = rolPantallaCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -100,7 +120,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "business.usuarios.entity.Rol[ idrol=" + idrol + " ]";
+        return "business.usuario.entity.Rol[ idrol=" + idrol + " ]";
     }
     
 }

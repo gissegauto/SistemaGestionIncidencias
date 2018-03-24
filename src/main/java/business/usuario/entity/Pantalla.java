@@ -8,6 +8,7 @@ package business.usuario.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -35,27 +37,36 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pantalla.findByCodigoPantalla", query = "SELECT p FROM Pantalla p WHERE p.codigoPantalla = :codigoPantalla")})
 public class Pantalla implements Serializable {
 
-    @OneToMany(mappedBy = "idpantalla")
-    private Collection<RolPantalla> rolPantallaCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idpantalla")
     private Integer idpantalla;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "descripcion")
     private String descripcion;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "codigo_pantalla")
     private String codigoPantalla;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpantalla")
+    private Collection<RolPantalla> rolPantallaCollection;
 
     public Pantalla() {
     }
 
     public Pantalla(Integer idpantalla) {
         this.idpantalla = idpantalla;
+    }
+
+    public Pantalla(Integer idpantalla, String descripcion, String codigoPantalla) {
+        this.idpantalla = idpantalla;
+        this.descripcion = descripcion;
+        this.codigoPantalla = codigoPantalla;
     }
 
     public Integer getIdpantalla() {
@@ -82,6 +93,15 @@ public class Pantalla implements Serializable {
         this.codigoPantalla = codigoPantalla;
     }
 
+    @XmlTransient
+    public Collection<RolPantalla> getRolPantallaCollection() {
+        return rolPantallaCollection;
+    }
+
+    public void setRolPantallaCollection(Collection<RolPantalla> rolPantallaCollection) {
+        this.rolPantallaCollection = rolPantallaCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -104,16 +124,7 @@ public class Pantalla implements Serializable {
 
     @Override
     public String toString() {
-        return "business.usuarios.entity.Pantalla[ idpantalla=" + idpantalla + " ]";
-    }
-
-    @XmlTransient
-    public Collection<RolPantalla> getRolPantallaCollection() {
-        return rolPantallaCollection;
-    }
-
-    public void setRolPantallaCollection(Collection<RolPantalla> rolPantallaCollection) {
-        this.rolPantallaCollection = rolPantallaCollection;
+        return "business.usuario.entity.Pantalla[ idpantalla=" + idpantalla + " ]";
     }
     
 }

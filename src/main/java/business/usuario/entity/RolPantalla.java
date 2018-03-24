@@ -28,36 +28,35 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RolPantalla.findAll", query = "SELECT r FROM RolPantalla r")
-    , @NamedQuery(name = "RolPantalla.findByIdrolPantalla", query = "SELECT r FROM RolPantalla r WHERE r.idrolPantalla = :idrolPantalla")
-    , @NamedQuery(name = "RolPantalla.findByIdrol", query = "SELECT r FROM RolPantalla r WHERE r.idrol = :idrol")})
+    , @NamedQuery(name = "RolPantalla.findByIdRolPantalla", query = "SELECT r FROM RolPantalla r WHERE r.idRolPantalla = :idRolPantalla")})
 public class RolPantalla implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idrol_pantalla")
-    private Integer idrolPantalla;
-    @JoinColumn(name = "idrol", referencedColumnName = "idrol")
-    @ManyToOne
-    private Rol idrol;
+    @Column(name = "idRolPantalla")
+    private Integer idRolPantalla;
     @JoinColumn(name = "idpantalla", referencedColumnName = "idpantalla")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Pantalla idpantalla;
+    @JoinColumn(name = "idrol", referencedColumnName = "idrol")
+    @ManyToOne(optional = false)
+    private Rol idrol;
 
     public RolPantalla() {
     }
 
-    public RolPantalla(Integer idrolPantalla) {
-        this.idrolPantalla = idrolPantalla;
+    public RolPantalla(Integer idRolPantalla) {
+        this.idRolPantalla = idRolPantalla;
     }
 
-    public Integer getIdrolPantalla() {
-        return idrolPantalla;
+    public Integer getIdRolPantalla() {
+        return idRolPantalla;
     }
 
-    public void setIdrolPantalla(Integer idrolPantalla) {
-        this.idrolPantalla = idrolPantalla;
+    public void setIdRolPantalla(Integer idRolPantalla) {
+        this.idRolPantalla = idRolPantalla;
     }
 
     public Pantalla getIdpantalla() {
@@ -68,18 +67,18 @@ public class RolPantalla implements Serializable {
         this.idpantalla = idpantalla;
     }
 
-    public Rol getIdRol() {
+    public Rol getIdrol() {
         return idrol;
     }
 
-    public void setIdRol(Rol idrol) {
+    public void setIdrol(Rol idrol) {
         this.idrol = idrol;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idrolPantalla != null ? idrolPantalla.hashCode() : 0);
+        hash += (idRolPantalla != null ? idRolPantalla.hashCode() : 0);
         return hash;
     }
 
@@ -90,7 +89,7 @@ public class RolPantalla implements Serializable {
             return false;
         }
         RolPantalla other = (RolPantalla) object;
-        if ((this.idrolPantalla == null && other.idrolPantalla != null) || (this.idrolPantalla != null && !this.idrolPantalla.equals(other.idrolPantalla))) {
+        if ((this.idRolPantalla == null && other.idRolPantalla != null) || (this.idRolPantalla != null && !this.idRolPantalla.equals(other.idRolPantalla))) {
             return false;
         }
         return true;
@@ -98,7 +97,7 @@ public class RolPantalla implements Serializable {
 
     @Override
     public String toString() {
-        return "business.usuarios.entity.RolPantalla[ idrolPantalla=" + idrolPantalla + " ]";
+        return "business.usuario.entity.RolPantalla[ idRolPantalla=" + idRolPantalla + " ]";
     }
-
+    
 }

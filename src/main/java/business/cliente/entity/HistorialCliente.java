@@ -5,6 +5,7 @@
  */
 package business.cliente.entity;
 
+import business.usuario.entity.Usuario;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -13,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -27,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author ggauto
  */
 @Entity
-@Table(name = "historialCliente")
+@Table(name = "historial_cliente")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HistorialCliente.findAll", query = "SELECT h FROM HistorialCliente h")
@@ -38,12 +41,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "HistorialCliente.findByNroDocumento", query = "SELECT h FROM HistorialCliente h WHERE h.nroDocumento = :nroDocumento")
     , @NamedQuery(name = "HistorialCliente.findBySexo", query = "SELECT h FROM HistorialCliente h WHERE h.sexo = :sexo")
     , @NamedQuery(name = "HistorialCliente.findByEstado", query = "SELECT h FROM HistorialCliente h WHERE h.estado = :estado")
-    , @NamedQuery(name = "HistorialCliente.findByIdUsuarioRegistro", query = "SELECT h FROM HistorialCliente h WHERE h.idUsuarioRegistro = :idUsuarioRegistro")
     , @NamedQuery(name = "HistorialCliente.findByFechaRegistro", query = "SELECT h FROM HistorialCliente h WHERE h.fechaRegistro = :fechaRegistro")
-    , @NamedQuery(name = "HistorialCliente.findByIdUsuarioActualizacion", query = "SELECT h FROM HistorialCliente h WHERE h.idUsuarioActualizacion = :idUsuarioActualizacion")
     , @NamedQuery(name = "HistorialCliente.findByFechaActualizacion", query = "SELECT h FROM HistorialCliente h WHERE h.fechaActualizacion = :fechaActualizacion")
     , @NamedQuery(name = "HistorialCliente.findByIdBarrio", query = "SELECT h FROM HistorialCliente h WHERE h.idBarrio = :idBarrio")
-    , @NamedQuery(name = "HistorialCliente.findByIdCliente", query = "SELECT h FROM HistorialCliente h WHERE h.idCliente = :idCliente")})
+    , @NamedQuery(name = "HistorialCliente.findByContrato", query = "SELECT h FROM HistorialCliente h WHERE h.contrato = :contrato")})
 public class HistorialCliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,33 +72,33 @@ public class HistorialCliente implements Serializable {
     @Size(max = 1)
     @Column(name = "sexo")
     private String sexo;
-    @Size(max = 10)
-    @Column(name = "estado")
-    private String estado;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idUsuarioRegistro")
-    private int idUsuarioRegistro;
+    @Size(min = 1, max = 10)
+    @Column(name = "estado")
+    private String estado;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fechaRegistro")
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idUsuarioActualizacion")
-    private int idUsuarioActualizacion;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "fechaActualizacion")
     @Temporal(TemporalType.DATE)
     private Date fechaActualizacion;
     @Column(name = "idBarrio")
     private Integer idBarrio;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "idCliente")
-    private int idCliente;
+    @Size(max = 255)
+    @Column(name = "contrato")
+    private String contrato;
+    @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
+    @ManyToOne(optional = false)
+    private Cliente idCliente;
+    @JoinColumn(name = "idUsuarioActualizacion", referencedColumnName = "idusuario")
+    @ManyToOne
+    private Usuario idUsuarioActualizacion;
+    @JoinColumn(name = "idUsuarioRegistro", referencedColumnName = "idusuario")
+    @ManyToOne(optional = false)
+    private Usuario idUsuarioRegistro;
 
     public HistorialCliente() {
     }
@@ -106,15 +107,12 @@ public class HistorialCliente implements Serializable {
         this.idHistorialCliente = idHistorialCliente;
     }
 
-    public HistorialCliente(Integer idHistorialCliente, String nombre, String apellido, int idUsuarioRegistro, Date fechaRegistro, int idUsuarioActualizacion, Date fechaActualizacion, int idCliente) {
+    public HistorialCliente(Integer idHistorialCliente, String nombre, String apellido, String estado, Date fechaRegistro) {
         this.idHistorialCliente = idHistorialCliente;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.idUsuarioRegistro = idUsuarioRegistro;
+        this.estado = estado;
         this.fechaRegistro = fechaRegistro;
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-        this.fechaActualizacion = fechaActualizacion;
-        this.idCliente = idCliente;
     }
 
     public Integer getIdHistorialCliente() {
@@ -173,28 +171,12 @@ public class HistorialCliente implements Serializable {
         this.estado = estado;
     }
 
-    public int getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(int idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
     public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
-    }
-
-    public int getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(int idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
     }
 
     public Date getFechaActualizacion() {
@@ -213,12 +195,36 @@ public class HistorialCliente implements Serializable {
         this.idBarrio = idBarrio;
     }
 
-    public int getIdCliente() {
+    public String getContrato() {
+        return contrato;
+    }
+
+    public void setContrato(String contrato) {
+        this.contrato = contrato;
+    }
+
+    public Cliente getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
+    public void setIdCliente(Cliente idCliente) {
         this.idCliente = idCliente;
+    }
+
+    public Usuario getIdUsuarioActualizacion() {
+        return idUsuarioActualizacion;
+    }
+
+    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
+        this.idUsuarioActualizacion = idUsuarioActualizacion;
+    }
+
+    public Usuario getIdUsuarioRegistro() {
+        return idUsuarioRegistro;
+    }
+
+    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
+        this.idUsuarioRegistro = idUsuarioRegistro;
     }
 
     @Override
