@@ -5,7 +5,6 @@
  */
 package business.funcionario.entity;
 
-import business.funcionario.entity.Funcionario;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -14,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,11 +27,12 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author ggauto
  */
 @Entity
-@Table(name = "historial_funcionario")
+@Table(name = "historial_Funcionario")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HistorialFuncionario.findAll", query = "SELECT h FROM HistorialFuncionario h")
     , @NamedQuery(name = "HistorialFuncionario.findByIdHistorialFuncionario", query = "SELECT h FROM HistorialFuncionario h WHERE h.idHistorialFuncionario = :idHistorialFuncionario")
+    , @NamedQuery(name = "HistorialFuncionario.findByIdFuncionario", query = "SELECT h FROM HistorialFuncionario h WHERE h.idFuncionario = :idFuncionario")
     , @NamedQuery(name = "HistorialFuncionario.findByIdUsuario", query = "SELECT h FROM HistorialFuncionario h WHERE h.idUsuario = :idUsuario")
     , @NamedQuery(name = "HistorialFuncionario.findByNombreFuncionario", query = "SELECT h FROM HistorialFuncionario h WHERE h.nombreFuncionario = :nombreFuncionario")
     , @NamedQuery(name = "HistorialFuncionario.findByApellidoFuncionario", query = "SELECT h FROM HistorialFuncionario h WHERE h.apellidoFuncionario = :apellidoFuncionario")
@@ -55,6 +53,10 @@ public class HistorialFuncionario implements Serializable {
     @Basic(optional = false)
     @Column(name = "idHistorialFuncionario")
     private Integer idHistorialFuncionario;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "idFuncionario")
+    private int idFuncionario;
     @Basic(optional = false)
     @NotNull
     @Column(name = "idUsuario")
@@ -98,16 +100,11 @@ public class HistorialFuncionario implements Serializable {
     @Size(min = 1, max = 1)
     @Column(name = "estado")
     private String estado;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "idBarrio")
-    private int idBarrio;
+    private Integer idBarrio;
     @Size(max = 255)
     @Column(name = "direccion")
     private String direccion;
-    @JoinColumn(name = "idFuncionario", referencedColumnName = "idFuncionario")
-    @ManyToOne(optional = false)
-    private Funcionario idFuncionario;
 
     public HistorialFuncionario() {
     }
@@ -116,8 +113,9 @@ public class HistorialFuncionario implements Serializable {
         this.idHistorialFuncionario = idHistorialFuncionario;
     }
 
-    public HistorialFuncionario(Integer idHistorialFuncionario, int idUsuario, String nombreFuncionario, String apellidoFuncionario, int idUsuarioRegistro, Date fechaRegistro, int idUsuarioActualizacion, Date fechaActualizacion, String estado, int idBarrio) {
+    public HistorialFuncionario(Integer idHistorialFuncionario, int idFuncionario, int idUsuario, String nombreFuncionario, String apellidoFuncionario, int idUsuarioRegistro, Date fechaRegistro, int idUsuarioActualizacion, Date fechaActualizacion, String estado) {
         this.idHistorialFuncionario = idHistorialFuncionario;
+        this.idFuncionario = idFuncionario;
         this.idUsuario = idUsuario;
         this.nombreFuncionario = nombreFuncionario;
         this.apellidoFuncionario = apellidoFuncionario;
@@ -126,7 +124,6 @@ public class HistorialFuncionario implements Serializable {
         this.idUsuarioActualizacion = idUsuarioActualizacion;
         this.fechaActualizacion = fechaActualizacion;
         this.estado = estado;
-        this.idBarrio = idBarrio;
     }
 
     public Integer getIdHistorialFuncionario() {
@@ -135,6 +132,14 @@ public class HistorialFuncionario implements Serializable {
 
     public void setIdHistorialFuncionario(Integer idHistorialFuncionario) {
         this.idHistorialFuncionario = idHistorialFuncionario;
+    }
+
+    public int getIdFuncionario() {
+        return idFuncionario;
+    }
+
+    public void setIdFuncionario(int idFuncionario) {
+        this.idFuncionario = idFuncionario;
     }
 
     public int getIdUsuario() {
@@ -217,11 +222,11 @@ public class HistorialFuncionario implements Serializable {
         this.estado = estado;
     }
 
-    public int getIdBarrio() {
+    public Integer getIdBarrio() {
         return idBarrio;
     }
 
-    public void setIdBarrio(int idBarrio) {
+    public void setIdBarrio(Integer idBarrio) {
         this.idBarrio = idBarrio;
     }
 
@@ -231,14 +236,6 @@ public class HistorialFuncionario implements Serializable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
-    }
-
-    public Funcionario getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(Funcionario idFuncionario) {
-        this.idFuncionario = idFuncionario;
     }
 
     @Override
@@ -263,7 +260,7 @@ public class HistorialFuncionario implements Serializable {
 
     @Override
     public String toString() {
-        return "business.direccion.entity.HistorialFuncionario[ idHistorialFuncionario=" + idHistorialFuncionario + " ]";
+        return "business.cliente.entity.HistorialFuncionario[ idHistorialFuncionario=" + idHistorialFuncionario + " ]";
     }
     
 }

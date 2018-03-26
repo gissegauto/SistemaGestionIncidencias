@@ -86,7 +86,7 @@ and open the template in the editor.
                             <p:column style="width:32px;text-align: center">
                                 <p:commandButton update=":solicitudConexionForm:solicitudConexionDetail"
                                                  oncomplete="PF('verSolicitudConexion').show('#{component.clientId}')"
-                                                 icon="ui-icon-search" title="Ver">
+                                                 icon="ui-icon-search" title="#{msg['generic.ver']}">
                                     <f:setPropertyActionListener value="#{solicitudConexion}" 
                                                                  target="#{solicitudConexionBean.solicitudConexion}" />
                                 </p:commandButton>
@@ -140,7 +140,7 @@ and open the template in the editor.
                             <br />
                             <div style="text-align:center;" >
                                 <p:commandButton 
-                                    value="Cerrar" 
+                                    value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('verSolicitudConexion').hide()" 
                                     id='btn-volver' />
                             </div>

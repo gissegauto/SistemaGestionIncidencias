@@ -5,7 +5,6 @@
  */
 package business.direccion.entity;
 
-import business.cliente.entity.Cliente;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -38,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Zona.findByEstado", query = "SELECT z FROM Zona z WHERE z.estado = :estado")})
 public class Zona implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idZona")
+    private Collection<ZonaBarrio> zonaBarrioCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,10 +55,6 @@ public class Zona implements Serializable {
     @NotNull
     @Column(name = "estado")
     private int estado;
-    @OneToMany(mappedBy = "idZona")
-    private Collection<Cliente> clienteCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idZona")
-    private Collection<ZonaBarrio> zonaBarrioCollection;
 
     public Zona() {
     }
@@ -95,24 +93,6 @@ public class Zona implements Serializable {
         this.estado = estado;
     }
 
-    @XmlTransient
-    public Collection<Cliente> getClienteCollection() {
-        return clienteCollection;
-    }
-
-    public void setClienteCollection(Collection<Cliente> clienteCollection) {
-        this.clienteCollection = clienteCollection;
-    }
-
-    @XmlTransient
-    public Collection<ZonaBarrio> getZonaBarrioCollection() {
-        return zonaBarrioCollection;
-    }
-
-    public void setZonaBarrioCollection(Collection<ZonaBarrio> zonaBarrioCollection) {
-        this.zonaBarrioCollection = zonaBarrioCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -136,6 +116,15 @@ public class Zona implements Serializable {
     @Override
     public String toString() {
         return "business.direccion.entity.Zona[ idZona=" + idZona + " ]";
+    }
+
+    @XmlTransient
+    public Collection<ZonaBarrio> getZonaBarrioCollection() {
+        return zonaBarrioCollection;
+    }
+
+    public void setZonaBarrioCollection(Collection<ZonaBarrio> zonaBarrioCollection) {
+        this.zonaBarrioCollection = zonaBarrioCollection;
     }
     
 }

@@ -5,10 +5,16 @@
  */
 package presentation;
 
+import business.direccion.boundary.BarrioManager;
+import business.direccion.boundary.CiudadManager;
+import business.direccion.entity.Barrio;
+import business.direccion.entity.Ciudad;
 import business.funcionario.boundary.FuncionarioManager;
+import business.funcionario.controller.HistorialFuncionarioController;
 import business.funcionario.entity.Funcionario;
 import business.utils.UtilLogger;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -30,10 +36,21 @@ public class FuncionarioBean implements Serializable {
 
     private Funcionario funcionario;
     private List<Funcionario> funcionarioList;
-    FacesContext context = FacesContext.getCurrentInstance();
+    private List<Ciudad> ciudadList;
+    private Ciudad ciudad;
+    private List<Barrio> barrioList;
+    private Barrio barrio;
 
     @Inject
     FuncionarioManager funcionarioMgr;
+    @Inject
+    HistorialFuncionarioController historialFuncionarioController;
+    @Inject
+    BarrioManager barrioMgr;
+    @Inject
+    CiudadManager ciudadMgr;
+    @Inject
+    LoginBean session;
 
     @PostConstruct
     public void init() {
@@ -43,6 +60,9 @@ public class FuncionarioBean implements Serializable {
     public void limpiar() {
         funcionario = new Funcionario();
         funcionarioList = funcionarioMgr.getAll();
+        ciudadList = ciudadMgr.getAll();
+        ciudad = new Ciudad();
+        barrio = new Barrio();
     }
 
     public String add() {
@@ -50,25 +70,32 @@ public class FuncionarioBean implements Serializable {
             if (null != funcionario) {
                 for (Funcionario funcionario : funcionarioList) {
                     if (funcionario.getApellidoFuncionario().trim().equalsIgnoreCase(funcionario.getApellidoFuncionario().trim())
-                            && (funcionario.getIdFuncionario()== null || funcionario.getIdFuncionario() == 0)) {
-                        context.addMessage(null, new FacesMessage("Advertencia",
+                            && (funcionario.getIdFuncionario() == null || funcionario.getIdFuncionario() == 0)) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
                                 "El funcionario " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()
                                 + " ya se encuentra registrado"));
                         return "funcionario";
                     }
                 }
-                if (funcionario != null & funcionario.getIdFuncionario()== null) {
+                if (funcionario != null & funcionario.getIdFuncionario() == null) {
+                    funcionario.setEstado("A");
+                    funcionario.setFechaRegistro(new Date());
+                    funcionario.setIdUsuarioRegistro(session.getUsuario());
                     funcionario = funcionarioMgr.add(funcionario);
-                    context.addMessage(null, new FacesMessage("Se agregó correctamente",
+                    historialFuncionarioController.addHistory(funcionario);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                 } else if (funcionario != null & funcionario.getIdFuncionario() > 0) {
+                    funcionario.setIdUsuarioActualizacion(session.getUsuario());
+                    funcionario.setFechaActualizacion(new Date());
                     funcionario = funcionarioMgr.update(funcionario);
-                    context.addMessage(null, new FacesMessage("Se actualizó correctamente",
+                    historialFuncionarioController.addHistory(funcionario);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
                             "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                 }
             }
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el funcionario "));
             UtilLogger.error("Problemas al insertar el funcionario", e);
         }
@@ -79,10 +106,10 @@ public class FuncionarioBean implements Serializable {
     public String delete() {
         try {
             funcionarioMgr.delete(funcionario);
-            context.addMessage(null, new FacesMessage("Se borró Funcionario"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Funcionario"));
             RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el funcionario"));
             UtilLogger.error("Problemas al insertar el funcionario", e);
             return null;
@@ -90,14 +117,8 @@ public class FuncionarioBean implements Serializable {
         return "funcionario";
     }
 
-    public void onCellEdit(CellEditEvent event) {
-//        String oldValue = event.getOldValue().toString();
-//        String newValue = event.getNewValue().toString();
-//        Funcionario newFuncionario = funcionarioMgr.getByName(oldValue);
-//        newFuncionario.setDescripcion(newValue);
-//        funcionarioMgr.update(newFuncionario);
-        RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
-
+    public void buscarBarrios() {
+        barrioList = barrioMgr.getBarriosByCiudad(ciudad);
     }
 
     public void actionClean(ActionEvent actionEvent) {
@@ -119,6 +140,38 @@ public class FuncionarioBean implements Serializable {
 
     public void setFuncionarioList(List<Funcionario> funcionarioList) {
         this.funcionarioList = funcionarioList;
+    }
+
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public List<Ciudad> getCiudadList() {
+        return ciudadList;
+    }
+
+    public void setCiudadList(List<Ciudad> ciudadList) {
+        this.ciudadList = ciudadList;
+    }
+
+    public List<Barrio> getBarrioList() {
+        return barrioList;
+    }
+
+    public void setBarrioList(List<Barrio> barrioList) {
+        this.barrioList = barrioList;
+    }
+
+    public Barrio getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(Barrio barrio) {
+        this.barrio = barrio;
     }
 
 }

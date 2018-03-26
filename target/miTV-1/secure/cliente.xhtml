@@ -82,7 +82,7 @@ and open the template in the editor.
                             <p:column style="width:32px;text-align: center">
                                 <p:commandButton update=":clienteForm:clienteDetail"
                                                  oncomplete="PF('dlgVerCliente').show('#{component.clientId}')"
-                                                 icon="ui-icon-search" title="Ver">
+                                                 icon="ui-icon-search" title="#{msg['generic.ver']}">
                                     <f:setPropertyActionListener value="#{cliente}" 
                                                                  target="#{clienteBean.cliente}" />
                                 </p:commandButton>
@@ -145,7 +145,7 @@ and open the template in the editor.
                             <br />
                             <div style="text-align:center;" >
                                 <p:commandButton 
-                                    value="Cerrar" 
+                                    value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('dlgVerCliente').hide()" 
                                     id='btn-volver' />
                             </div>
@@ -174,7 +174,6 @@ and open the template in the editor.
                                     <f:selectItem itemLabel="CI" itemValue="CI" />
                                     <f:selectItem itemLabel="RUC" itemValue="RUC" />
                                     <f:selectItem itemLabel="DNI" itemValue="DNI" />
-                                    <f:selectItem itemLabel="Otro" itemValue="Otro" />
                                 </p:selectOneMenu>
                                 <p:spacer/>
 

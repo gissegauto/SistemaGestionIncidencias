@@ -34,10 +34,7 @@ and open the template in the editor.
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"  style="font-size:12px"
                                  rowKey="#{funcionario.idFuncionario}"
-                                 editable="true" 
-                                 editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
-                        <p:ajax event="cellEdit" listener="#{funcionarioBean.onCellEdit}" update=":funcionarioForm:growl" />
                         <p:column headerText="#{msg['generic.id']}" 
                                   width="5%"
                                   sortBy="#{funcionario.idFuncionario}">
@@ -46,45 +43,38 @@ and open the template in the editor.
                         <p:column headerText="#{msg['funcionario.nombre']}" 
                                   width="10%" filterBy="#{funcionario.nombreFuncionario}"
                                   sortBy="#{funcionario.nombreFuncionario}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{funcionario.nombreFuncionario}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{funcionario.nombreFuncionario}" style="width:10%" label="nombre"/></f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{funcionario.nombreFuncionario}" />
                         </p:column>
                         <p:column headerText="#{msg['funcionario.apellido']}" 
                                   width="10%" filterBy="#{funcionario.apellidoFuncionario}"
                                   sortBy="#{funcionario.apellidoFuncionario}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{funcionario.apellidoFuncionario}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{funcionario.apellidoFuncionario}" style="width:10%" label="apellido"/></f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{funcionario.apellidoFuncionario}" />
                         </p:column>
                         <p:column headerText="#{msg['funcionario.direccion']}" 
                                   width="10%" filterBy="#{funcionario.direccion}"
                                   sortBy="#{funcionario.direccion}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{funcionario.direccion}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{funcionario.direccion}" style="width:10%" label="direccion"/></f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{funcionario.direccion}" />
                         </p:column>
                         <p:column headerText="#{msg['funcionario.telefono']}" 
                                   width="10%" filterBy="#{funcionario.telefono}"
                                   sortBy="#{funcionario.telefono}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{funcionario.telefono}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{funcionario.telefono}" style="width:10%" label="telefono"/></f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{funcionario.telefono}" />
                         </p:column>
                         <p:column headerText="#{msg['funcionario.estado']}" 
                                   width="10%" filterBy="#{funcionario.estado}"
                                   sortBy="#{funcionario.estado}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{funcionario.estado}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{funcionario.estado}" style="width:10%" label="estado"/></f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{funcionario.estado}" />
                         </p:column>
-                        <p:column headerText="Opciones" 
+                        <p:column headerText="#{msg['generic.opciones']}" 
                                   width="20%">
+                            <p:column style="width:32px;text-align: center">
+                                <p:commandButton update=":funcionarioForm:funcionarioDetail"
+                                                 oncomplete="PF('dlgVerFuncionario').show('#{component.clientId}')"
+                                                 icon="ui-icon-search" title="#{msg['generic.ver']}">
+                                    <f:setPropertyActionListener value="#{funcionario}" 
+                                                                 target="#{funcionarioBean.funcionario}" />
+                                </p:commandButton>
+                            </p:column>
                             <p:commandButton 
                                 icon="ui-icon-trash" 
                                 id="botonEditar">
@@ -92,41 +82,120 @@ and open the template in the editor.
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
+                    <p:overlayPanel widgetVar="dlgVerFuncionario" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+                        <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                            <p:outputPanel id="clienteDetail">
+                                <h:panelGrid  columns="2" rendered="#{not empty funcionarioBean.funcionario}" columnClasses="label,value">
+                                    <p:outputLabel value="#{msg['funcionario.add.id']}"  style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.idFuncionario}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.funcionario']}"  style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.nombreFuncionario} #{funcionarioBean.funcionario.apellidoFuncionario}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.direccion']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.direccion}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.ciudad']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.idBarrio.idCiudad.ciudad}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.barrio']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.idBarrio.barrio}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.celular']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.celular}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.telefono']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.telefono}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.usuarioR']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.idUsuarioRegistro.username}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.fechaR']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.fechaRegistro}"  >
+                                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm" /></h:outputText>
+                                    <p:outputLabel value="#{msg['funcionario.add.usuarioA']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.idUsuarioActualizacion.username}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.fechaA']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.fechaActualizacion}"  >
+                                        <f:convertDateTime pattern="dd-MM-yyyy hh:mm" /></h:outputText>
+                                    <p:outputLabel value="#{msg['funcionario.add.estado']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.estado}" />
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <br />
+                            <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="#{msg['generic.cerrar']}" 
+                                    oncomplete="PF('dlgVerFuncionario').hide()" 
+                                    id='btn-volver' />
+                            </div>
+                        </p:fieldset>
+                    </p:overlayPanel>
                 </h:form>
 
                 <p:dialog header="#{msg['funcionario.add']}" widgetVar="dlgFuncionarioAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                         <h:form id="form-add">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
                             <h:panelGroup>
-                                <h:panelGrid columns="2" columnClasses="column" id="FuncionarioGr">   
+                                <h:panelGrid columns="3" columnClasses="column" id="FuncionarioGr">   
                                     <p:outputLabel value="#{msg['funcionario.nombre']}" for="nombre" style="left:  20%"/>
                                     <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
                                                  value="#{funcionarioBean.funcionario.nombreFuncionario}" />
-                                    <p:outputLabel value="Apellido : " for="apellido" style="right: 20%"/>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.apellido']}" for="apellido" style="right: 20%"/>
                                     <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
                                                  value="#{funcionarioBean.funcionario.apellidoFuncionario}" />
-                                    <p:outputLabel value="Dirección : " for="direccion" style="right: 20%"/>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.direccion']}" for="direccion" style="right: 20%"/>
                                     <p:inputText id="direccion" required="true" requiredMessage="#{msg['requerid.direccion']}"
                                                  value="#{funcionarioBean.funcionario.direccion}" />
-                                    <p:outputLabel value="Teléfono : " for="telefono" style="right: 20%"/>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.telefono']}" for="telefono" style="right: 20%"/>
                                     <p:inputText id="telefono" 
                                                  value="#{funcionarioBean.funcionario.telefono}" />
-                                    <p:outputLabel value="Celular : " for="celular" style="right: 20%"/>
-                                    <p:inputText id="celular" 
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.celular']}" for="celular" style="right: 20%"/>
+                                    <p:inputMask id="celular" mask="(9999) 999-999"
                                                  value="#{funcionarioBean.funcionario.celular}" />
-                                    <p:outputLabel value="Nro Documento : " for="nroDocumento" style="right: 20%"/>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.tipoDocumento']}" for="tipoDocumento"  />
+                                    <p:selectOneMenu id="tipoDocumento" value="#{funcionarioBean.funcionario.tipoDocumento}" style="width:125px">
+                                        <f:selectItem itemLabel="CI" itemValue="CI" />
+                                        <f:selectItem itemLabel="RUC" itemValue="RUC" />
+                                        <f:selectItem itemLabel="DNI" itemValue="DNI" />
+                                    </p:selectOneMenu>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.nroDocumento']}" for="nroDocumento" style="right: 20%"/>
                                     <p:inputText id="nroDocumento" 
                                                  value="#{funcionarioBean.funcionario.nroDocumento}" />
-                                    <p:outputLabel value="Estado : " for="estado" style="right: 20%"/>
-                                    <p:inputText id="estado" 
-                                                 value="#{funcionarioBean.funcionario.estado}" />
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.ciudad']}" for="ciudad" />
+                                    <p:selectOneMenu id="ciudad" value="#{funcionarioBean.ciudad}" 
+                                                     effect="fold" editable="false"
+                                                     validatorMessage="Debe seleccionar una ciudad"
+                                                     filter="true" filterMatchMode="startsWith"
+                                                     converter="ciudadConverter" >
+                                        <f:selectItems value="#{funcionarioBean.ciudadList}" 
+                                                       var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                       itemValue="#{ciudad}" />
+                                        <p:ajax  process="ciudad"  event="change"
+                                                 update=":form-add:barrio"
+                                                 listener="#{funcionarioBean.buscarBarrios}"/> 
+                                    </p:selectOneMenu>                                                             
+                                    <p:spacer/>     
+
+                                    <p:outputLabel value="#{msg['cliente.add.barrio']}" for="barrio" />
+                                    <p:selectOneMenu id="barrio" value="#{funcionarioBean.barrio.idBarrio}" 
+                                                     effect="fold" editable="false" 
+                                                     filter="true" filterMatchMode="startsWith"
+                                                     converter="barrioConverter" >
+                                        <f:selectItems value="#{funcionarioBean.barrioList}" 
+                                                       var="barrio" itemLabel="#{barrio.barrio}" 
+                                                       itemValue="#{barrio}"/>
+                                    </p:selectOneMenu>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.estado']}" style="right: 15%"/>
+                                    <p:inputText id="estado" value="Activo" disabled="true" />
+                                    <p:spacer/>
                                     <br />
                                     <br />
                                     <div style="align-content: center" >
                                         <p:commandButton 
-                                            value="Guardar" 
+                                            value="#{msg['generic.guardar']}" 
                                             update="FuncionarioGr,:funcionarioForm:dtFuncionario" 
                                             action="#{funcionarioBean.add}"
                                             id='btn-guardar-funcionario'

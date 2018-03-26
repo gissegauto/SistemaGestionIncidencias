@@ -60,9 +60,9 @@ public class RolPantallaBean implements Serializable {
 
         try {
             if (null != rolPantalla) {
-                if (rolPantalla.getIdRolPantalla()== null) {
+                if (rolPantalla.getIdrolPantalla()== null) {
                     rolPantalla = rolPantallaMgr.add(rolPantalla);
-                } else if (rolPantalla.getIdRolPantalla()> 0) {
+                } else if (rolPantalla.getIdrolPantalla()> 0) {
                     rolPantalla = rolPantallaMgr.update(rolPantalla);
                 }
             }
@@ -77,7 +77,7 @@ public class RolPantallaBean implements Serializable {
 
     public String delete() {
         try {
-            if (rolPantalla.getIdRolPantalla()> 0) {
+            if (rolPantalla.getIdrolPantalla()> 0) {
                 rolPantallaMgr.delete(rolPantalla);
                 context.addMessage(null, new FacesMessage("Se borró Rol Pantalla"));
                 RequestContext.getCurrentInstance().update("rolPantallaForm:dtRolPantalla");

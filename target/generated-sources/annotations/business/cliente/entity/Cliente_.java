@@ -11,13 +11,14 @@ import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-22T19:51:21")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-03-26T09:29:49")
 @StaticMetamodel(Cliente.class)
 public class Cliente_ { 
 
     public static volatile SingularAttribute<Cliente, String> estado;
     public static volatile SingularAttribute<Cliente, Date> fechaRegistro;
     public static volatile SingularAttribute<Cliente, String> direccion;
+    public static volatile SingularAttribute<Cliente, String> contrato;
     public static volatile SingularAttribute<Cliente, Usuario> idUsuarioRegistro;
     public static volatile SingularAttribute<Cliente, String> nombre;
     public static volatile CollectionAttribute<Cliente, HistorialCliente> historialClienteCollection;

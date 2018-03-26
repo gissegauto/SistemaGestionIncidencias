@@ -17,7 +17,6 @@
 /home/ggauto/NetBeansProjects/miTV/src/main/java/presentation/PantallaBean.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/presentation/converters/RolConverter.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/utils/MD5Generator.java
-/home/ggauto/NetBeansProjects/miTV/src/main/java/business/funcionario/entity/FuncionarioHorario.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/usuario/boundary/UsuarioManager.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/configuracion/controller/ServicioController.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/dao/GenericImpl.java
@@ -30,7 +29,6 @@
 /home/ggauto/NetBeansProjects/miTV/src/main/java/presentation/RolPantallaBean.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/presentation/converters/PaisConverter.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/presentation/LoginBean.java
-/home/ggauto/NetBeansProjects/miTV/src/main/java/business/funcionario/entity/Horario.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/cliente/entity/ClienteSolicitud.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/cliente/boundary/ClienteSolicitudManager.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/direccion/boundary/PaisManager.java
@@ -61,7 +59,6 @@
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/cliente/entity/Cliente.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/funcionario/entity/HistorialFuncionario.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/direccion/boundary/DepartamentoManager.java
-/home/ggauto/NetBeansProjects/miTV/src/main/java/business/funcionario/entity/PermisoFuncionario.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/usuario/boundary/PantallaManager.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/presentation/RolBean.java
 /home/ggauto/NetBeansProjects/miTV/src/main/java/business/solicitudes/controller/SolicitudConexionController.java
