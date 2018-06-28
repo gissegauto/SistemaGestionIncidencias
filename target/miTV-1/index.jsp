@@ -1,1 +1,0 @@
-<% String redirectURL = "login.jsf"; response.sendRedirect(redirectURL); %>
