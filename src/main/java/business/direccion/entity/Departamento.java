@@ -7,6 +7,7 @@ package business.direccion.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,7 +56,7 @@ public class Departamento implements Serializable {
     @Column(name = "departamento")
     private String departamento;
     @Column(name = "estado")
-    private Integer estado;
+    private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDepartamento")
     private Collection<Ciudad> ciudadCollection;
 
@@ -87,15 +88,22 @@ public class Departamento implements Serializable {
         this.departamento = departamento;
     }
 
-    public Integer getEstado() {
+    public Pais getIdPais() {
+        return idPais;
+    }
+
+    public void setIdPais(Pais idPais) {
+        this.idPais = idPais;
+    }
+
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Integer estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
-    @XmlTransient
     public Collection<Ciudad> getCiudadCollection() {
         return ciudadCollection;
     }
@@ -106,19 +114,40 @@ public class Departamento implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idDepartamento != null ? idDepartamento.hashCode() : 0);
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.idPais);
+        hash = 67 * hash + Objects.hashCode(this.idDepartamento);
+        hash = 67 * hash + Objects.hashCode(this.departamento);
+        hash = 67 * hash + Objects.hashCode(this.estado);
+        hash = 67 * hash + Objects.hashCode(this.ciudadCollection);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Departamento)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Departamento other = (Departamento) object;
-        if ((this.idDepartamento == null && other.idDepartamento != null) || (this.idDepartamento != null && !this.idDepartamento.equals(other.idDepartamento))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Departamento other = (Departamento) obj;
+        if (!Objects.equals(this.departamento, other.departamento)) {
+            return false;
+        }
+        if (!Objects.equals(this.estado, other.estado)) {
+            return false;
+        }
+        if (!Objects.equals(this.idPais, other.idPais)) {
+            return false;
+        }
+        if (!Objects.equals(this.idDepartamento, other.idDepartamento)) {
+            return false;
+        }
+        if (!Objects.equals(this.ciudadCollection, other.ciudadCollection)) {
             return false;
         }
         return true;
@@ -126,15 +155,7 @@ public class Departamento implements Serializable {
 
     @Override
     public String toString() {
-        return "business.direccion.entity.Departamento[ idDepartamento=" + idDepartamento + " ]";
+        return "Departamento{" + "idPais=" + idPais + ", idDepartamento=" + idDepartamento + ", departamento=" + departamento + ", estado=" + estado + ", ciudadCollection=" + ciudadCollection + '}';
     }
 
-    public Pais getIdPais() {
-        return idPais;
-    }
-
-    public void setIdPais(Pais idPais) {
-        this.idPais = idPais;
-    }
-    
 }

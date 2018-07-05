@@ -5,6 +5,8 @@
  */
 package business.usuario.controller;
 
+import business.funcionario.boundary.FuncionarioManager;
+import business.funcionario.entity.Funcionario;
 import business.usuario.boundary.UsuarioManager;
 import business.usuario.entity.Usuario;
 import business.utils.MD5Generator;
@@ -22,6 +24,8 @@ public class UsuarioController {
 
     @Inject
     UsuarioManager usuarioMgr;
+    @Inject
+    FuncionarioManager funcionarioMgr;
 
     public Usuario authenticate(String username, String password) {
         try {
@@ -44,14 +48,47 @@ public class UsuarioController {
         }
     }
 
+    /**
+     * Actualizar Password de MI CUENTA
+     *
+     * @param usuario
+     * @param newPass
+     * @return
+     */
+    public Usuario actualizarPassword(Usuario usuario, String newPass) {
+        try {
+            usuario.setPassword(MD5Generator.MD5(newPass));
+            return usuarioMgr.update(usuario);
+        } catch (Exception ex) {
+            UtilLogger.error("UsuarioController.actualizarPassword", ex);
+            return usuario;
+        }
+    }
+
+    /**
+     * Resetear Password de un Usuario
+     *
+     * @param usuario
+     * @return
+     */
     public Usuario resetearPassword(Usuario usuario) {
         try {
             String newPassword = MD5Generator.MD5("12345");
-            usuario.setPassword(newPassword);            
+            usuario.setPassword(newPassword);
             return usuarioMgr.update(usuario);
         } catch (Exception ex) {
             UtilLogger.error("UsuarioController.resetearPassword", ex);
-            return null;
+            return usuario;
+        }
+    }
+
+    public boolean actualizarDatosPersonales(Funcionario funcionario) {
+        try {
+            funcionario = funcionarioMgr.update(funcionario);
+            return true;
+        } catch (Exception ex) {
+            UtilLogger.error("UsuarioController.actualizarDatosPersonales", ex);
+            return false;
         }
     }
 }

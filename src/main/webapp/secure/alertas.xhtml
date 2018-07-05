@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="alertasForm">
+                    <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['alertas.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <facelets>
+                        <div align="right">
+                            <p:commandButton process="dtAlertas" 
+                                             icon="fa fa-plus-circle" 
+                                             update=":form-add:alertasGr" 
+                                             oncomplete="PF('dlgAlertasAdd').show()" 
+                                             action="#{alertasBean.limpiar}"/>
+                        </div>
+                    </facelets>
+                    <p:dataTable id="dtAlertas" var="alertas" 
+                                 value="#{alertasBean.alertasList}"
+                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 rowKey="#{alertas.idAlertas}"
+                                 style="font-size:12px"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:column headerText="#{msg['generic.id']}" 
+                                  width="20%"
+                                  sortBy="#{alertas.idAlertas}">
+                            <h:outputText value="#{alertas.idAlertas}" />
+                        </p:column>
+                        <p:column headerText="#{msg['alertas.descripcion']}" 
+                                  width="20%"
+                                  sortBy="#{alertas.alertaDescripcion}">
+                            <h:outputText value="#{alertas.alertaDescripcion}" />
+                        </p:column>
+                        <p:column headerText="#{msg['alertas.fecha']}" 
+                                  width="20%"
+                                  sortBy="#{alertas.alertaFechaHora}">
+                            <h:outputText value="#{alertas.alertaFechaHora}" >
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['alertas.hora']}" 
+                                  width="20%"
+                                  sortBy="#{alertas.alertaFechaHora}">
+                            <h:outputText value="#{alertas.alertaFechaHora}" >
+                                <f:convertDateTime pattern="hh:mm" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['generic.opciones']}" 
+                                  width="20%">
+                            <p:commandButton 
+                                icon="fa fa-trash"  style="color: crimson"
+                                action="#{alertasBean.delete(alertas)}"
+                                id="botonEditar">
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog header="#{msg['alertas.title']}" widgetVar="dlgAlertasAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="alertasGr">   
+                                <p:outputLabel value="#{msg['alertas.add.descripcion']}" for="descripcion" style="right: 20%"/>
+                                <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
+                                             value="#{alertasBean.alertas.alertaDescripcion}" />
+                                <p:outputLabel value="#{msg['alertas.add.fecha']}" for="fecha" style="right: 20%"/>
+                                <p:calendar id="fecha" value="#{alertasBean.alertas.alertaFechaHora}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                <br />
+                                <br />
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="Guardar" 
+                                        update="alertasGr,:alertasForm:dtAlertas" 
+                                        action="#{alertasBean.addAlerta}"
+                                        id='btn-guardar-alertas'
+                                        />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

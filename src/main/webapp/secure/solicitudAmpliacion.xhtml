@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="solicitudAmpliacionForm">
+                    <p:growl id="growl"  autoUpdate="true" globalOnly="true" showDetail="true" sticky="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['solicitud.ampliacion.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <facelets>
+                        <div align="right">
+                            <p:commandButton process="dtSolicitudAmpliacion" 
+                                             icon="fa fa-plus-circle" 
+                                             title="Agregar Solicitud"
+                                             update=":form-add-ampliacion:solicitudAmpliacionGr" 
+                                             oncomplete="PF('dlgSolicitudAmpliacionAdd').show()" 
+                                             actionListener="#{solicitudAmpliacionBean.limpiar}"/>
+                        </div>
+                    </facelets>
+                    <p:dataTable id="dtSolicitudAmpliacion" var="solicitudAmpliacion" 
+                                 value="#{solicitudAmpliacionBean.solicitudAmpliacionList}"
+                                 rows="10" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 style="font-size:12px"
+                                 rowKey="#{solicitudAmpliacion}"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:column headerText="#{msg['generic.id']}" 
+                                  width="5%"
+                                  sortBy="#{solicitudAmpliacion.idSolicitudAmpliacion}">
+                            <h:outputText value="#{solicitudAmpliacion.idSolicitudAmpliacion}" />
+                        </p:column>
+                        <p:column headerText="#{msg['generic.cliente']}" 
+                                  width="10%" filterBy="#{solicitudAmpliacion.idCliente.nombre} #{solicitudAmpliacion.idCliente.apellido}"
+                                  sortBy="#{solicitudAmpliacion.idCliente.nombre} #{solicitudAmpliacion.idCliente.apellido}">
+                            <h:outputText value="#{solicitudAmpliacion.idSolicitudAmpliacion} #{solicitudAmpliacion.idCliente.apellido}" />
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.fecha']}" 
+                                  width="10%" filterBy="#{solicitudAmpliacion.fechaRegistro}"
+                                  sortBy="#{solicitudAmpliacion.fechaRegistro}">
+                            <h:outputText value="#{solicitudAmpliacion.fechaRegistro}" >
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.hora']}" 
+                                  width="8%" filterBy="#{solicitudAmpliacion.fechaRegistro}"
+                                  sortBy="#{solicitudAmpliacion.fechaRegistro}">
+                            <h:outputText value="#{solicitudAmpliacion.fechaRegistro}" >
+                                <f:convertDateTime pattern="hh:mm" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.estado']}" 
+                                  width="10%" filterBy="#{solicitudAmpliacion.estado}"
+                                  sortBy="#{solicitudAmpliacion.estado}">
+                            <h:outputText value="#{solicitudAmpliacion.estado}" />
+                        </p:column>
+                        <p:column headerText="#{msg['generic.opciones']}" 
+                                  width="12%">
+                            <p:commandButton update=":solicitudAmpliacionForm:solicitudAmpliacionDetail"
+                                             oncomplete="PF('verSolicitudAmpliacion').show('#{component.clientId}')"
+                                             icon="ui-icon-search" title="#{msg['generic.ver']}">
+                                <f:setPropertyActionListener value="#{solicitudAmpliacion}" 
+                                                             target="#{solicitudAmpliacionBean.solicitudAmpliacion}" />
+                            </p:commandButton>
+                            <p:commandButton 
+                                icon="ui-icon-pencil"
+                                update=":form-add:solicitudAmpliacionGr"
+                                title="Editar"
+                                action="#{solicitudAmpliacionBean.edicion}"
+                                oncomplete="PF('dlgSolicitudAmpliacionAdd').show('#{component.clientId}')"
+                                id="botonEditarSAmpliacion" >
+                                <f:setPropertyActionListener value="#{solicitudAmpliacion}" 
+                                                             target="#{solicitudAmpliacionBean.solicitudAmpliacion}" />
+                            </p:commandButton>
+                            <p:commandButton 
+                                rendered="#{solicitudAmpliacion.estado eq 'Pendiente'}"
+                                icon="ui-icon-check"
+                                process="dtSolicitudAmpliacion"
+                                title="Cambiar de estado"
+                                id="botonCambiarEstadoSAmpliacion" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:overlayPanel widgetVar="verSolicitudAmpliacion" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+                        <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                            <p:outputPanel id="solicitudAmpliacionDetail">
+                                <h:panelGrid  columns="2" rendered="#{not empty solicitudAmpliacionBean.solicitudAmpliacion}" columnClasses="label,value">
+                                    <p:outputLabel value="#{msg['solicitud.ampliacion.add.id']}"  style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudAmpliacionBean.solicitudAmpliacion.idSolicitudAmpliacion}" />
+                                    <p:outputLabel value="#{msg['solicitud.ampliacion.add.cliente']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudAmpliacionBean.solicitudAmpliacion.idCliente.nombre}
+                                                  #{solicitudAmpliacionBean.solicitudAmpliacion.idCliente.apellido}" />
+                                    <p:outputLabel value="#{msg['solicitud.ampliacion.add.obs']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudAmpliacionBean.solicitudAmpliacion.observaciones}" />
+                                    <p:outputLabel value="#{msg['solicitud.ampliacion.add.estado']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudAmpliacionBean.solicitudAmpliacion.estado}" />
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <br />
+                            <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="#{msg['generic.cerrar']}" 
+                                    oncomplete="PF('verSolicitudAmpliacion').hide()" 
+                                    id='btn-volver' />
+                                <p:commandButton 
+                                    style="margin-left: 10px"
+                                    value="#{msg['generic.imprimir']}" 
+                                    id='btn-imprimir' />
+                            </div>
+                        </p:fieldset>
+                    </p:overlayPanel>
+                </h:form>
+
+                <p:dialog header="#{msg['solicitud.ampliacion.add.title']}"  widgetVar="dlgSolicitudAmpliacionAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add-ampliacion" >
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <h:panelGrid columns="3" columnClasses="column" id="solicitudAmpliacionGr">
+                                <p:outputLabel value="#{msg['solicitud.ampliacion.add.id']}" for="id" 
+                                               style="right: 10%" rendered="#{solicitudAmpliacionBean.editar}"/>
+                                <p:inputText id="id" disabled="true" rendered="#{solicitudAmpliacionBean.editar}"
+                                             value="#{solicitudAmpliacionBean.solicitudAmpliacion.idSolicitudAmpliacion}" />
+                                <p:spacer/>
+                            </h:panelGrid> 
+                            <p:panelGrid columns="2" id="clienteDetalleGr" layout="grid">
+                                <p:autoUpdate />
+                                <p:outputLabel value="#{msg['solicitud.ampliacion.add.cliente']}" for="cliente" />
+                                <p:selectOneMenu id="cliente" value="#{solicitudAmpliacionBean.cliente}" 
+                                                 effect="fold" editable="false"
+                                                 validatorMessage="#{msg['requerid.cliente']}"
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 converter="clienteConverter" >
+                                    <f:selectItems value="#{solicitudAmpliacionBean.clienteList}" 
+                                                   var="cliente" itemLabel="#{cliente.nombre}" 
+                                                   itemValue="#{cliente}"/>
+                                    <p:ajax  update="clienteNombre1" />   
+                                </p:selectOneMenu>
+                                <p:outputLabel value="#{msg['cliente.add.nombre']}" for="clienteNombre1" />
+                                <p:outputLabel id="clienteNombre1" value="#{solicitudAmpliacionBean.cliente.nombre}" >
+                                    <p:autoUpdate />
+                                </p:outputLabel>
+                            </p:panelGrid>
+                            <h:panelGrid columns="3">
+                                <p:outputLabel value="#{msg['solicitud.ampliacion.add.obs']}" />
+                                <p:inputText id="observacion" value="#{solicitudAmpliacionBean.solicitudAmpliacion.observaciones}" />
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['solicitud.ampliacion.add.estado']}" />
+                                <p:inputText id="estado" value="Pendiente" disabled="true" />
+                                <p:spacer/>
+                                <br />
+                                <br />
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="Guardar" 
+                                        update="solicitudAmpliacionGr,:solicitudAmpliacionForm:dtSolicitudAmpliacion" 
+                                        action="#{solicitudAmpliacionBean.add}"
+                                        oncomplete="PF('dlgSolicitudAmpliacionAdd').hide()" 
+                                        id='btn-guardar-ampliacion' />
+                                </div>
+                            </h:panelGrid> 
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

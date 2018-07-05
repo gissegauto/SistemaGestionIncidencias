@@ -5,8 +5,10 @@
  */
 package business.direccion.entity;
 
+import business.cliente.entity.Cliente;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,6 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Zona.findByEstado", query = "SELECT z FROM Zona z WHERE z.estado = :estado")})
 public class Zona implements Serializable {
 
+    @Column(name = "estado")
+    private Integer estado;
+    @OneToMany(mappedBy = "idZona")
+    private List<Cliente> clienteList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idZona")
     private Collection<ZonaBarrio> zonaBarrioCollection;
 
@@ -51,10 +58,6 @@ public class Zona implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "zona")
     private String zona;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "estado")
-    private int estado;
 
     public Zona() {
     }
@@ -85,13 +88,6 @@ public class Zona implements Serializable {
         this.zona = zona;
     }
 
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
 
     @Override
     public int hashCode() {
@@ -125,6 +121,23 @@ public class Zona implements Serializable {
 
     public void setZonaBarrioCollection(Collection<ZonaBarrio> zonaBarrioCollection) {
         this.zonaBarrioCollection = zonaBarrioCollection;
+    }
+
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
+
+    @XmlTransient
+    public List<Cliente> getClienteList() {
+        return clienteList;
+    }
+
+    public void setClienteList(List<Cliente> clienteList) {
+        this.clienteList = clienteList;
     }
     
 }

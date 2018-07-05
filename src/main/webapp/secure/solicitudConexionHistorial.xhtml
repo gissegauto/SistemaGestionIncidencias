@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="historialSolicitudConexionForm">
+                    <div align="center">
+                        <p:outputLabel value="#{msg['solicitud.conexion.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <p:fieldset  style="margin-bottom:5px; font-size:15px " >
+                        <h:panelGrid columns="4">
+                            <h:outputText value="#{msg['solicitud.conexion.nro']}" style="font-weight: bold"/>
+                            <h:outputText value="#{solicitudConexionHistorialBean.solicitudConexion.idSolicitudConexion}" />
+                            <h:outputText value="#{msg['solicitud.conexion.fechaR']}" style="font-weight: bold;margin-left: 100px"/>
+                            <h:outputText value="#{solicitudConexionHistorialBean.solicitudConexion.fechaRegistro}" >
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                            <h:outputText value="#{msg['solicitud.conexion.add.serv']}" style="font-weight: bold"/>
+                            <h:outputText value="#{solicitudConexionHistorialBean.solicitudConexion.idServicio.servicio}" />
+                            <h:outputText value="#{msg['solicitud.conexion.horaR']}" style="font-weight: bold;margin-left: 100px"/>
+                            <h:outputText value="#{solicitudConexionHistorialBean.solicitudConexion.fechaRegistro}" >
+                                <f:convertDateTime pattern="hh:mm" />
+                            </h:outputText>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <p:dataTable id="dtHistorialSolicitudConexion" var="solicitudConexion" 
+                                 value="#{solicitudConexionHistorialBean.solicitudConexionHistorialList}"
+                                 scrollable="true" 
+                                 rows="8" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"
+                                 style="font-size:12px"  
+                                 rowKey="#{solicitudConexion}"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:column headerText="#{msg['solicitud.conexion.nombre']}" 
+                                  width="10%" filterBy="#{solicitudConexion.nombre}" 
+                                  sortBy="#{solicitudConexion.nombre}">
+                            <h:outputText value="#{solicitudConexion.nombre}" />
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.apellido']}" 
+                                  width="10%" filterBy="#{solicitudConexion.apellido}"
+                                  sortBy="#{solicitudConexion.apellido}">
+                            <h:outputText value="#{solicitudConexion.apellido}" />
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.ciudad']}" 
+                                  width="10%" filterBy="#{solicitudConexion.idBarrio.idCiudad.ciudad}"
+                                  sortBy="#{solicitudConexion.idBarrio.idCiudad.ciudad}">
+                            <h:outputText value="#{solicitudConexion.idBarrio.idCiudad.ciudad}" />
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.barrio']}" 
+                                  width="10%" filterBy="#{solicitudConexion.idBarrio.barrio}"
+                                  sortBy="#{solicitudConexion.idBarrio.barrio}">
+                            <h:outputText value="#{solicitudConexion.idBarrio.barrio}" />
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.fecha.act']}" 
+                                  width="8%" 
+                                  sortBy="#{solicitudConexion.fechaActualizacion}">
+                            <h:outputText value="#{solicitudConexion.fechaActualizacion}" >
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.hora.act']}" 
+                                  width="8%" 
+                                  sortBy="#{solicitudConexion.fechaActualizacion}">
+                            <h:outputText value="#{solicitudConexion.fechaActualizacion}" >
+                                <f:convertDateTime pattern="hh:mm" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.estado']}" 
+                                  width="8%" 
+                                  sortBy="#{solicitudConexion.estado}">
+                            <h:outputText value="#{solicitudConexion.estado}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:spacer /><p:spacer /><br />
+                    <p:commandButton action="solicitudConexion" style="font-size: 15px"
+                                    title="Volver" value="Volver"
+                                     icon="fa fa-angle-left"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

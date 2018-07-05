@@ -33,7 +33,7 @@ and open the template in the editor.
                                  rows="5" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
-                                 rowKey="#{pais.idPais}"
+                                 rowKey="#{pais.idPais}"  style="font-size:12px"
                                  editable="true" 
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
@@ -43,23 +43,23 @@ and open the template in the editor.
                                   sortBy="#{pais.idPais}">
                             <h:outputText value="#{pais.idPais}" />
                         </p:column>
-                        <p:column headerText="Pais" 
+                        <p:column headerText="#{msg['pais.pais']}" 
                                   width="40%"
                                   sortBy="#{pais.nombre}">
                             <h:outputText value="#{pais.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Opciones" 
+                        <p:column headerText="#{msg['generic.opciones']}" 
                                   width="20%">
                             <p:commandButton oncomplete="PF('dlgBarriosAdd').show()" 
-                                             icon="fa fa-plus-circle"
+                                             icon="fa fa-pencil"  style="color: crimson"
                                              update=":paisForm:growl"
-                                             id="addBarrios" > 
+                                             id="editPais" > 
                                 <f:setPropertyActionListener value="#{pais}"
                                                              target="#{paisBean.pais}"/>
                             </p:commandButton>
                             <p:commandButton 
-                                icon="ui-icon-trash" 
+                                icon="fa fa-trash" style="color: crimson"
                                 id="botonEditar"
                                 action="#{paisBean.delete}"
                                 />   
@@ -69,71 +69,123 @@ and open the template in the editor.
 
                 <p:dialog header="Pais / Departamentos / Ciudad / Barrios" widgetVar="dlgBarriosAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                    <h:form id="form-add">
-                        <p:growl id="growl1" showDetail="true" sticky="true" />
-                        <h:panelGrid columns="2" columnClasses="column" id="paisGr">   
-                            <p:outputLabel value="Pais" style="right: 20%"/>
-                            <p:column headerText="Pais" sortBy="#{pais.nombre}" width="20%">
-                                <p:outputLabel value="#{pais.nombre}"/>
-                            </p:column>
-                            <!--                            <h:panelGroup>
-                                <p:selectOneMenu   id="listaPais" filter="true" value="#{paisBean.pais}"  style="width:100%;z-index: 1000;" converter="paisConverter" >
-                                    <f:selectItems value="#{paisBean.paisList}" var="pais" itemLabel="#{pais.nombre} " itemDescription=" #{pais.nombre}" itemValue="#{pais}" />                                        
-                                </p:selectOneMenu>                                
-                            </h:panelGroup>-->
-                            <p:outputLabel value="Departamento" for="listaDepartamentos" style="right: 20%"/>
-                            <h:panelGroup>
-                                <p:selectOneMenu   id="listaDepartamentos" filter="true" value="#{paisBean.departamento}"  style="width:100%;z-index: 1000;" converter="departamentoConverter" >
-                                    <f:selectItems value="#{paisBean.departamentoList}" var="departamento" itemLabel="#{departamento.departamento} " itemDescription=" #{departamento.departamento}" itemValue="#{departamento}" />                                        
-                                </p:selectOneMenu>                                
-                            </h:panelGroup>
-                            <p:outputLabel value="Ciudad" for="listaCiudad" style="right: 20%"/>
-                            <h:panelGroup>
-                                <p:selectOneMenu   id="listaCiudad" filter="true" value="#{paisBean.ciudad}"  style="width:100%;z-index: 1000;" converter="ciudadConverter" >
-                                    <f:selectItems value="#{paisBean.ciudadList}" var="ciudad" itemLabel="#{ciudad.ciudad} " itemDescription=" #{ciudad.ciudad}" itemValue="#{ciudad}" />                                        
-                                </p:selectOneMenu>
-                            </h:panelGroup>
-                        </h:panelGrid>
-                        <p:dataTable id="dtBarrio" var="barrioAdd" 
-                                     value="#{paisBean.barrioListAdd}"
-                                     rows="5" paginator="true" paginatorPosition="bottom"
-                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10,15"
-                                     rowKey="#{barrioAdd.idBarrio}"
-                                     editable="true" 
-                                     style="height: 50%"
-                                     editMode="cell"
-                                     emptyMessage="No hay datos para mostrar!">
-                            <p:ajax event="cellEdit" listener="#{paisBean.onCellEdit}" update=":form-add:growl1" />
-                            <p:column headerText="Barrio" 
-                                      width="20%"
-                                      sortBy="#{barrioAdd.barrio}">
-                                <h:outputText value="#{barrioAdd.barrio}" />
-                            </p:column>
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-edit">
+                            <p:growl id="growl1" showDetail="true" sticky="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="paisGr">   
+                                <p:outputLabel value="#{msg['pais.pais']}" style="right: 20%"/>
+                                <p:inputText value="#{pais.nombre}"/>
+                                <p:outputLabel value="#{msg['departamento.departamento']}" for="listaDepartamentos" style="right: 20%"/>
+                                <h:panelGroup>
+                                    <p:selectOneMenu   id="listaDepartamentos" filter="true" value="#{paisBean.departamento}"  style="width:100%;z-index: 1000;" converter="departamentoConverter" >
+                                        <f:selectItems value="#{paisBean.departamentoList}" var="departamento" itemLabel="#{departamento.departamento} " itemDescription=" #{departamento.departamento}" itemValue="#{departamento}" />                                        
+                                    </p:selectOneMenu>                                
+                                </h:panelGroup>
+                                <p:outputLabel value="#{msg['ciudad.ciudad']}" for="listaCiudad" style="right: 20%"/>
+                                <h:panelGroup>
+                                    <p:selectOneMenu   id="listaCiudad" filter="true" value="#{paisBean.ciudad}"  style="width:100%;z-index: 1000;" converter="ciudadConverter" >
+                                        <f:selectItems value="#{paisBean.ciudadList}" var="ciudad" itemLabel="#{ciudad.ciudad} " itemDescription=" #{ciudad.ciudad}" itemValue="#{ciudad}" />                                        
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            <p:dataTable id="dtBarrio" var="barrioAdd" 
+                                         value="#{paisBean.barrioListAdd}"
+                                         rows="5" paginator="true" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         rowKey="#{barrioAdd.idBarrio}"
+                                         editable="true" 
+                                         style="height: 50%"
+                                         editMode="cell"
+                                         emptyMessage="#{msg['generic.empty']}">
+                                <p:ajax event="cellEdit" listener="#{paisBean.onCellEdit}" update=":form-add:growl1" />
+                                <p:column headerText="#{msg['barrio.barrio']}" 
+                                          width="20%"
+                                          sortBy="#{barrioAdd.barrio}">
+                                    <h:outputText value="#{barrioAdd.barrio}" />
+                                </p:column>
 
-                            <p:column headerText="Opciones" 
-                                      width="20%">
+                                <p:column headerText="#{msg['generic.opciones']}" 
+                                          width="20%">
+                                    <p:commandButton 
+                                        icon="ui-icon-trash" 
+                                        id="botonEditar"
+                                        action="#{paisBean.delete}"
+                                        />   
+                                </p:column>
+                            </p:dataTable>
+                            <div style="align-content: center" >
                                 <p:commandButton 
-                                    icon="ui-icon-trash" 
-                                    id="botonEditar"
-                                    action="#{paisBean.delete}"
-                                    />   
-                            </p:column>
-                        </p:dataTable>
-                        <div style="align-content: center" >
-                            <p:commandButton 
-                                value="Guardar" 
-                                action="#{paisBean.add}"
-                                id='btn-guardar-pais'
-                                />
-                        </div>
-                    </h:form>
+                                    value="Guardar" 
+                                    action="#{paisBean.add}"
+                                    id='btn-guardar-pais'
+                                    />
+                            </div>
+                        </h:form>
+                    </p:fieldset>
                 </p:dialog>
-                
+
                 <p:dialog header="Pais" widgetVar="dlgPaisAdd"
-                           modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                               
-                 </p:dialog>
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:growl id="growl1" showDetail="true" sticky="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="paisGr">   
+                                <p:outputLabel value="#{msg['pais.pais']}" style="right: 20%"/>
+                                <p:inputText value="#{pais.nombre}"/>
+                                
+                                <p:outputLabel value="#{msg['departamento.departamento']}" for="listaDepartamentos" style="right: 20%"/>
+                                <h:panelGroup>
+                                    <p:selectOneMenu   id="listaDepartamentos" filter="true" value="#{paisBean.departamento}"  style="width:100%;z-index: 1000;" converter="departamentoConverter" >
+                                        <f:selectItems value="#{paisBean.departamentoList}" var="departamento" itemLabel="#{departamento.departamento} " itemDescription=" #{departamento.departamento}" itemValue="#{departamento}" />                                        
+                                    </p:selectOneMenu>                                
+                                </h:panelGroup>
+                                
+                                <p:outputLabel value="#{msg['ciudad.ciudad']}" for="listaCiudad" style="right: 20%"/>
+                                <h:panelGroup>
+                                    <p:selectOneMenu   id="listaCiudad" filter="true" value="#{paisBean.ciudad}"  style="width:100%;z-index: 1000;" converter="ciudadConverter" >
+                                        <f:selectItems value="#{paisBean.ciudadList}" var="ciudad" itemLabel="#{ciudad.ciudad} " itemDescription=" #{ciudad.ciudad}" itemValue="#{ciudad}" />                                        
+                                    </p:selectOneMenu>
+                                </h:panelGroup>
+                            </h:panelGrid>
+                            
+                            <p:dataTable id="dtBarrio" var="barrioAdd" 
+                                         value="#{paisBean.barrioListAdd}"
+                                         rows="5" paginator="true" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         rowKey="#{barrioAdd.idBarrio}"
+                                         editable="true" 
+                                         style="height: 50%"
+                                         editMode="cell"
+                                         emptyMessage="#{msg['generic.empty']}">
+                                <p:ajax event="cellEdit" listener="#{paisBean.onCellEdit}" update=":form-add:growl1" />
+                                <p:column headerText="#{msg['barrio.barrio']}" 
+                                          width="20%"
+                                          sortBy="#{barrioAdd.barrio}">
+                                    <h:outputText value="#{barrioAdd.barrio}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg['generic.opciones']}" 
+                                          width="20%">
+                                    <p:commandButton 
+                                        icon="ui-icon-trash" 
+                                        id="botonEditar"
+                                        action="#{paisBean.delete}"
+                                        />   
+                                </p:column>
+                            </p:dataTable>
+                            <div ></div>
+                            <div style="text-align: center" >
+                                <p:commandButton 
+                                    value="#{msg['generic.guardar']}" 
+                                    action="#{paisBean.add}"
+                                    id='btn-guardar-pais'
+                                    />
+                            </div>
+                        </h:form>
+                    </p:fieldset>     
+                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>

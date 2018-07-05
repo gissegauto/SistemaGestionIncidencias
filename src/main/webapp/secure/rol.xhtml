@@ -55,7 +55,8 @@ and open the template in the editor.
                         <p:column headerText="Opciones" 
                                   width="20%">
                             <p:commandButton 
-                                icon="ui-icon-trash"
+                                icon="fa fa-trash"
+                                style="color: crimson"
                                 action="#{rolBean.delete}"
                                 id="botonEditar">
                                 <f:setPropertyActionListener target="#{rolBean.rol}" value="rol" />
@@ -67,7 +68,7 @@ and open the template in the editor.
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                         <h:form id="form-add">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                            <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
                             <h:panelGrid columns="2" columnClasses="column" id="rolGr">   
                                 <p:outputLabel value="Descripcion : " for="descripcion" style="right: 20%"/>
                                 <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"

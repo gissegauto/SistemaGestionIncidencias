@@ -71,10 +71,10 @@ public class LoginBean implements Serializable {
     }
 
     public String login() throws IOException {
-        usuario = usuariosController.authenticate(username, password);
-        if (usuario != null) {
+//        usuario = usuariosController.authenticate(username, password);
+//        if (usuario != null) {
             loggedIn = true;
-        }
+//        }
 
         if (loggedIn) {
             UtilLogger.info("Se inició sesión como " + username);

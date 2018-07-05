@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="clienteViewForm">
+                    <div align="center">
+                        <p:outputLabel value="#{msg['cliente.view.cliente']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <p:fieldset  style="margin-bottom:5px; font-size:15px " >
+                        <p:panel>
+                            <h:panelGrid columns="4">
+                                <h:outputText value="#{msg['cliente.add.nro']}" style="font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.idCliente}" />
+                                <p:outputLabel value="#{msg['cliente.add.nombre']}"  style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.nombre} #{clienteBean.cliente.apellido}" />
+                                <p:outputLabel value="#{msg['cliente.add.nroDocumento']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.nroDocumento}" />
+                                <p:outputLabel value="#{msg['cliente.add.tipoDocumento']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.tipoDocumento}" />
+                                <p:outputLabel value="#{msg['cliente.add.ciudad']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.idBarrio.idCiudad.ciudad}" />
+                                <p:outputLabel value="#{msg['cliente.add.barrio']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.idBarrio.barrio}" />
+                                <p:outputLabel value="#{msg['cliente.add.celular']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.celular}" />
+                                <p:outputLabel value="#{msg['cliente.add.telefono']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.telefono}" />
+                                <p:outputLabel value="#{msg['cliente.add.sexo']}"  style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.sexo}" />
+                                <p:outputLabel value="#{msg['cliente.add.usuarioR']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.idUsuarioRegistro.username}" />
+                                <p:outputLabel value="#{msg['cliente.add.usuarioA']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.idUsuarioActualizacion.username}" />
+                                <h:outputText value="#{msg['cliente.add.fechaR']}" style="font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.fechaRegistro}" >
+                                    <f:convertDateTime pattern="dd-MM-yyyy" />
+                                </h:outputText>
+                                <h:outputText value="#{msg['cliente.add.fechaA']}" style="font-weight: bold;"/>
+                                <h:outputText value="#{clienteBean.cliente.fechaActualizacion}" >
+                                    <f:convertDateTime pattern="dd-MM-yyyy" />
+                                </h:outputText>
+                                <h:outputText value="#{msg['cliente.add.horaR']}" style="font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.fechaRegistro}" >
+                                    <f:convertDateTime pattern="hh:mm" />
+                                </h:outputText>
+                                <h:outputText value="#{msg['cliente.add.horaA']}" style="font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.fechaActualizacion}" >
+                                    <f:convertDateTime pattern="hh:mm" />
+                                </h:outputText>
+                                <p:outputLabel value="#{msg['cliente.add.estado']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.estado}" />
+                                <p:outputLabel value="#{msg['cliente.add.observaciones']}" style="right: 15%; font-weight: bold"/>
+                                <h:outputText value="#{clienteBean.cliente.observaciones}" />
+
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:fieldset>
+                    <p:dataTable id="dtClienteDetalle" var="clienteSolicitud" 
+                                 value="#{clienteBean.clienteSolicitudList}"
+                                 scrollable="true" 
+                                 style="font-size:12px"  
+                                 rowKey="#{clienteSolicitud}"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:column headerText="#{msg['cliente.telefono']}" 
+                                  width="10%" 
+                                  sortBy="#{clienteSolicitud.idSolicitudConexion.idServicio.servicio}">
+                            <h:outputText value="#{clienteSolicitud.idSolicitudConexion.idServicio.servicio}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:commandButton action="cliente" style="font-size: 15px"
+                                     title="Volver" value="Volver" 
+                                     icon="fa fa-angle-left"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

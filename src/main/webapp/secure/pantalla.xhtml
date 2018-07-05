@@ -60,14 +60,14 @@ and open the template in the editor.
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="Opciones" width="20%">
-                            <p:commandButton icon="ui-icon-trash" 
+                            <p:commandButton icon="fa fa-trash"  style="color: crimson"
                                              id="botonEliminar"
                                              style="align-content: center"
                                              action="#{pantallaBean.delete}">
                                 <f:setPropertyActionListener target="#{pantallaBean.pantalla}" value="pantalla" />
                             </p:commandButton>
                         </p:column>
-                        s                    </p:dataTable>
+                    </p:dataTable>
                 </h:form>
                 <p:dialog header="#{msg['pantalla.add']}" widgetVar="dlgPantallaAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">

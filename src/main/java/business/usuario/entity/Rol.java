@@ -6,7 +6,6 @@
 package business.usuario.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,11 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,7 +23,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "rol")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r")
     , @NamedQuery(name = "Rol.findByIdrol", query = "SELECT r FROM Rol r WHERE r.idrol = :idrol")
@@ -40,11 +35,9 @@ public class Rol implements Serializable {
     @Basic(optional = false)
     @Column(name = "idrol")
     private Integer idrol;
-    @Size(max = 45)
+    @Size(max = 255)
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(mappedBy = "idrol")
-    private Collection<Usuario> usuarioCollection;
 
     public Rol() {
     }
@@ -69,15 +62,6 @@ public class Rol implements Serializable {
         this.descripcion = descripcion;
     }
 
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -100,7 +84,7 @@ public class Rol implements Serializable {
 
     @Override
     public String toString() {
-        return "business.usuarios.entity.Rol[ idrol=" + idrol + " ]";
+        return "business.usuario.entity.Rol[ idrol=" + idrol + " ]";
     }
     
 }

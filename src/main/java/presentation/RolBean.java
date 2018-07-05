@@ -31,6 +31,7 @@ public class RolBean implements Serializable {
     private Rol rol;
     private List<Rol> rolList;
     FacesContext context = FacesContext.getCurrentInstance();
+    
     @Inject
     RolManager rolMgr;
 
@@ -74,6 +75,7 @@ public class RolBean implements Serializable {
                     "Ocurrió un error al intentar guardar el rol "));
             UtilLogger.error("Problemas al insertar el rol", e);
         }
+        limpiar();
         RequestContext.getCurrentInstance().update("rolForm:dtRol");
         return "rol";
     }

@@ -37,9 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pais.findByEstado", query = "SELECT p FROM Pais p WHERE p.estado = :estado")})
 public class Pais implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPais")
-    private Collection<Departamento> departamentoCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,8 +48,14 @@ public class Pais implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "nombre")
     private String nombre;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 11)
     @Column(name = "estado")
-    private Integer estado;
+    private String estado;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPais")
+    private Collection<Departamento> departamentoCollection;
 
     public Pais() {
     }
@@ -80,14 +83,6 @@ public class Pais implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Integer getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Integer estado) {
-        this.estado = estado;
     }
 
     @Override
@@ -123,5 +118,13 @@ public class Pais implements Serializable {
     public void setDepartamentoCollection(Collection<Departamento> departamentoCollection) {
         this.departamentoCollection = departamentoCollection;
     }
-    
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
 }
