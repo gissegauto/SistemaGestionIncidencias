@@ -7,6 +7,7 @@ package business.direccion.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -40,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Ciudad implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCiudad")
-    private Collection<Barrio> barrioCollection;
+    private List<Barrio> barrioCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,7 +55,7 @@ public class Ciudad implements Serializable {
     @Column(name = "ciudad")
     private String ciudad;
     @Column(name = "estado")
-    private Integer estado;
+    private String estado;
     @JoinColumn(name = "idDepartamento", referencedColumnName = "idDepartamento")
     @ManyToOne(optional = false)
     private Departamento idDepartamento;
@@ -87,11 +88,11 @@ public class Ciudad implements Serializable {
         this.ciudad = ciudad;
     }
 
-    public Integer getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(Integer estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
@@ -129,11 +130,11 @@ public class Ciudad implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Barrio> getBarrioCollection() {
+    public List<Barrio> getBarrioCollection() {
         return barrioCollection;
     }
 
-    public void setBarrioCollection(Collection<Barrio> barrioCollection) {
+    public void setBarrioCollection(List<Barrio> barrioCollection) {
         this.barrioCollection = barrioCollection;
     }
     

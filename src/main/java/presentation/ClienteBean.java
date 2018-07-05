@@ -103,7 +103,7 @@ public class ClienteBean implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
                             "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
                 }
-
+                limpiar();
                 RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').hide()");
             }
 

@@ -72,11 +72,13 @@ and open the template in the editor.
                                   sortBy="#{cliente.celular}">
                             <h:outputText value="#{cliente.celular}" />
                         </p:column>
+
                         <p:column headerText="#{msg['cliente.estado']}" 
                                   width="10%" filterBy="#{cliente.estado}"
                                   sortBy="#{cliente.estado}">
                             <h:outputText value="#{cliente.estado}" />
                         </p:column>
+
                         <p:column headerText="Opciones" 
                                   width="20%">
                             <p:column style="width:32px;text-align: center">
@@ -88,15 +90,25 @@ and open the template in the editor.
                                 </p:commandButton>
                             </p:column>
                             <p:commandButton 
-                                icon="ui-icon-close"
+                                icon="ui-icon-pencil"
                                 update=":form-add:clienteGr" 
+                                title="#{msg['generic.btnUpdate']}"
                                 oncomplete="PF('dlgClienteAdd').show()" 
                                 id="botonEditar">
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                             <p:commandButton 
+                                icon="ui-icon-close"
+                                update=":form-add:clienteGr" 
+                                title="#{msg['generic.btnInactive']}"
+                                oncomplete="PF('dlgClienteAdd').show()" 
+                                id="botonDesactivar">
+                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
+                            </p:commandButton>
+                            <p:commandButton 
                                 icon="ui-icon-trash" 
                                 action="#{clienteBean.delete}"
+                                title="#{msg['generic.btnDelete']}"
                                 id="botonEliminar">
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
@@ -202,17 +214,19 @@ and open the template in the editor.
                                                  validatorMessage="Debe seleccionar una ciudad"
                                                  filter="true" filterMatchMode="startsWith"
                                                  converter="ciudadConverter" >
-                                    <f:selectItems value="#{clienteBean.ciudadList}" 
-                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
-                                                   itemValue="#{ciudad}" />
                                     <p:ajax  process="ciudad"  event="change"
                                              update=":form-add:barrio"
                                              listener="#{clienteBean.buscarBarrios}"/> 
+                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{clienteBean.ciudadList}" 
+                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                   itemValue="#{ciudad}" />
+
                                 </p:selectOneMenu>                                                             
                                 <p:spacer/>     
 
                                 <p:outputLabel value="#{msg['cliente.add.barrio']}" for="barrio" />
-                                <p:selectOneMenu id="barrio" value="#{clienteBean.barrio.idBarrio}" 
+                                <p:selectOneMenu id="barrio" value="#{clienteBean.cliente.idBarrio}" 
                                                  effect="fold" editable="false" 
                                                  filter="true" filterMatchMode="startsWith"
                                                  converter="barrioConverter" >
@@ -233,7 +247,7 @@ and open the template in the editor.
                                         value="Guardar" 
                                         oncomplete="PF('dlgClienteAdd').hide()" 
                                         update="clienteGr,:clienteForm:dtCliente" 
-                                        action="#{clienteBean.add}"
+                                        actionListener="#{clienteBean.add}"
                                         id='btn-guardar-cliente' />
                                 </div>
                             </h:panelGrid>

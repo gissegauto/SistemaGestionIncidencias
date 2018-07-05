@@ -116,6 +116,14 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+     <navigation-rule>
+        <from-view-id>/secure/*</from-view-id>
+        <navigation-case>
+            <from-outcome>notificaciones</from-outcome>
+            <to-view-id>/secure/notificaciones.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     <managed-bean>
         <managed-bean-name>loginBean</managed-bean-name>
         <managed-bean-class>

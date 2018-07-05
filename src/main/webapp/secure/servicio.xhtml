@@ -56,12 +56,12 @@ and open the template in the editor.
                                   sortBy="#{servicio.estado}" 
                                   width="10%" >
                             <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="Activado" rendered="#{servicio.estado eq 0}" /></f:facet>
-                                <f:facet name="output2"><h:outputText value="Desactivado" rendered="#{servicio.estado eq 1}" /></f:facet>
+                                <f:facet name="output"><h:outputText value="Activo" rendered="#{servicio.estado == 'Activo'}" /></f:facet>
+                                <f:facet name="output2"><h:outputText value="Inactivo" rendered="#{servicio.estado == 'Inactivo'}" /></f:facet>
                                 <f:facet name="input">
                                     <p:selectOneListbox id="estado" value="#{servicio.estado}" >
-                                        <f:selectItem itemLabel="Activo" itemValue="0" />
-                                        <f:selectItem itemLabel="Inactivo" itemValue="1" />
+                                        <f:selectItem itemLabel="Activo" itemValue="Activo" />
+                                        <f:selectItem itemLabel="Inactivo" itemValue="Inactivo" />
                                     </p:selectOneListbox>
                                 </f:facet>
                             </p:cellEditor>

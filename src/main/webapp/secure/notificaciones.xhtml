@@ -14,49 +14,49 @@ and open the template in the editor.
     <h:body>
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
-                <h:form id="alertasForm">
+                <h:form id="notificacionesForm">
                     <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
                     <div align="center">
-                        <p:outputLabel value="#{msg['alertas.title']} " class="card-title" style="color: #0056b3"/>
+                        <p:outputLabel value="#{msg['notificaciones.title']} " class="card-title" style="color: #0056b3"/>
                     </div>
                     <facelets>
                         <div align="right">
-                            <p:commandButton process="dtAlertas" 
+                            <p:commandButton process="dtNotificaciones" 
                                              icon="fa fa-plus-circle" 
-                                             update=":form-add:alertasGr" 
-                                             oncomplete="PF('dlgAlertasAdd').show()" 
-                                             action="#{alertasBean.limpiar}"/>
+                                             update=":form-add:notificacionesGr" 
+                                             oncomplete="PF('dlgNotificacionesAdd').show()" 
+                                             action="#{notificacionesBean.limpiar}"/>
                         </div>
                     </facelets>
-                    <p:dataTable id="dtAlertas" var="alertas" 
-                                 value="#{alertasBean.alertasList}"
+                    <p:dataTable id="dtNotificaciones" var="notificaciones" 
+                                 value="#{notificacionesBean.notificacionesList}"
                                  rows="5" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
-                                 rowKey="#{alertas.idAlertas}"
+                                 rowKey="#{notificaciones.idNotificaciones}"
                                  style="font-size:12px"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:column headerText="#{msg['generic.id']}" 
                                   width="20%"
-                                  sortBy="#{alertas.idAlertas}">
-                            <h:outputText value="#{alertas.idAlertas}" />
+                                  sortBy="#{notificaciones.idNotificaciones}">
+                            <h:outputText value="#{notificaciones.idNotificaciones}" />
                         </p:column>
-                        <p:column headerText="#{msg['alertas.descripcion']}" 
+                        <p:column headerText="#{msg['notificaciones.descripcion']}" 
                                   width="20%"
-                                  sortBy="#{alertas.alertaDescripcion}">
-                            <h:outputText value="#{alertas.alertaDescripcion}" />
+                                  sortBy="#{notificaciones.descripcion}">
+                            <h:outputText value="#{notificaciones.descripcion}" />
                         </p:column>
-                        <p:column headerText="#{msg['alertas.fecha']}" 
+                        <p:column headerText="#{msg['notificaciones.fecha']}" 
                                   width="20%"
-                                  sortBy="#{alertas.alertaFechaHora}">
-                            <h:outputText value="#{alertas.alertaFechaHora}" >
+                                  sortBy="#{notificaciones.fechaHora}">
+                            <h:outputText value="#{notificaciones.fechaHora}" >
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column headerText="#{msg['alertas.hora']}" 
+                        <p:column headerText="#{msg['notificaciones.hora']}" 
                                   width="20%"
-                                  sortBy="#{alertas.alertaFechaHora}">
-                            <h:outputText value="#{alertas.alertaFechaHora}" >
+                                  sortBy="#{notificaciones.fechaHora}">
+                            <h:outputText value="#{notificaciones.fechaHora}" >
                                 <f:convertDateTime pattern="hh:mm" />
                             </h:outputText>
                         </p:column>
@@ -64,31 +64,31 @@ and open the template in the editor.
                                   width="20%">
                             <p:commandButton 
                                 icon="fa fa-trash"  style="color: crimson"
-                                action="#{alertasBean.delete(alertas)}"
+                                action="#{notificacionesBean.delete(notificaciones)}"
                                 id="botonEditar">
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog header="#{msg['alertas.title']}" widgetVar="dlgAlertasAdd"
+                <p:dialog header="#{msg['notificaciones.title']}" widgetVar="dlgNotificacionesAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                         <h:form id="form-add">
                             <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
-                            <h:panelGrid columns="2" columnClasses="column" id="alertasGr">   
-                                <p:outputLabel value="#{msg['alertas.add.descripcion']}" for="descripcion" style="right: 20%"/>
+                            <h:panelGrid columns="2" columnClasses="column" id="notificacionesGr">   
+                                <p:outputLabel value="#{msg['notificaciones.add.descripcion']}" for="descripcion" style="right: 20%"/>
                                 <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
-                                             value="#{alertasBean.alertas.alertaDescripcion}" />
-                                <p:outputLabel value="#{msg['alertas.add.fecha']}" for="fecha" style="right: 20%"/>
-                                <p:calendar id="fecha" value="#{alertasBean.alertas.alertaFechaHora}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                             value="#{notificacionesBean.notificaciones.descripcion}" />
+                                <p:outputLabel value="#{msg['notificaciones.add.fecha']}" for="fecha" style="right: 20%"/>
+                                <p:calendar id="fecha" value="#{notificacionesBean.notificaciones.fechaHora}" pattern="MM/dd/yyyy HH:mm:ss" />
                                 <br />
                                 <br />
                                 <div style="align-content: center" >
                                     <p:commandButton 
                                         value="Guardar" 
-                                        update="alertasGr,:alertasForm:dtAlertas" 
-                                        action="#{alertasBean.addAlerta}"
-                                        id='btn-guardar-alertas'
+                                        update="notificacionesGr,:notificacionesForm:dtNotificaciones" 
+                                        action="#{notificacionesBean.addNotificacion}"
+                                        id='btn-guardar-notificaciones'
                                         />
                                 </div>
                             </h:panelGrid>

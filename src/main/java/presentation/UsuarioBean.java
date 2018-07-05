@@ -38,11 +38,13 @@ public class UsuarioBean implements Serializable {
     private String password;
     private String repeadPassword;
     private List<Rol> rolesList;
-    FacesContext context = FacesContext.getCurrentInstance();
+
     @Inject
     UsuarioManager usuariosMgr;
+
     @Inject
     RolManager rolesMgr;
+
     @Inject
     UsuarioController usuariosController;
 
@@ -64,12 +66,11 @@ public class UsuarioBean implements Serializable {
 
     public String addUsuario() {
         try {
-            context = FacesContext.getCurrentInstance();
             if (null != usuario) {
                 for (Usuario user : usuarioList) {
                     if ((usuario.getIdusuario() == null || usuario.getIdusuario() == 0)
                             && usuario.getUsername().trim().equalsIgnoreCase(user.getUsername().trim())) {
-                        context.addMessage(null, new FacesMessage("Advertencia",
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
                                 "El usuario " + usuario.getUsername()
                                 + " ya se encuentra registrado"));
                         RequestContext.getCurrentInstance().execute("PF('dlgUsuAdd').hide()");
@@ -78,11 +79,11 @@ public class UsuarioBean implements Serializable {
                 }
                 if (usuario != null & usuario.getIdusuario() == null) {
                     usuario = usuariosMgr.add(usuario);
-                    context.addMessage(null, new FacesMessage("Se agregó correctamente",
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Usuario: " + usuario.getUsername()));
                 } else if (usuario != null & usuario.getIdusuario() > 0) {
                     usuario = usuariosMgr.update(usuario);
-                    context.addMessage(null, new FacesMessage("Se actualizó correctamente",
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
                             "Usuario: " + usuario.getUsername()));
                 }
 
@@ -99,10 +100,11 @@ public class UsuarioBean implements Serializable {
                     }
                 }
                 RequestContext.getCurrentInstance().execute("PF('dlgUsuAdd').hide()");
+                limpiar();
             }
 
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el usuario "));
             UtilLogger.error("Problemas al insertar el usuario", e);
         }
@@ -113,11 +115,12 @@ public class UsuarioBean implements Serializable {
         try {
             if (usuario.getIdusuario() > 0) {
                 usuariosMgr.delete(usuario);
-                context.addMessage(null, new FacesMessage("Se borró Usuario"));
-//                RequestContext.getCurrentInstance().update("usuariocForm:dtUsuario");
+                limpiar();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Usuario"));
+                RequestContext.getCurrentInstance().update("usuarioForm:dtUsuario");
             }
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el usuario "));
             UtilLogger.error("Problemas al insertar el usuario", e);
         }
@@ -127,7 +130,7 @@ public class UsuarioBean implements Serializable {
     public void resetearPass() {
         if (!usuarioSelected.getPassword().equals("")) {
             usuariosController.resetearPassword(usuarioSelected);
-            context.addMessage(null, new FacesMessage("Se reseteó el  password", "Usuario : " + usuarioSelected.getUsername()));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se reseteó el  password", "Usuario : " + usuarioSelected.getUsername()));
         }
     }
 
@@ -146,7 +149,7 @@ public class UsuarioBean implements Serializable {
                 usuariosMgr.update(user);
             }
 
-            if (user.getIdrol() == oldValue) {
+            if (user.getIdrol().equals(oldValue)) {
                 Rol newUserRol = user.getIdrol();
                 newUserRol.setIdrol(((Rol) newValue).getIdrol());
                 user.setIdrol(newUserRol);

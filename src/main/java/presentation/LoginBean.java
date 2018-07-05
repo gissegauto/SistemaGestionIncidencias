@@ -48,7 +48,7 @@ public class LoginBean implements Serializable {
         username = "";
         password = "";
         loggedIn = false;
-        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy"); 
+        SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
         fechaAcceso = f.format(new Date());
         usuario = new Usuario();
         mapaPantalla = new HashMap<>();
@@ -71,10 +71,10 @@ public class LoginBean implements Serializable {
     }
 
     public String login() throws IOException {
-//        usuario = usuariosController.authenticate(username, password);
-//        if (usuario != null) {
+        usuario = usuariosController.authenticate(username, password);
+        if (usuario != null) {
             loggedIn = true;
-//        }
+        }
 
         if (loggedIn) {
             UtilLogger.info("Se inició sesión como " + username);

@@ -7,6 +7,7 @@ package business.direccion.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -24,7 +25,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -58,7 +58,7 @@ public class Departamento implements Serializable {
     @Column(name = "estado")
     private String estado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDepartamento")
-    private Collection<Ciudad> ciudadCollection;
+    private List<Ciudad> ciudadCollection;
 
     public Departamento() {
     }
@@ -104,11 +104,11 @@ public class Departamento implements Serializable {
         this.estado = estado;
     }
 
-    public Collection<Ciudad> getCiudadCollection() {
+    public List<Ciudad> getCiudadCollection() {
         return ciudadCollection;
     }
 
-    public void setCiudadCollection(Collection<Ciudad> ciudadCollection) {
+    public void setCiudadCollection(List<Ciudad> ciudadCollection) {
         this.ciudadCollection = ciudadCollection;
     }
 

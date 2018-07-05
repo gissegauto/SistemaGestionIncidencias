@@ -59,7 +59,7 @@ public class Servicio implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
-    private int estado;
+    private String estado;
     public Servicio() {
     }
 
@@ -67,7 +67,7 @@ public class Servicio implements Serializable {
         this.idServicio = idServicio;
     }
 
-    public Servicio(Integer idServicio, String servicio, int estado) {
+    public Servicio(Integer idServicio, String servicio, String estado) {
         this.idServicio = idServicio;
         this.servicio = servicio;
         this.estado = estado;
@@ -89,11 +89,11 @@ public class Servicio implements Serializable {
         this.servicio = servicio;
     }
 
-    public int getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(int estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 

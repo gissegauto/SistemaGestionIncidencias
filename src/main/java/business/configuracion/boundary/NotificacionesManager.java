@@ -5,7 +5,7 @@
  */
 package business.configuracion.boundary;
 
-import business.configuracion.entity.Alertas;
+import business.configuracion.entity.Notificaciones;
 import business.dao.GenericImpl;
 import javax.ejb.Stateless;
 
@@ -14,7 +14,7 @@ import javax.ejb.Stateless;
  * @author ggauto
  */
 @Stateless
-public class AlertasManager extends GenericImpl<Alertas, Integer> {
+public class NotificacionesManager extends GenericImpl<Notificaciones, Integer> {
 
     
 }

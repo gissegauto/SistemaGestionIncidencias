@@ -37,27 +37,31 @@
                             <h:outputText value="#{usuario.idusuario}" />
                         </p:column>                        
 
-                        <p:column headerText="Usuario" sortBy="#{usuario.username}" 
+                        <p:column headerText="#{msg['generic.usuario']}" sortBy="#{usuario.username}" 
                                   filterBy="#{usuario.username}" style="width: 40%" >
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{usuario.username}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{usuario.username}" style="width:96%" label="username"/></f:facet>
-                            </p:cellEditor>
+                            <f:facet name="header">
+                                <h:outputText value="#{msg['generic.usuario']}" />
+                            </f:facet>
+                            <h:outputText value="#{usuario.username}" />
                         </p:column>
 
 
-                        <p:column headerText="Rol" sortBy="#{usuario.idrol.descripcion}" 
+                        <p:column headerText="#{msg['generic.rol']}" sortBy="#{usuario.idrol.descripcion}" 
                                   filterBy="#{usuario.idrol.descripcion}" style="width: 40%" >
-                            <p:cellEditor>
+                             <f:facet name="header">
+                                <h:outputText value="#{msg['generic.rol']}" />
+                            </f:facet>
+                            <h:outputText value="#{usuario.idrol.descripcion}" />
+<!--                            <p:cellEditor>
                                 <f:facet name="output"><h:outputText value="#{usuario.idrol.descripcion}" /></f:facet>
                                 <f:facet name="input">
                                     <h:selectOneMenu value="#{usuario.idrol}" style="width:100%" converter="rolConverter">
                                         <f:selectItems value="#{usuarioBean.rolList}" var="rol" itemLabel="#{rol.descripcion}" itemValue="#{rol}"/>
                                     </h:selectOneMenu>
                                 </f:facet>
-                            </p:cellEditor>
+                            </p:cellEditor>-->
                         </p:column>
-                        <p:column headerText="Opciones" style="width: 20%" >
+                        <p:column headerText="#{msg['generic.opciones']}" style="width: 20%" >
                             <p:commandButton action="#{usuarioBean.resetearPass}"
                                              icon="ui-icon-refresh"
                                              title="Resetar Password"
@@ -69,7 +73,7 @@
                             <p:spacer /><p:spacer /><p:spacer /><p:spacer />
                             <p:spacer /><p:spacer /><p:spacer /><p:spacer />
                             <p:commandButton process="dtUsuario" 
-                                             title="Eliminar"
+                                             title="#{msg['generic.btnDelete']}"
                                              update=":usuarioForm:growl"
                                              icon="ui-icon-trash" 
                                              action="#{usuarioBean.delete}"
@@ -108,7 +112,7 @@
                                 </h:panelGroup>  
                                 <p:spacer />
                                 <p:spacer />
-                                <p:outputLabel value="Rol" for="roles" />
+                                <p:outputLabel value="#{msg['generic.rol']}" for="roles" />
                                 <p:selectOneMenu id="roles" value="#{usuarioBean.usuario.idrol}" 
                                                  effect="fold" editable="false" 
                                                  converter="rolConverter" >
@@ -130,7 +134,7 @@
                                 <br />
                                 <div style="align-content: center" >
                                     <p:commandButton 
-                                        value="Guardar" 
+                                        value="#{msg['generic.guardar']}" 
                                         update="usuarioGr,:usuarioForm:dtUsuario" 
                                         action="#{usuarioBean.addUsuario}"
                                         id='btn-guardar-usuarios'

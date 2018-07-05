@@ -57,6 +57,7 @@ public class ServicioBean implements Serializable {
                     }
                 }
                 if (servicio != null & servicio.getIdServicio() == null) {
+                    servicio.setEstado("Activo");
                     servicio = servicioMgr.add(servicio);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Servicio: " + servicio.getServicio()));
@@ -65,6 +66,7 @@ public class ServicioBean implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
                             "Servicio: " + servicio.getServicio()));
                 }
+                limpiar();
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",

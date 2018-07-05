@@ -76,9 +76,9 @@
                         </li>
                         <h3 class="menu-title">Configuraciones</h3><!-- /.menu-title -->
                         <li class="menu-item-has-children dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-warning"></i>#{msg['menu.alertas']}</a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-warning"></i>#{msg['menu.notificaciones']}</a>
                             <ul class="sub-menu children dropdown-menu">
-                                <li><i class="fa fa-warning"></i><a href="alertas.jsf">#{msg['menu.alertas']}</a></li>
+                                <li><i class="fa fa-warning"></i><a href="notificaciones.jsf">#{msg['menu.notificaciones']}</a></li>
                             </ul>
                         </li>
                         <li class="menu-item-has-children dropdown">
@@ -141,26 +141,26 @@
                         <h:form>
                             <p:sidebar widgetVar="sidebar2" position="right" baseZIndex="10000">
                                 <i class="fa fa-bell-o Fs100 red"> </i>
-                                <h:outputText value="#{msg['alertas.title']}" style="size: 15px; color: #b00; font-weight: bold; margin-left: 5px"/>
+                                <h:outputText value="#{msg['notificaciones.title']}" style="size: 15px; color: #b00; font-weight: bold; margin-left: 5px"/>
                                 <p:separator />
-                                <p:repeat value="#{alertasBean.alertasList}" var="alertas">
+                                <p:repeat value="#{notificacionesBean.notificacionesList}" var="notificaciones">
                                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                                         <p:outputPanel>
                                             <p:commandButton 
                                                 style="font-size: 15px"
                                                 icon="ui-icon-trash"
-                                                action="#{alertasBean.delete(alertas)}"
-                                                id="botonEliminarAlerta">
+                                                action="#{notificacionesBean.delete(notificaciones)}"
+                                                id="botonEliminarNotificacion">
                                             </p:commandButton>
-                                            <h:outputText value="#{alertas.alertaDescripcion}" style="font-weight: bold; margin-left: 5px;font-size: 16px"/>
+                                            <h:outputText value="#{notificaciones.descripcion}" style="font-weight: bold; margin-left: 5px;font-size: 16px"/>
                                             <h:panelGrid columns="2">
-                                                <h:outputText value="#{msg['alertas.add.fecha']}" style=" font-size: 15px"/>
-                                                <h:outputText value="#{alertas.alertaFechaHora}"  style="font-size: 15px; margin-left: 5px">
+                                                <h:outputText value="#{msg['notificaciones.add.fecha']}" style=" font-size: 15px"/>
+                                                <h:outputText value="#{notificaciones.fechaHora}"  style="font-size: 15px; margin-left: 5px">
                                                     <f:convertDateTime pattern="dd-MM-yyyy" />
                                                 </h:outputText>
 
-                                                <h:outputText value="#{msg['alertas.add.hora']}" style=" font-size: 15px"/>
-                                                <h:outputText value="#{alertas.alertaFechaHora}" style="font-size: 15px; margin-left: 5px">
+                                                <h:outputText value="#{msg['notificaciones.add.hora']}" style=" font-size: 15px"/>
+                                                <h:outputText value="#{notificaciones.fechaHora}" style="font-size: 15px; margin-left: 5px">
                                                     <f:convertDateTime pattern="hh:mm" />
                                                 </h:outputText>
                                             </h:panelGrid>
@@ -172,7 +172,7 @@
                                     style="font-size: 15px"
                                     value="Cerrar"
                                     oncomplete="PF('sidebar2').hide()"
-                                    id="botonCerrarAlerta">
+                                    id="botonCerrarNotificacion">
                                 </p:commandButton>
                             </p:sidebar>
                         </h:form>
@@ -203,7 +203,7 @@
                                         <h:panelGrid columns="1" cellspacing="1px">
                                             <p:commandLink oncomplete="PF('sidebar2').show()">
                                                 <i class="fa fa-bell-o Fs100 red"> </i>
-                                                <h:outputText value=" #{alertasBean.alertasList.size()} alertas"  style="font-size: 10px; margin-left: 5px" />
+                                                <h:outputText value=" #{notificacionesBean.notificacionesList.size()} notificaciones"  style="font-size: 10px; margin-left: 5px" />
                                             </p:commandLink>
                                         </h:panelGrid>
                                     </h:form>

@@ -14,7 +14,7 @@ and open the template in the editor.
     <h:body>
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
-                <p:fieldset title="Datos de Solicitud" style="margin-bottom:5px; font-size:15px " >
+                <p:fieldset title="#{msg['micuenta.datos']}" style="margin-bottom:5px; font-size:15px " >
                     <h:form id="miCuentaForm">
                         <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
                         <div align="center">
@@ -23,34 +23,33 @@ and open the template in the editor.
                         <p:fieldset style="margin-bottom:5px; font-size:15px " >
                             <p:fieldset style="margin-bottom:5px; font-size:15px; border-radius: 10px " >
                                 <h:panelGrid  columns="2">
-                                    <h6 style="color: #0056b3; font-weight: bold">Datos de Usuario</h6>
+                                    <h6 style="color: #0056b3; font-weight: bold">#{msg['micuenta.datos.usuario']}</h6>
                                     <p:commandButton icon="fa fa-pencil" 
-                                                     value="Actualizar Contraseña"
-                                                     title="Actualizar Contraseña"
+                                                     value="#{msg['micuenta.actualizar.pass']}"
+                                                     title="#{msg['micuenta.actualizar.pass']}"
                                                      update=":form-actualizar-pass:actualizarPassGr" 
                                                      oncomplete="PF('dlgActualizarPass').show()" 
                                                      style="margin-left: 70%"
                                                      />
                                 </h:panelGrid>
                                 <p:separator/>
-                                <p:outputPanel id="miCuentaDetail">
-                                    <h:panelGrid  columns="4" rendered="#{not empty miCuentaBean.usuario}" columnClasses="label,value">
-                                        <p:outputLabel value="#{msg['micuenta.username']}"  style="margin-right: 40%; font-weight: bold"/>
-                                        <h:outputText value="#{miCuentaBean.usuario.username}"  style="margin-right: 100%"/>
-                                        <p:spacer /> <p:spacer />
-                                        <p:outputLabel value="#{msg['micuenta.rol']}"  style="margin-right: 50%; font-weight: bold"/>
-                                        <h:outputText value="#{miCuentaBean.usuario.idrol.descripcion}" />
-                                        <p:spacer />
+                                <p:outputPanel id="miCuentaDetail" class="col-sm-12">
+                                    <h:panelGrid  columns="2" rendered="#{not empty miCuentaBean.usuario}" columnClasses="label,value">
+                                        <p:outputLabel value="#{msg['micuenta.username']}"  style="font-weight: bold" id="username"/>
+                                        <h:outputText value="#{miCuentaBean.usuario.username}" class="col-sm-4"/>
+                                        <p:outputLabel value="#{msg['micuenta.rol']}"  style="font-weight: bold" />
+                                        <h:outputText value="Administrador" rendered="#{miCuentaBean.usuario.idrol.descripcion == 'Admin'}" class="col-sm-4"/>
+                                        <h:outputText value="#{miCuentaBean.usuario.idrol.descripcion}" rendered="#{miCuentaBean.usuario.idrol.descripcion != 'Admin'}" class="col-sm-4"/>
                                     </h:panelGrid>
                                 </p:outputPanel>
                             </p:fieldset>
                             <br />
-                            <p:fieldset style="margin-bottom:5px; font-size:15px; border-radius: 10px " >
+                            <p:fieldset id="datosPersonales" class="col-sm-12" style="margin-bottom:5px; font-size:15px; border-radius: 10px " >
                                 <h:panelGrid  columns="2">
                                     <h6 style="color: #0056b3; font-weight: bold">Datos Personales</h6>
                                     <p:commandButton icon="fa fa-pencil" 
-                                                     value="Actualizar Datos"
-                                                     title="Actualizar Datos"
+                                                     value="#{msg['micuenta.actualizar']}"
+                                                     title="#{msg['micuenta.actualizar']}"
                                                      update=":form-actualizar-datos:actualizarDatosGr" 
                                                      oncomplete="PF('dlgActualizarDatos').show()" 
                                                      style="margin-left: 75%"
@@ -62,30 +61,30 @@ and open the template in the editor.
                                         <p:outputLabel value="#{msg['funcionario.add.nombre']}" style="font-weight: bold"/>
                                         <h:outputText value="#{miCuentaBean.usuario.idFuncionario.nombreFuncionario}" style="margin-left: 1px" />
 
-                                        <p:outputLabel value="#{msg['funcionario.add.apellido']}" style="margin-left:  70%; font-weight: bold"/>
-                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.apellidoFuncionario}" style="margin-left:  30%" />
+                                        <p:outputLabel value="#{msg['funcionario.add.apellido']}" style=" font-weight: bold"/>
+                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.apellidoFuncionario}" style="margin-left: 3px"/>
 
                                         <p:outputLabel value="#{msg['funcionario.add.nroDocumento']}" style="font-weight: bold"/>
                                         <h:outputText value="#{miCuentaBean.usuario.idFuncionario.nroDocumento}" style="margin-left:  3px" />
 
-                                        <p:outputLabel value="#{msg['funcionario.add.celular']}" style="margin-left:  70%; font-weight: bold"/>
+                                        <p:outputLabel value="#{msg['funcionario.add.celular']}" style="font-weight: bold"/>
                                         <h:outputText value="#{miCuentaBean.usuario.idFuncionario.celular}" style="margin-left: 3px" />
 
                                         <p:outputLabel value="#{msg['funcionario.add.ciudad']}" style="font-weight: bold"/>
-                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.idBarrio.idCiudad.ciudad}" style="margin-left:  3px" />
+                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.idBarrio.idCiudad.ciudad}" style="margin-left: 3px" />
 
-                                        <p:outputLabel value="#{msg['funcionario.add.telefono']}" style="margin-left:  70%; font-weight: bold"/>
+                                        <p:outputLabel value="#{msg['funcionario.add.telefono']}" style=" font-weight: bold"/>
                                         <h:outputText value="#{miCuentaBean.usuario.idFuncionario.telefono}" style="margin-left:  3px" />
 
                                         <p:outputLabel value="#{msg['funcionario.add.estado']}"  style="font-weight: bold"/>
                                         <h:outputText value="#{miCuentaBean.usuario.idFuncionario.estado}" style="margin-left: 3px" />
 
-                                        <p:outputLabel value="#{msg['funcionario.add.barrio']}" style="margin-left:  70%; font-weight: bold"/>
-                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.idBarrio.barrio}" style="margin-left:  3px" />
+                                        <p:outputLabel value="#{msg['funcionario.add.barrio']}" style="font-weight: bold"/>
+                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.idBarrio.barrio}" />
                                     </h:panelGrid>
                                     <h:panelGrid columns="3" >
                                         <p:outputLabel value="#{msg['funcionario.add.direccion']}" style="font-weight: bold"/>
-                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.direccion}"  style="margin-left:  30px"/>
+                                        <h:outputText value="#{miCuentaBean.usuario.idFuncionario.direccion}"  />
                                     </h:panelGrid> 
                                 </p:outputPanel>
                             </p:fieldset>
@@ -98,7 +97,7 @@ and open the template in the editor.
                                     <h:outputText value="#{miCuentaBean.usuario.idFuncionario.fechaRegistro}" style="margin-left: 45%" >
                                         <f:convertDateTime pattern="dd-MM-yyyy" />
                                     </h:outputText>
-                                    <p:outputLabel value="#{msg['generic.fechaA']}" style="margin-left:  65%; font-weight: bold"/>
+                                    <p:outputLabel value="#{msg['generic.fechaA']}" style="font-weight: bold"/>
                                     <h:outputText value="#{miCuentaBean.usuario.idFuncionario.fechaActualizacion}" style="margin-left: 45%">
                                         <f:convertDateTime pattern="dd-MM-yyyy" />
                                     </h:outputText>
@@ -106,7 +105,7 @@ and open the template in the editor.
                             </p:fieldset>
                         </p:fieldset>
                     </h:form> 
-                    <p:dialog header="Actualizar Password" widgetVar="dlgActualizarPass"
+                    <p:dialog header="#{msg['micuenta.actualizar.pass']}" widgetVar="dlgActualizarPass"
                               modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                         <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                             <h:form id="form-actualizar-pass" >
@@ -139,7 +138,7 @@ and open the template in the editor.
                             </h:form>
                         </p:fieldset>
                     </p:dialog>
-                    <p:dialog header="Actualizar Datos Personales" widgetVar="dlgActualizarDatos"
+                    <p:dialog header="#{msg['micuenta.actualizar.datos']}" widgetVar="dlgActualizarDatos"
                               modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                         <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                             <h:form id="form-actualizar-datos" >
