@@ -53,7 +53,7 @@ and open the template in the editor.
                             <h:outputText value="#{solicitudConexion.apellido}" />
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.ciudad']}" 
-                                  width="12%" filterBy="#{solicitudConexion.idBarrio.idCiudad.ciudad}"
+                                  width="10%" filterBy="#{solicitudConexion.idBarrio.idCiudad.ciudad}"
                                   sortBy="#{solicitudConexion.idBarrio.idCiudad.ciudad}">
                             <h:outputText value="#{solicitudConexion.idBarrio.idCiudad.ciudad}" />
                         </p:column>
@@ -70,14 +70,19 @@ and open the template in the editor.
                             </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.hora']}" 
-                                  width="8%" filterBy="#{solicitudConexion.fechaRegistro}"
+                                  width="7%" filterBy="#{solicitudConexion.fechaRegistro}"
                                   sortBy="#{solicitudConexion.fechaRegistro}">
                             <h:outputText value="#{solicitudConexion.fechaRegistro}" >
                                 <f:convertDateTime pattern="hh:mm" />
                             </h:outputText>
                         </p:column>
+                        <p:column headerText="#{msg['solicitud.conexion.servicio']}" 
+                                  width="9%" filterBy="#{solicitudConexion.idServicio.servicio}"
+                                  sortBy="#{solicitudConexion.idServicio.servicio}">
+                            <h:outputText value="#{solicitudConexion.idServicio.servicio}" />
+                        </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.estado']}" 
-                                  width="10%" filterBy="#{solicitudConexion.estado}"
+                                  width="9%" filterBy="#{solicitudConexion.estado}"
                                   sortBy="#{solicitudConexion.estado}">
                             <h:outputText value="#{solicitudConexion.estado}" />
                         </p:column>
@@ -118,7 +123,7 @@ and open the template in the editor.
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.id']}"  style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.idSolicitudConexion}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.solicitante']}"  style="right: 10%; font-weight: bold"/>
-                                    <h:outputText value="#{clienteSolicitudBean.solicitudConexion.nombre} #{clienteSolicitudBean.solicitudConexion.apellido}" />
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.nombre} #{solicitudConexionBean.solicitudConexion.apellido}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.direccion']}" style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.direccion}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.referencia']}" style="right: 10%; font-weight: bold"/>
@@ -139,6 +144,10 @@ and open the template in the editor.
                             </p:outputPanel>
                             <br />
                             <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="#{msg['generic.imprimir']}" 
+                                    id='btn-imprimir' />
+                                
                                 <p:commandButton 
                                     value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('verSolicitudConexion').hide()" 

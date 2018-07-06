@@ -15,7 +15,7 @@ and open the template in the editor.
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
                 <h:form id="clienteForm">
-                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" escape="true" />
                     <div align="center">
                         <p:outputLabel value="#{msg['cliente.title']} " class="card-title" style="color: #0056b3"/>
                     </div>
@@ -28,11 +28,11 @@ and open the template in the editor.
                                              actionListener="#{clienteBean.actionClean}"/>
                         </div>
                     </facelets>
-                    <p:dataTable id="dtCliente" var="cliente" 
+                    <p:dataTable id="dtCliente" var="cliente" widgetVar="clienteTable"
                                  value="#{clienteBean.clienteList}"
-                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 rows="15" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="5,10,15"
+                                 rowsPerPageTemplate="15,20,50"
                                  style="font-size:12px"
                                  rowKey="#{cliente.idCliente}"
                                  emptyMessage="#{msg['generic.empty']}">
@@ -55,9 +55,15 @@ and open the template in the editor.
                             <h:outputText value="#{cliente.apellido}" />
                         </p:column>
 
-                        <p:column headerText="#{msg['cliente.ciudad']}" 
+                        <p:column headerText="#{msg['cliente.ciudad']}"
                                   width="10%" filterBy="#{cliente.idBarrio.idCiudad.ciudad}"
                                   sortBy="#{cliente.idBarrio.idCiudad.ciudad}">
+                            <f:facet name="filter">
+                                <p:selectCheckboxMenu label="Ciudades" onchange="PF('clienteTable').filter()" panelStyle="width:150px" class="text-primary" scrollHeight="100">
+                                    <f:selectItems value="#{clienteBean.ciudadList}" var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                   itemValue="#{ciudad}" />
+                                </p:selectCheckboxMenu>
+                            </f:facet>
                             <h:outputText value="#{cliente.idBarrio.idCiudad.ciudad}" />
                         </p:column>
 
@@ -92,29 +98,37 @@ and open the template in the editor.
                             <p:commandButton 
                                 icon="ui-icon-pencil"
                                 update=":form-add:clienteGr" 
+                                rendered="#{cliente.estado eq 'Activo'}" 
                                 title="#{msg['generic.btnUpdate']}"
                                 oncomplete="PF('dlgClienteAdd').show()" 
                                 id="botonEditar">
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                             <p:commandButton 
+                                rendered="#{cliente.estado eq 'Inactivo'}"
+                                icon="ui-icon-check"
+                                title="#{msg['generic.btnActive']}"
+                                actionListener="#{clienteBean.activarCliente(cliente)}"
+                                id="botonActivar" />
+                            <p:commandButton 
                                 icon="ui-icon-close"
+                                rendered="#{cliente.estado eq 'Activo'}"                                
                                 update=":form-add:clienteGr" 
                                 title="#{msg['generic.btnInactive']}"
-                                oncomplete="PF('dlgClienteAdd').show()" 
+                                actionListener="#{clienteBean.desactivarCliente(cliente)}"
                                 id="botonDesactivar">
-                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                             <p:commandButton 
                                 icon="ui-icon-trash" 
                                 action="#{clienteBean.delete}"
                                 title="#{msg['generic.btnDelete']}"
+                                actionListener="#{clienteBean.delete(cliente)}"
                                 id="botonEliminar">
-                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                             <p:commandButton 
                                 icon="ui-icon-contact" 
-                                oncomplete="PF('dlgContratoAdd').show()"
+                                rendered="#{cliente.estado eq 'Activo'}" 
+                                oncomplete="PF('dlgClienteContrato').show()"
                                 id="botonContrato">
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
@@ -126,7 +140,7 @@ and open the template in the editor.
                                 <h:panelGrid  columns="2" rendered="#{not empty clienteBean.cliente}" columnClasses="label,value">
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.id']}"  style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{clienteBean.cliente.idCliente}" />
-                                    <p:outputLabel value="#{msg['solicitud.conexion.solicitante']}"  style="right: 15%; font-weight: bold"/>
+                                    <p:outputLabel value="#{msg['cliente.cliente']}"  style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{clienteBean.cliente.nombre} #{clienteBean.cliente.apellido}" />
                                     <p:outputLabel value="#{msg['cliente.add.direccion']}" style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{clienteBean.cliente.direccion}" />
@@ -254,6 +268,19 @@ and open the template in the editor.
                         </h:form>
                     </p:fieldset>
                 </p:dialog>
+                <p:dialog header="Contrato de Cliente" widgetVar="dlgClienteContrato"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form enctype="multipart/form-data">
+                            <p:growl id="messages" showDetail="true" />
+
+                            <p:fileUpload value="#{clienteBean.file}" mode="simple" skinSimple="true" uploadLabel="Agregar" />
+
+                            <p:commandButton value="Cargar" ajax="false" actionListener="#{clienteBean.upload}" disabled="true" />
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+
             </ui:define>
         </ui:composition>
     </h:body>

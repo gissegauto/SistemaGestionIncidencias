@@ -35,5 +35,8 @@ public class ClienteManager extends GenericImpl<Cliente, Integer> {
             return null;
         }
     }
-
+    
+    
+    
+   
 }

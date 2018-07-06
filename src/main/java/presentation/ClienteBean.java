@@ -46,6 +46,7 @@ public class ClienteBean implements Serializable {
     private Barrio barrio;
     private boolean editar;
     private boolean skip;
+    private UploadedFile file;
 
     @Inject
     ClienteManager clienteMgr;
@@ -115,19 +116,17 @@ public class ClienteBean implements Serializable {
         return "cliente";
     }
 
-    public String delete() {
+    public void delete(Cliente cliente) {
         try {
-            if (cliente.getIdCliente() > 0) {
-                clienteMgr.delete(cliente);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Cliente"));
-                RequestContext.getCurrentInstance().update("clientecForm:dtCliente");
-            }
+            clienteMgr.delete(cliente);
+            limpiar();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Cliente"));
+            RequestContext.getCurrentInstance().update("clientecForm:dtCliente");
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el cliente "));
             UtilLogger.error("Problemas al insertar el cliente", e);
         }
-        return "cliente";
     }
 
     public void handleFileUpload(FileUploadEvent event) throws Exception {
@@ -144,21 +143,39 @@ public class ClienteBean implements Serializable {
         cliente = new Cliente();
         RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
     }
-    
+
+    public void desactivarCliente(Cliente cliente) {
+        clienteController.cambiarEstado(cliente, session.getUsuario(), "Inactivo");
+        limpiar();
+        RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
+    }
+
+    public void activarCliente(Cliente cliente) {
+        clienteController.cambiarEstado(cliente, session.getUsuario(), "Activo");
+        limpiar();
+        RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
+    }
+
+    public void upload() {
+        if (file != null) {
+            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+
     public boolean isSkip() {
         return skip;
     }
- 
+
     public void setSkip(boolean skip) {
         this.skip = skip;
     }
-     
+
     public String onFlowProcess(FlowEvent event) {
-        if(skip) {
+        if (skip) {
             skip = false;   //reset in case user goes back
             return "confirm";
-        }
-        else {
+        } else {
             return event.getNewStep();
         }
     }
@@ -223,4 +240,11 @@ public class ClienteBean implements Serializable {
         this.editar = editar;
     }
 
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
 }
