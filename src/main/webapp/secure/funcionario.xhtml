@@ -169,17 +169,19 @@ and open the template in the editor.
                                                      validatorMessage="Debe seleccionar una ciudad"
                                                      filter="true" filterMatchMode="startsWith"
                                                      converter="ciudadConverter" >
+                                        <p:ajax  process="ciudad"  event="change"
+                                                 update=":form-add:barrio"
+                                                 listener="#{funcionarioBean.buscarBarrios}"/>
+                                        <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
                                         <f:selectItems value="#{funcionarioBean.ciudadList}" 
                                                        var="ciudad" itemLabel="#{ciudad.ciudad}" 
                                                        itemValue="#{ciudad}" />
-                                        <p:ajax  process="ciudad"  event="change"
-                                                 update=":form-add:barrio"
-                                                 listener="#{funcionarioBean.buscarBarrios}"/> 
+                                         
                                     </p:selectOneMenu>                                                             
                                     <p:spacer/>     
 
                                     <p:outputLabel value="#{msg['cliente.add.barrio']}" for="barrio" />
-                                    <p:selectOneMenu id="barrio" value="#{funcionarioBean.barrio.idBarrio}" 
+                                    <p:selectOneMenu id="barrio" value="#{funcionarioBean.funcionario.idBarrio}" 
                                                      effect="fold" editable="false" 
                                                      filter="true" filterMatchMode="startsWith"
                                                      converter="barrioConverter" >

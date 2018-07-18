@@ -57,8 +57,13 @@ and open the template in the editor.
                                   width="20%"
                                   sortBy="#{notificaciones.fechaHora}">
                             <h:outputText value="#{notificaciones.fechaHora}" >
-                                <f:convertDateTime pattern="hh:mm" />
+                                 <f:convertDateTime pattern="hh:mm" />
                             </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['notificaciones.todos']}" 
+                                  width="20%"
+                                  sortBy="#{notificaciones.todos}">
+                            <h:outputText value="#{notificaciones.todos}" />
                         </p:column>
                         <p:column headerText="#{msg['generic.opciones']}" 
                                   width="20%">
@@ -81,11 +86,16 @@ and open the template in the editor.
                                              value="#{notificacionesBean.notificaciones.descripcion}" />
                                 <p:outputLabel value="#{msg['notificaciones.add.fecha']}" for="fecha" style="right: 20%"/>
                                 <p:calendar id="fecha" value="#{notificacionesBean.notificaciones.fechaHora}" pattern="MM/dd/yyyy HH:mm:ss" />
+                                <p:outputLabel value="#{msg['notificaciones.add.todos']}" for="todos" style="right: 20%"/>
+                                <p:selectOneRadio id="todos" value="#{notificacionesBean.notificaciones.todos}">
+                                    <f:selectItem itemLabel="Si" itemValue="Si" />
+                                    <f:selectItem itemLabel="No" itemValue="No" />
+                                </p:selectOneRadio>
                                 <br />
                                 <br />
                                 <div style="align-content: center" >
                                     <p:commandButton 
-                                        value="Guardar" 
+                                        value="#{msg['generic.guardar']}" 
                                         update="notificacionesGr,:notificacionesForm:dtNotificaciones" 
                                         action="#{notificacionesBean.addNotificacion}"
                                         id='btn-guardar-notificaciones'

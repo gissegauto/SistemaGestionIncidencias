@@ -8,6 +8,7 @@ package business.configuracion.entity;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -65,6 +66,8 @@ public class Notificaciones implements Serializable {
     @Column(name = "fechaRegistro")
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
+    @Column(name = "todos")
+    private String todos;
     @JoinColumn(name = "idUsuarioRegistro", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
@@ -76,11 +79,22 @@ public class Notificaciones implements Serializable {
         this.idNotificaciones = idNotificaciones;
     }
 
-    public Notificaciones(Integer idNotificaciones, String asunto, Date fechaHora, Date fechaRegistro) {
+    public Notificaciones(Integer idNotificaciones, String asunto, String descripcion, Date fechaHora, Date fechaRegistro, String todos, Usuario idUsuarioRegistro) {
         this.idNotificaciones = idNotificaciones;
         this.asunto = asunto;
+        this.descripcion = descripcion;
         this.fechaHora = fechaHora;
         this.fechaRegistro = fechaRegistro;
+        this.todos = todos;
+        this.idUsuarioRegistro = idUsuarioRegistro;
+    }
+
+    public String getTodos() {
+        return todos;
+    }
+
+    public void setTodos(String todos) {
+        this.todos = todos;
     }
 
     public Integer getIdNotificaciones() {
@@ -133,19 +147,48 @@ public class Notificaciones implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (idNotificaciones != null ? idNotificaciones.hashCode() : 0);
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.idNotificaciones);
+        hash = 59 * hash + Objects.hashCode(this.asunto);
+        hash = 59 * hash + Objects.hashCode(this.descripcion);
+        hash = 59 * hash + Objects.hashCode(this.fechaHora);
+        hash = 59 * hash + Objects.hashCode(this.fechaRegistro);
+        hash = 59 * hash + Objects.hashCode(this.todos);
+        hash = 59 * hash + Objects.hashCode(this.idUsuarioRegistro);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Notificaciones)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Notificaciones other = (Notificaciones) object;
-        if ((this.idNotificaciones == null && other.idNotificaciones != null) || (this.idNotificaciones != null && !this.idNotificaciones.equals(other.idNotificaciones))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Notificaciones other = (Notificaciones) obj;
+        if (!Objects.equals(this.asunto, other.asunto)) {
+            return false;
+        }
+        if (!Objects.equals(this.descripcion, other.descripcion)) {
+            return false;
+        }
+        if (!Objects.equals(this.todos, other.todos)) {
+            return false;
+        }
+        if (!Objects.equals(this.idNotificaciones, other.idNotificaciones)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaHora, other.fechaHora)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaRegistro, other.fechaRegistro)) {
+            return false;
+        }
+        if (!Objects.equals(this.idUsuarioRegistro, other.idUsuarioRegistro)) {
             return false;
         }
         return true;
@@ -155,5 +198,5 @@ public class Notificaciones implements Serializable {
     public String toString() {
         return "business.configuracion.entity.Notificaciones[ idNotificaciones=" + idNotificaciones + " ]";
     }
-    
+
 }

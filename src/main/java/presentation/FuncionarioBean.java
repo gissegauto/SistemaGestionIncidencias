@@ -78,7 +78,7 @@ public class FuncionarioBean implements Serializable {
                     }
                 }
                 if (funcionario != null & funcionario.getIdFuncionario() == null) {
-                    funcionario.setEstado("A");
+                    funcionario.setEstado("Activo");
                     funcionario.setFechaRegistro(new Date());
                     funcionario.setIdUsuarioRegistro(session.getUsuario());
                     funcionario = funcionarioMgr.add(funcionario);
