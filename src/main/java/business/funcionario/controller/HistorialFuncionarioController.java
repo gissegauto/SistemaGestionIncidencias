@@ -26,12 +26,12 @@ public class HistorialFuncionarioController {
         try {
             HistorialFuncionario history = new HistorialFuncionario();
             history.setNombreFuncionario(funcionario.getNombreFuncionario());
-            history.setApellidoFuncionario(funcionario.getApellidoFuncionario());
-            history.setNroDocumento((funcionario.getNroDocumento() != null) ? funcionario.getNroDocumento() : null);
-            history.setTipoDocumento((funcionario.getTipoDocumento() != null) ? funcionario.getTipoDocumento() : null);
-            history.setFechaRegistro((funcionario.getFechaRegistro() != null) ? funcionario.getFechaRegistro() : null);
-            history.setFechaActualizacion((funcionario.getFechaActualizacion() != null) ? funcionario.getFechaActualizacion() : null);
-            history.setEstado((funcionario.getEstado() != null) ? funcionario.getEstado() : null);
+            history.setApellidoFuncionario(funcionario.getApellidoFuncionario() != null ? funcionario.getApellidoFuncionario() : null);
+            history.setNroDocumento(funcionario.getNroDocumento() != null ? funcionario.getNroDocumento() : null);
+            history.setTipoDocumento(funcionario.getTipoDocumento() != null ? funcionario.getTipoDocumento() : null);
+            history.setFechaRegistro(funcionario.getFechaRegistro() != null ? funcionario.getFechaRegistro() : null);
+            history.setFechaActualizacion(funcionario.getFechaActualizacion() != null ? funcionario.getFechaActualizacion() : null);
+            history.setEstado(funcionario.getEstado() != null ? funcionario.getEstado() : null);
             if (funcionario.getIdBarrio() != null) {
                 history.setIdBarrio(funcionario.getIdBarrio().getIdBarrio());
             }

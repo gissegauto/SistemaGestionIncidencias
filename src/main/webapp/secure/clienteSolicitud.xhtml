@@ -21,7 +21,7 @@ and open the template in the editor.
                             <p:outputLabel value="#{msg['cliente.solicitud.title']} " class="card-title" style="color: #0056b3"/>
                         </div>
                         <p:fieldset style="margin-bottom:5px; font-size:15px " >
-                            <h6 style="color: #0056b3; font-weight: bold">Datos de Solicitud</h6>
+                            <h6 style="color: #0056b3; font-weight: bold">#{msg['cliente.solicitud.description']}</h6>
                             <p:separator/>
                             <h:panelGrid columns="2" width="30%">
                                 <h:outputText value="#{msg['solicitud.conexion.nro']}"  style="right: 10%; font-weight: bold"/>
@@ -34,7 +34,7 @@ and open the template in the editor.
                             </h:panelGrid>
                         </p:fieldset>
                         <p:fieldset style="margin-bottom:5px; font-size:15px " >
-                            <h6 style="color: #0056b3; font-weight: bold">Seleccionar Funcionario</h6>
+                            <h6 style="color: #0056b3; font-weight: bold">#{msg['cliente.solicitud.seleccionar']}</h6>
                             <p:separator/>
                             <h:panelGrid columns="2" width="30%">  
                                 <h:outputText value="#{msg['solicitud.conexion.funcionario']}"  style="right: 10%; font-weight: bold"/>
@@ -48,6 +48,12 @@ and open the template in the editor.
                                         <h:outputText value="#{funcionario.nombreFuncionario}" />
                                     </p:column>
                                 </p:selectOneMenu>
+                                
+                                <p:selectManyCheckbox id="grid2" value="#{checkboxView.selectedCities2}" layout="responsive" columns="3">
+                                    <f:selectItems value="#{clienteSolicitudBean.funcionarioList}" var="funcionario" itemLabel="#{funcionario.nombreFuncionario}" itemValue="#{funcionario}"/>
+                                </p:selectManyCheckbox>
+                                
+                                
                             </h:panelGrid>
                         </p:fieldset>
                         <br />

@@ -24,7 +24,6 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.CellEditEvent;
 
 /**
  *
@@ -82,17 +81,23 @@ public class FuncionarioBean implements Serializable {
                     funcionario.setFechaRegistro(new Date());
                     funcionario.setIdUsuarioRegistro(session.getUsuario());
                     funcionario = funcionarioMgr.add(funcionario);
-                    historialFuncionarioController.addHistory(funcionario);
+                    if(funcionario != null){
+                        historialFuncionarioController.addHistory(funcionario);
+                    }
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                 } else if (funcionario != null & funcionario.getIdFuncionario() > 0) {
                     funcionario.setIdUsuarioActualizacion(session.getUsuario());
                     funcionario.setFechaActualizacion(new Date());
                     funcionario = funcionarioMgr.update(funcionario);
-                    historialFuncionarioController.addHistory(funcionario);
+                    
+                    if(funcionario != null){
+                        historialFuncionarioController.addHistory(funcionario);
+                    }
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
                             "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                 }
+                limpiar();
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",

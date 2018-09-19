@@ -75,6 +75,7 @@ public class LoginBean implements Serializable {
         if (usuario != null) {
             loggedIn = true;
         }
+      
 
         if (loggedIn) {
             UtilLogger.info("Se inició sesión como " + username);

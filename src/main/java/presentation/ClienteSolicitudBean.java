@@ -6,9 +6,6 @@
 package presentation;
 
 import business.cliente.boundary.ClienteSolicitudManager;
-import business.cliente.entity.Cliente;
-import business.direccion.entity.Barrio;
-import business.direccion.entity.Ciudad;
 import business.funcionario.boundary.FuncionarioManager;
 import business.funcionario.entity.Funcionario;
 import business.solicitudes.entity.SolicitudConexion;
