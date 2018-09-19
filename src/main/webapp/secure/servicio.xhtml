@@ -38,11 +38,11 @@ and open the template in the editor.
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:ajax event="cellEdit" listener="#{servicioBean.onCellEdit}" update=":servicioForm:growl" />
-                        <p:column headerText="#{msg['generic.id']}" 
+<!--                        <p:column headerText="#{msg['generic.id']}" 
                                   width="20%"
                                   sortBy="#{servicio.idServicio}">
                             <h:outputText value="#{servicio.idServicio}" />
-                        </p:column>
+                        </p:column>-->
                         <p:column headerText="#{msg['servicio.servicio']}" 
                                   width="20%"
                                   sortBy="#{servicio.servicio}">

@@ -58,12 +58,12 @@ and open the template in the editor.
                         <p:column headerText="#{msg['cliente.ciudad']}"
                                   width="10%" filterBy="#{cliente.idBarrio.idCiudad.ciudad}"
                                   sortBy="#{cliente.idBarrio.idCiudad.ciudad}">
-                            <f:facet name="filter">
+<!--                            <f:facet name="filter">
                                 <p:selectCheckboxMenu label="Ciudades" onchange="PF('clienteTable').filter()" panelStyle="width:150px" class="text-primary" scrollHeight="100">
                                     <f:selectItems value="#{clienteBean.ciudadList}" var="ciudad" itemLabel="#{ciudad.ciudad}" 
                                                    itemValue="#{ciudad}" />
                                 </p:selectCheckboxMenu>
-                            </f:facet>
+                            </f:facet>-->
                             <h:outputText value="#{cliente.idBarrio.idCiudad.ciudad}" />
                         </p:column>
 
