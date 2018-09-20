@@ -6,7 +6,6 @@
 package presentation;
 
 import business.cliente.boundary.ClienteSolicitudManager;
-import business.cliente.entity.Cliente;
 import business.cliente.entity.ClienteSolicitud;
 import business.funcionario.boundary.FuncionarioManager;
 import business.funcionario.entity.Funcionario;
@@ -22,7 +21,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
 
 /**
  *

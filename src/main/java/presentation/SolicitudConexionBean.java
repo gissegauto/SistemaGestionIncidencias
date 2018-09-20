@@ -21,7 +21,6 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
@@ -124,6 +123,16 @@ public class SolicitudConexionBean implements Serializable {
         clienteSolicitudBean.setSolicitudConexion(solicitudC);
         return "clienteSolicitud";
     }
+    
+    public void changeStatusFinalizado(SolicitudConexion solicitudConexion) {
+        solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
+        solicitudConexion.setFechaActualizacion(new Date());
+        solicitudConexion.setEstado("Finalizado");
+        solicitudConexionMgr.update(solicitudConexion);
+        limpiar();
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+    }
+    
 
     public void cargarClienteSolicitud() {
 //        this.solicitudConexion = solicitudC;

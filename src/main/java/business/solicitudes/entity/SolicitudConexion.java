@@ -10,8 +10,8 @@ import business.configuracion.entity.Servicio;
 import business.direccion.entity.Barrio;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -108,11 +108,10 @@ public class SolicitudConexion implements Serializable {
     private Servicio idServicio;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
-    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
+    private List<HistorialSolicitudConexion> historialSolicitudConexionList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
-    private Collection<ClienteSolicitud> clienteSolicitudCollection;
-    
+    private List<ClienteSolicitud> clienteSolicitudList;
 
     public SolicitudConexion() {
     }
@@ -250,47 +249,25 @@ public class SolicitudConexion implements Serializable {
         this.idServicio = idServicio;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idSolicitudConexion != null ? idSolicitudConexion.hashCode() : 0);
-        return hash;
+    public List<HistorialSolicitudConexion> getHistorialSolicitudConexionList() {
+        return historialSolicitudConexionList;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SolicitudConexion)) {
-            return false;
-        }
-        SolicitudConexion other = (SolicitudConexion) object;
-        if ((this.idSolicitudConexion == null && other.idSolicitudConexion != null) || (this.idSolicitudConexion != null && !this.idSolicitudConexion.equals(other.idSolicitudConexion))) {
-            return false;
-        }
-        return true;
+    public void setHistorialSolicitudConexionList(List<HistorialSolicitudConexion> historialSolicitudConexionList) {
+        this.historialSolicitudConexionList = historialSolicitudConexionList;
+    }
+
+    public List<ClienteSolicitud> getClienteSolicitudList() {
+        return clienteSolicitudList;
+    }
+
+    public void setClienteSolicitudList(List<ClienteSolicitud> clienteSolicitudList) {
+        this.clienteSolicitudList = clienteSolicitudList;
     }
 
     @Override
     public String toString() {
         return "business.solicitudes.entity.SolicitudConexion[ idSolicitudConexion=" + idSolicitudConexion + " ]";
-    }
-
-    @XmlTransient
-    public Collection<ClienteSolicitud> getClienteSolicitudCollection() {
-        return clienteSolicitudCollection;
-    }
-
-    public void setClienteSolicitudCollection(Collection<ClienteSolicitud> clienteSolicitudCollection) {
-        this.clienteSolicitudCollection = clienteSolicitudCollection;
-    }
-
-    @XmlTransient
-    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection() {
-        return historialSolicitudConexionCollection;
-    }
-
-    public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
-        this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
     }
 
 }
