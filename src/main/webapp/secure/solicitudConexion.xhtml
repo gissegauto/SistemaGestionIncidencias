@@ -119,7 +119,7 @@ and open the template in the editor.
                                 rendered="#{solicitudConexion.estado eq 'En Curso'}"
                                 icon="ui-icon-check"
                                 title="#{msg['solicitud.conexion.btn.finalizar']}"
-                                actionListener="#{solicitudConexionBean.changeStatusFinalizado(solicitudConexion)}"
+                                action="#{solicitudConexionBean.addCliente(solicitudConexion)}"
                                 id="botonFinalizadoEstado" />
                         </p:column>
                     </p:dataTable>
@@ -255,6 +255,97 @@ and open the template in the editor.
                         </h:form>
                     </p:fieldset>
                 </p:dialog>
+                
+                <p:dialog header="#{msg['solicitud.conexion.add.cliente']}" widgetVar="dlgClienteAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add-cliente" >
+                            <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
+                            <h:panelGrid id="clienteNewGr" columns="3" columnClasses="column" >
+                                <p:outputLabel value="#{msg['cliente.add.nombre']}" for="nombre" style="left:10%"/>
+                                <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
+                                             value="#{clienteBean.cliente.nombre}" />
+                                <p:spacer/>
+                                
+                                <p:outputLabel value="#{msg['cliente.add.apellido']}" for="apellido" style="right: 10%"/>
+                                <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
+                                             value="#{clienteBean.cliente.apellido}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.tipoDocumento']}" for="tipoDocumento"  />
+                                <p:selectOneMenu id="tipoDocumento" value="#{clienteBean.cliente.tipoDocumento}" style="width:125px">
+                                    <f:selectItem itemLabel="CI" itemValue="CI" />
+                                    <f:selectItem itemLabel="RUC" itemValue="RUC" />
+                                    <f:selectItem itemLabel="DNI" itemValue="DNI" />
+                                </p:selectOneMenu>
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.nroDocumento']}" for="nroDocumento" />
+                                <p:inputText id="nroDocumento"  value="#{clienteBean.cliente.nroDocumento}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.direccion']}" for="direccion" style="right: 10%"/>
+                                <p:inputText id="direccion" 
+                                             value="#{clienteBean.cliente.direccion}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.telefono']}" for="telefono" style="right: 10%"/>
+                                <p:inputText id="telefono" 
+                                             value="#{clienteBean.cliente.telefono}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.celular']}" for="celular" style="right: 10%"/>
+                                <p:inputMask id="celular" mask="(9999) 999-999"
+                                             value="#{clienteBean.cliente.celular}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.ciudad']}" for="ciudad" />
+                                <p:selectOneMenu id="ciudad" value="#{clienteBean.ciudad}" 
+                                                 effect="fold" editable="false"
+                                                 validatorMessage="Debe seleccionar una ciudad"
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 converter="ciudadConverter" >
+                                    <p:ajax  process="ciudad"  event="change"
+                                             update=":form-add:barrio"
+                                             listener="#{clienteBean.buscarBarrios}"/> 
+                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{clienteBean.ciudadList}" 
+                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                   itemValue="#{ciudad}" />
+
+                                </p:selectOneMenu>                                                             
+                                <p:spacer/>     
+
+                                <p:outputLabel value="#{msg['cliente.add.barrio']}" for="barrio" />
+                                <p:selectOneMenu id="barrio" value="#{clienteBean.cliente.idBarrio}" 
+                                                 effect="fold" editable="false" 
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 converter="barrioConverter" >
+                                    <f:selectItems value="#{clienteBean.barrioList}" 
+                                                   var="barrio" itemLabel="#{barrio.barrio}" 
+                                                   itemValue="#{barrio}"/>
+                                </p:selectOneMenu>
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.observaciones']}" for="observaciones" style="right: 10%"/>
+                                <p:inputText id="observaciones" 
+                                             value="#{clienteBean.cliente.observaciones}" />
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.estado']}" />
+                                <p:inputText id="estado" value="Activo" disabled="true" />
+                                <p:spacer/>
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="#{msg['generic.guardar']}" 
+                                        oncomplete="PF('dlgClienteAdd').hide()" 
+                                        update="clienteNewGr"
+                                        actionListener="#{clienteBean.addCliente}"
+                                        id='btn-guardar-clie' />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+                
             </ui:define>
         </ui:composition>
     </h:body>

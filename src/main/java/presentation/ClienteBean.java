@@ -13,6 +13,7 @@ import business.direccion.boundary.BarrioManager;
 import business.direccion.boundary.CiudadManager;
 import business.direccion.entity.Barrio;
 import business.direccion.entity.Ciudad;
+import business.solicitudes.entity.SolicitudConexion;
 import business.utils.UtilLogger;
 import java.io.Serializable;
 import java.util.Date;
@@ -46,6 +47,7 @@ public class ClienteBean implements Serializable {
     private boolean editar;
     private boolean skip;
     private UploadedFile file;
+    private SolicitudConexion solicitudConexion;
 
     @Inject
     ClienteManager clienteMgr;
@@ -53,6 +55,8 @@ public class ClienteBean implements Serializable {
     HistorialClienteController historialClienteController;
     @Inject
     ClienteController clienteController;
+    @Inject
+    SolicitudConexionBean solicitudConexionBean;
     @Inject
     BarrioManager barrioMgr;
     @Inject
@@ -113,6 +117,39 @@ public class ClienteBean implements Serializable {
             UtilLogger.error("Problemas al insertar el cliente", e);
         }
         return "cliente";
+    }
+
+    public void addCliente() {
+        try {
+            if (null != cliente) {
+                for (Cliente clie : clienteList) {
+                    if ((cliente.getIdCliente() == null || cliente.getIdCliente() == 0)
+                            && cliente.getNroDocumento().trim().equalsIgnoreCase(clie.getNroDocumento().trim())) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
+                                "El cliente " + cliente.getNombre() + " " + cliente.getApellido()
+                                + " ya se encuentra registrado"));
+                        RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').hide()");
+                    }
+                }
+                if (cliente != null & cliente.getIdCliente() == null) {
+                    cliente.setFechaRegistro(new Date());
+                    cliente.setIdUsuarioRegistro(session.getUsuario());
+                    cliente.setEstado("Activo");
+                    cliente = clienteMgr.add(cliente);
+                    historialClienteController.addHistory(cliente);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
+                            "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
+                }
+                limpiar();
+                RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').hide()");
+                solicitudConexionBean.changeStatusFinalizado(solicitudConexion);
+            }
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+                    "Ocurrió un error al intentar guardar el cliente "));
+            UtilLogger.error("Problemas al insertar el cliente", e);
+        }
     }
 
     public void delete(Cliente cliente) {
@@ -246,4 +283,13 @@ public class ClienteBean implements Serializable {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
+
+    public SolicitudConexion getSolicitudConexion() {
+        return solicitudConexion;
+    }
+
+    public void setSolicitudConexion(SolicitudConexion solicitudConexion) {
+        this.solicitudConexion = solicitudConexion;
+    }
+
 }

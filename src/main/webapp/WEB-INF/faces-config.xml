@@ -116,11 +116,27 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-     <navigation-rule>
+    <navigation-rule>
         <from-view-id>/secure/*</from-view-id>
         <navigation-case>
             <from-outcome>notificaciones</from-outcome>
             <to-view-id>/secure/notificaciones.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/secure/*</from-view-id>
+        <navigation-case>
+            <from-outcome>facturacion</from-outcome>
+            <to-view-id>/secure/facturacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/secure/*</from-view-id>
+        <navigation-case>
+            <from-outcome>solicitudDesconexion</from-outcome>
+            <to-view-id>/secure/desconexion.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
