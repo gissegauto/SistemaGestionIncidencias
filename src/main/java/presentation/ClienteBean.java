@@ -16,6 +16,7 @@ import business.direccion.entity.Ciudad;
 import business.solicitudes.entity.SolicitudConexion;
 import business.utils.UtilLogger;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -190,6 +191,16 @@ public class ClienteBean implements Serializable {
         clienteController.cambiarEstado(cliente, session.getUsuario(), "Activo");
         limpiar();
         RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
+    }
+
+    public void editCliente(Cliente cli) {
+        ciudad = new Ciudad();
+        barrioList = new ArrayList<>();
+        if (cli.getIdBarrio() != null) {
+            ciudad = cli.getIdBarrio().getIdCiudad();
+            buscarBarrios();
+        }
+        cliente = cli;
     }
 
     public void upload() {

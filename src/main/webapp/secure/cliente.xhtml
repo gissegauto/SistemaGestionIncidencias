@@ -101,8 +101,8 @@ and open the template in the editor.
                                 rendered="#{cliente.estado eq 'Activo'}" 
                                 title="#{msg['generic.btnUpdate']}"
                                 oncomplete="PF('dlgClienteAdd').show()" 
+                                actionListener="#{clienteBean.editCliente(cliente)}"
                                 id="botonEditar">
-                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                             <p:commandButton 
                                 rendered="#{cliente.estado eq 'Inactivo'}"
