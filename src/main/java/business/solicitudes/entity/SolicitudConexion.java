@@ -27,7 +27,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -53,12 +52,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "SolicitudConexion.findByObservacion", query = "SELECT s FROM SolicitudConexion s WHERE s.observacion = :observacion")
     , @NamedQuery(name = "SolicitudConexion.findByEstado", query = "SELECT s FROM SolicitudConexion s WHERE s.estado = :estado")})
 public class SolicitudConexion implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
-    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
-    private Collection<ClienteSolicitud> clienteSolicitudCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -113,6 +106,13 @@ public class SolicitudConexion implements Serializable {
     @JoinColumn(name = "idServicio", referencedColumnName = "idServicio")
     @ManyToOne(optional = false)
     private Servicio idServicio;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
+    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
+    private Collection<ClienteSolicitud> clienteSolicitudCollection;
+    
 
     public SolicitudConexion() {
     }
@@ -292,5 +292,5 @@ public class SolicitudConexion implements Serializable {
     public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
         this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
     }
-    
+
 }

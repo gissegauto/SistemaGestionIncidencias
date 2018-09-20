@@ -105,6 +105,11 @@ public class Funcionario implements Serializable {
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
 
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "tecnico")
+    private String tecnico;
+
     public Funcionario() {
     }
 
@@ -240,29 +245,17 @@ public class Funcionario implements Serializable {
         this.idUsuarioRegistro = idUsuarioRegistro;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idFuncionario != null ? idFuncionario.hashCode() : 0);
-        return hash;
+    public String getTecnico() {
+        return tecnico;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Funcionario)) {
-            return false;
-        }
-        Funcionario other = (Funcionario) object;
-        if ((this.idFuncionario == null && other.idFuncionario != null) || (this.idFuncionario != null && !this.idFuncionario.equals(other.idFuncionario))) {
-            return false;
-        }
-        return true;
+    public void setTecnico(String tecnico) {
+        this.tecnico = tecnico;
     }
 
     @Override
     public String toString() {
-        return "business.cliente.entity.Funcionario[ idFuncionario=" + idFuncionario + " ]";
+        return "Funcionario{" + "idFuncionario=" + idFuncionario + ", nombreFuncionario=" + nombreFuncionario + ", apellidoFuncionario=" + apellidoFuncionario + ", tipoDocumento=" + tipoDocumento + ", nroDocumento=" + nroDocumento + ", fechaRegistro=" + fechaRegistro + ", fechaActualizacion=" + fechaActualizacion + ", estado=" + estado + ", direccion=" + direccion + ", telefono=" + telefono + ", celular=" + celular + ", idBarrio=" + idBarrio + ", idUsuario=" + idUsuario + ", idUsuarioActualizacion=" + idUsuarioActualizacion + ", idUsuarioRegistro=" + idUsuarioRegistro + ", tecnico=" + tecnico + '}';
     }
-    
+
 }

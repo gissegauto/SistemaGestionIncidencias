@@ -39,12 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Servicio.findByEstado", query = "SELECT s FROM Servicio s WHERE s.estado = :estado")})
 public class Servicio implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idServicio")
-    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idServicio")
-    private Collection<SolicitudConexion> solicitudConexionCollection;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -120,24 +114,6 @@ public class Servicio implements Serializable {
     @Override
     public String toString() {
         return "business.configuraciones.entity.Servicio[ idServicio=" + idServicio + " ]";
-    }
-
-    @XmlTransient
-    public Collection<SolicitudConexion> getSolicitudConexionCollection() {
-        return solicitudConexionCollection;
-    }
-
-    public void setSolicitudConexionCollection(Collection<SolicitudConexion> solicitudConexionCollection) {
-        this.solicitudConexionCollection = solicitudConexionCollection;
-    }
-
-    @XmlTransient
-    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection() {
-        return historialSolicitudConexionCollection;
-    }
-
-    public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
-        this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
     }
     
 }

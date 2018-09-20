@@ -5,11 +5,9 @@
  */
 package business.cliente.boundary;
 
-import business.direccion.boundary.*;
 import business.dao.GenericImpl;
 import business.cliente.entity.Cliente;
 import business.utils.UtilLogger;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 

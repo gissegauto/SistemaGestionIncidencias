@@ -134,14 +134,7 @@ public class SolicitudConexionBean implements Serializable {
         barrioList = barrioMgr.getBarriosByCiudad(ciudad);
     }
 
-    public String addFuncionario() {
-        solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
-        solicitudConexion.setFechaActualizacion(new Date());
-        solicitudConexion.setEstado("En Curso");
-        solicitudConexionMgr.update(solicitudConexion);
-        return "solicitudConexion";
-    }
-
+   
     public void actionClean() {
         this.solicitudConexion = new SolicitudConexion();
         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
