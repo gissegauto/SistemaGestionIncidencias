@@ -55,10 +55,10 @@ and open the template in the editor.
                                   sortBy="#{funcionario.tecnico}">
                             <h:outputText value="#{funcionario.tecnico}" />
                         </p:column>
-                        <p:column headerText="#{msg['funcionario.telefono']}" 
-                                  width="10%" filterBy="#{funcionario.telefono}"
-                                  sortBy="#{funcionario.telefono}">
-                            <h:outputText value="#{funcionario.telefono}" />
+                        <p:column headerText="#{msg['funcionario.celular']}" 
+                                  width="10%" filterBy="#{funcionario.celular}"
+                                  sortBy="#{funcionario.celular}">
+                            <h:outputText value="#{funcionario.celular}" />
                         </p:column>
                         <p:column headerText="#{msg['funcionario.estado']}" 
                                   width="10%"
@@ -67,29 +67,32 @@ and open the template in the editor.
                         </p:column>
                         <p:column headerText="#{msg['generic.opciones']}" 
                                   width="20%">
-<!--                            <p:column style="width:32px;text-align: center">
+                            <p:column style="width:32px;text-align: center">
                                 <p:commandButton update=":funcionarioForm:funcionarioDetail"
                                                  oncomplete="PF('dlgVerFuncionario').show('#{component.clientId}')"
                                                  icon="ui-icon-search" title="#{msg['generic.ver']}">
                                     <f:setPropertyActionListener value="#{funcionario}" 
                                                                  target="#{funcionarioBean.funcionario}" />
                                 </p:commandButton>
-                            </p:column>-->
+                            </p:column>
                             <p:commandButton 
                                 icon="ui-icon-trash" 
-                                id="botonEditar">
-                                <f:setPropertyActionListener target="#{funcionarioBean.funcionario}" value="funcionario" />
+                                title="#{msg['generic.btnDelete']}"
+                                id="botonEliminar">
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
                     <p:overlayPanel widgetVar="dlgVerFuncionario" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
                         <p:fieldset  style="margin-bottom:5px; font-size:12px " >
-                            <p:outputPanel id="clienteDetail">
+                            <p:outputPanel id="funcionarioDetail">
                                 <h:panelGrid  columns="2" rendered="#{not empty funcionarioBean.funcionario}" columnClasses="label,value">
                                     <p:outputLabel value="#{msg['funcionario.add.id']}"  style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{funcionarioBean.funcionario.idFuncionario}" />
                                     <p:outputLabel value="#{msg['funcionario.add.funcionario']}"  style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{funcionarioBean.funcionario.nombreFuncionario} #{funcionarioBean.funcionario.apellidoFuncionario}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.tecnico']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.tecnico}" />
+
                                     <p:outputLabel value="#{msg['funcionario.add.direccion']}" style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{funcionarioBean.funcionario.direccion}" />
                                     <p:outputLabel value="#{msg['funcionario.add.ciudad']}" style="right: 15%; font-weight: bold"/>
@@ -176,7 +179,7 @@ and open the template in the editor.
                                         <f:selectItems value="#{funcionarioBean.ciudadList}" 
                                                        var="ciudad" itemLabel="#{ciudad.ciudad}" 
                                                        itemValue="#{ciudad}" />
-                                         
+
                                     </p:selectOneMenu>                                                             
                                     <p:spacer/>     
 
@@ -189,6 +192,10 @@ and open the template in the editor.
                                                        var="barrio" itemLabel="#{barrio.barrio}" 
                                                        itemValue="#{barrio}"/>
                                     </p:selectOneMenu>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.tecnico']}" style="right: 15%"/>
+                                    <p:selectBooleanButton id="value2" value="#{funcionarioBean.tecnico}" onLabel="Si" offLabel="No" 
+                                                           onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px"/>
                                     <p:spacer/>
                                     <p:outputLabel value="#{msg['funcionario.add.estado']}" style="right: 15%"/>
                                     <p:inputText id="estado" value="Activo" disabled="true" />

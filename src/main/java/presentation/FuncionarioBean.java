@@ -39,6 +39,7 @@ public class FuncionarioBean implements Serializable {
     private Ciudad ciudad;
     private List<Barrio> barrioList;
     private Barrio barrio;
+    private boolean tecnico = false;
 
     @Inject
     FuncionarioManager funcionarioMgr;
@@ -76,12 +77,17 @@ public class FuncionarioBean implements Serializable {
                         return "funcionario";
                     }
                 }
+                if (tecnico) {
+                    funcionario.setTecnico("SI");
+                } else {
+                    funcionario.setTecnico("NO");
+                }
                 if (funcionario != null & funcionario.getIdFuncionario() == null) {
                     funcionario.setEstado("Activo");
                     funcionario.setFechaRegistro(new Date());
                     funcionario.setIdUsuarioRegistro(session.getUsuario());
                     funcionario = funcionarioMgr.add(funcionario);
-                    if(funcionario != null){
+                    if (funcionario != null) {
                         historialFuncionarioController.addHistory(funcionario);
                     }
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
@@ -90,8 +96,8 @@ public class FuncionarioBean implements Serializable {
                     funcionario.setIdUsuarioActualizacion(session.getUsuario());
                     funcionario.setFechaActualizacion(new Date());
                     funcionario = funcionarioMgr.update(funcionario);
-                    
-                    if(funcionario != null){
+
+                    if (funcionario != null) {
                         historialFuncionarioController.addHistory(funcionario);
                     }
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
@@ -108,9 +114,12 @@ public class FuncionarioBean implements Serializable {
         return "funcionario";
     }
 
-    public String delete() {
+    public String delete(Funcionario funcionario) {
         try {
-            funcionarioMgr.delete(funcionario);
+            funcionario.setIdUsuarioActualizacion(session.getUsuario());
+            funcionario.setFechaActualizacion(new Date());
+            funcionario.setEstado("Borrado");
+            funcionarioMgr.update(funcionario);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Funcionario"));
             RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
         } catch (Exception e) {
@@ -177,6 +186,14 @@ public class FuncionarioBean implements Serializable {
 
     public void setBarrio(Barrio barrio) {
         this.barrio = barrio;
+    }
+
+    public boolean isTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(boolean tecnico) {
+        this.tecnico = tecnico;
     }
 
 }

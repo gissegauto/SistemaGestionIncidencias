@@ -10,9 +10,18 @@ and open the template in the editor.
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-     <h:body>
+    <h:body>
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
+                <p:fieldset title="cliente.solicitud.description" style="margin-bottom:5px; font-size:15px " >
+                    <h:form id="solicitudesForm">
+                        <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                        <div align="center">
+                            <p:outputLabel value="#{msg['cliente.solicitud.title']} " class="card-title" style="color: #0056b3"/>
+                        </div>
+
+                    </h:form>   
+                </p:fieldset>
             </ui:define>
         </ui:composition>
     </h:body>

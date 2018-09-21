@@ -48,5 +48,20 @@ public class FuncionarioManager extends GenericImpl<Funcionario, Integer> {
             return null;
         }
     }
+    
+    
+//    /**
+//     * Obtener Lista de Funcionarios que no estén borrados
+//     */
+//    public List<Funcionario> getByNoBorrado() {
+//        try {
+//            Query query = em.createQuery("SELECT f FROM Funcionario f where f.estado != 'Borrado' ");
+//
+//            return ((List<Funcionario>) query.getResultList());
+//        } catch (Exception e) {
+//            UtilLogger.error(this.getClass().getName() + ".getByNoBorrado", e);
+//            return null;
+//        }
+//    }
 
 }
