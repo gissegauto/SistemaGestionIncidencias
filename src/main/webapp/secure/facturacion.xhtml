@@ -15,7 +15,43 @@ and open the template in the editor.
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
                 <h:form id="facturacionForm">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" escape="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['facturacion.title']} " class="card-title" style="color: #0056b3"/>
+                    </div> 
+                    <p:dataTable id="dtFactura" var="factura" widgetVar="facturaTable"
+                                 value="#{facturacionBean.facturaList}"
+                                 rows="15" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,20,50"
+                                 style="font-size:12px"
+                                 emptyMessage="#{msg['generic.empty']}">
 
+                        <p:column headerText="#{msg['generic.id']}" 
+                                  width="5%"
+                                  sortBy="#{factura.idFactura}">
+                            <h:outputText value="#{factura.idFactura}" />
+                        </p:column>
+                         <p:column headerText="#{msg['facturacion.cliente']}" 
+                                  width="10%" filterBy="#{factura.cliente.nombre} #{factura.cliente.apellido}"
+                                  sortBy="#{factura.cliente.nombre} #{factura.cliente.apellido}">
+                             <h:outputText value="#{factura.cliente.nombre} #{factura.cliente.apellido}" />
+                        </p:column>
+                        <p:column headerText="#{msg['facturacion.fecha']}" 
+                                  width="10%" filterBy="#{factura.fecInsercion}"
+                                  sortBy="#{factura.fecInsercion}">
+                            <h:outputText value="#{factura.fecInsercion}" >
+                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column headerText="#{msg['facturacion.estado']}" 
+                                  width="10%" filterBy="#{factura.estado}"
+                                  sortBy="#{factura.estado}">
+                            <h:outputText value="#{factura.estado}" />
+                        </p:column>
+
+                    </p:dataTable>
                 </h:form>
             </ui:define>
         </ui:composition>
