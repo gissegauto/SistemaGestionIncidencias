@@ -153,6 +153,11 @@ public class ClienteBean implements Serializable {
         }
     }
 
+    public String solicitudes(Cliente cliente) {
+//         clienteSolicitudBean.setSolicitudConexion(solicitudC);
+        return "solicitudes";
+    }
+
     public void delete(Cliente cliente) {
         try {
             clienteMgr.delete(cliente);

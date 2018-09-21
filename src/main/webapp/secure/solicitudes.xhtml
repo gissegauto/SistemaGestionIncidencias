@@ -13,13 +13,22 @@ and open the template in the editor.
     <h:body>
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
-                <p:fieldset title="cliente.solicitud.description" style="margin-bottom:5px; font-size:15px " >
+                <p:fieldset title="solicitudes.title" style="margin-bottom:5px; font-size:15px " >
                     <h:form id="solicitudesForm">
                         <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
                         <div align="center">
-                            <p:outputLabel value="#{msg['cliente.solicitud.title']} " class="card-title" style="color: #0056b3"/>
+                            <p:outputLabel value="#{msg['solicitudes.title']} " class="card-title" style="color: #0056b3"/>
                         </div>
+                        <p:fieldset style="margin-bottom:5px; font-size:15px " >
+                            <h6 style="color: #0056b3; font-weight: bold">#{msg['solicitudes.datos']}</h6>
+                            <p:separator/>
+                            <h:panelGrid columns="2" width="50%">
+                                <h:outputText value="#{msg['cliente.solicitud.nro']}"  style="right: 10%; font-weight: bold"/>
+                                <h:outputText value="#{clienteSolicitudBean.solicitudConexion.idSolicitudConexion}" />
 
+                            </h:panelGrid>
+
+                        </p:fieldset>
                     </h:form>   
                 </p:fieldset>
             </ui:define>

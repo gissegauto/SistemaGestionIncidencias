@@ -127,7 +127,9 @@ and open the template in the editor.
                             </p:commandButton>
                              <p:commandButton 
                                 icon="ui-icon-folder-collapsed" 
+                                process="dtCliente"
                                 title="#{msg['cliente.btn.solicitud']}"
+                                action="#{clienteBean.solicitudes(cliente)}"
                                 id="botonSolicitud">
                             </p:commandButton>
                             <p:commandButton 
