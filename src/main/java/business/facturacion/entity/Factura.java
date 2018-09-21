@@ -87,14 +87,14 @@ public class Factura implements Serializable {
     @Column(name = "estado")
     private String estado;
 
-    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
+    @JoinColumn(name = "id_cliente", referencedColumnName = "idCliente")
     @ManyToOne
     private Cliente cliente;
 
-    @JoinColumn(name = "idUsuarioActualizacion", referencedColumnName = "idusuario")
+    @JoinColumn(name = "usu_insercion", referencedColumnName = "idUsuario")
     @ManyToOne
     private Usuario idUsuarioActualizacion;
-    @JoinColumn(name = "idUsuarioRegistro", referencedColumnName = "idusuario")
+    @JoinColumn(name = "usu_modificacion", referencedColumnName = "idUsuario")
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
 

@@ -32,7 +32,7 @@ and open the template in the editor.
                                   sortBy="#{factura.idFactura}">
                             <h:outputText value="#{factura.idFactura}" />
                         </p:column>
-                         <p:column headerText="#{msg['facturacion.cliente']}" 
+                        <p:column headerText="#{msg['facturacion.cliente']}" 
                                   width="10%" filterBy="#{factura.cliente.nombre} #{factura.cliente.apellido}"
                                   sortBy="#{factura.cliente.nombre} #{factura.cliente.apellido}">
                              <h:outputText value="#{factura.cliente.nombre} #{factura.cliente.apellido}" />
@@ -44,7 +44,11 @@ and open the template in the editor.
                                 <f:convertDateTime pattern="dd-MMM-yyyy" />
                             </h:outputText>
                         </p:column>
-                        
+                        <p:column headerText="#{msg['facturacion.total']}" 
+                                  width="10%" filterBy="#{factura.total}"
+                                  sortBy="#{factura.total}">
+                             <h:outputText value="#{factura.total}" />
+                        </p:column>
                         <p:column headerText="#{msg['facturacion.estado']}" 
                                   width="10%" filterBy="#{factura.estado}"
                                   sortBy="#{factura.estado}">
