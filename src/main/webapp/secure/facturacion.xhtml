@@ -35,7 +35,7 @@ and open the template in the editor.
                         <p:column headerText="#{msg['facturacion.cliente']}" 
                                   width="10%" filterBy="#{factura.cliente.nombre} #{factura.cliente.apellido}"
                                   sortBy="#{factura.cliente.nombre} #{factura.cliente.apellido}">
-                             <h:outputText value="#{factura.cliente.nombre} #{factura.cliente.apellido}" />
+                            <h:outputText value="#{factura.cliente.nombre} #{factura.cliente.apellido}" />
                         </p:column>
                         <p:column headerText="#{msg['facturacion.fecha']}" 
                                   width="10%" filterBy="#{factura.fecInsercion}"
@@ -47,7 +47,9 @@ and open the template in the editor.
                         <p:column headerText="#{msg['facturacion.total']}" 
                                   width="10%" filterBy="#{factura.total}"
                                   sortBy="#{factura.total}">
-                             <h:outputText value="#{factura.total}" />
+                            <h:outputText value="#{factura.total}" >
+                                <f:convertNumber pattern="#0" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['facturacion.estado']}" 
                                   width="10%" filterBy="#{factura.estado}"

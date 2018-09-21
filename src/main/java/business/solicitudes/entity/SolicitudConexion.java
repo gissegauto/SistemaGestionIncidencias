@@ -86,6 +86,8 @@ public class SolicitudConexion implements Serializable {
     @Size(max = 15)
     @Column(name = "celular")
     private String celular;
+    @Column(name = "tv_cantidad")
+    private Integer cantidadTv;
     @Size(max = 100)
     @Column(name = "observacion")
     private String observacion;
@@ -119,13 +121,12 @@ public class SolicitudConexion implements Serializable {
         this.idSolicitudConexion = idSolicitudConexion;
     }
 
-    public SolicitudConexion(Integer idSolicitudConexion, String nombre, String apellido, String direccion, Date fechaRegistro, String estado) {
-        this.idSolicitudConexion = idSolicitudConexion;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.direccion = direccion;
-        this.fechaRegistro = fechaRegistro;
-        this.estado = estado;
+    public Integer getCantidadTv() {
+        return cantidadTv;
+    }
+
+    public void setCantidadTv(Integer cantidadTv) {
+        this.cantidadTv = cantidadTv;
     }
 
     public Integer getIdSolicitudConexion() {

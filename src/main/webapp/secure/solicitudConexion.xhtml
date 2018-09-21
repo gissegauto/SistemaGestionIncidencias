@@ -147,6 +147,9 @@ and open the template in the editor.
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.celular}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.telefono ne ''}"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.telefono}" rendered="#{solicitudConexionBean.solicitudConexion.telefono ne ''}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" />
+                                    
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}"  style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.observacion}" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" style="right: 10%; font-weight: bold"/>
