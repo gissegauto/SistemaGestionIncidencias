@@ -140,6 +140,22 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/secure/*</from-view-id>
+        <navigation-case>
+            <from-outcome>solicitudReconexion</from-outcome>
+            <to-view-id>/secure/reconexion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/secure/*</from-view-id>
+        <navigation-case>
+            <from-outcome>solicitudes</from-outcome>
+            <to-view-id>/secure/solicitudes.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     <managed-bean>
         <managed-bean-name>loginBean</managed-bean-name>
         <managed-bean-class>

@@ -32,6 +32,11 @@ and open the template in the editor.
                                   sortBy="#{factura.idFactura}">
                             <h:outputText value="#{factura.idFactura}" />
                         </p:column>
+                        <p:column headerText="#{msg['facturacion.nro.cliente']}" 
+                                   width="10%" filterBy="#{factura.cliente.idCliente}"
+                                  sortBy="#{factura.cliente.idCliente}">
+                            <h:outputText value="#{factura.cliente.idCliente}" />
+                        </p:column>
                         <p:column headerText="#{msg['facturacion.cliente']}" 
                                   width="10%" filterBy="#{factura.cliente.nombre} #{factura.cliente.apellido}"
                                   sortBy="#{factura.cliente.nombre} #{factura.cliente.apellido}">
@@ -56,7 +61,22 @@ and open the template in the editor.
                                   sortBy="#{factura.estado}">
                             <h:outputText value="#{factura.estado}" />
                         </p:column>
-
+                        <p:column headerText="Opciones" 
+                                  width="20%">
+                            <p:column style="width:32px;text-align: center">
+                                <p:column style="width:32px;text-align: center">
+                                <p:commandButton 
+                                    icon="ui-icon-search" title="#{msg['facturacion.btn.ver']}">
+                                </p:commandButton>
+                            </p:column>
+                                <p:commandButton 
+                                    icon="ui-icon-pencil"
+                                    rendered="#{factura.estado eq 'Pendiente'}" 
+                                    title="#{msg['generic.btnUpdate']}"
+                                    id="botonEditar">
+                                </p:commandButton>
+                            </p:column>
+                        </p:column>
                     </p:dataTable>
                 </h:form>
             </ui:define>
