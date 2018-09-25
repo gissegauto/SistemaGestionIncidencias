@@ -41,7 +41,7 @@ public class FuncionarioManager extends GenericImpl<Funcionario, Integer> {
      */
     public List<Funcionario> getByTecnico() {
         try {
-            Query query = em.createQuery("SELECT f FROM Funcionario f where f.tecnico = 'SI' ");
+            Query query = em.createQuery("SELECT f FROM Funcionario f where f.tecnico = 'SI' and f.estado = 'Activo' ");
 
             return ((List<Funcionario>) query.getResultList());
         } catch (Exception e) {
@@ -51,18 +51,19 @@ public class FuncionarioManager extends GenericImpl<Funcionario, Integer> {
     }
     
     
-//    /**
-//     * Obtener Lista de Funcionarios que no estén borrados
-//     */
-//    public List<Funcionario> getByNoBorrado() {
-//        try {
-//            Query query = em.createQuery("SELECT f FROM Funcionario f where f.estado != 'Borrado' ");
-//
-//            return ((List<Funcionario>) query.getResultList());
-//        } catch (Exception e) {
-//            UtilLogger.error(this.getClass().getName() + ".getByNoBorrado", e);
-//            return null;
-//        }
-//    }
+    /**
+     * Obtener Lista de Funcionarios que no estén borrados
+     * @return 
+     */
+    public List<Funcionario> getByNotBorrado() {
+        try {
+            Query query = em.createQuery("SELECT c FROM Funcionario c where c.estado <> 'Borrado' ");
+
+            return ((List<Funcionario>) query.getResultList());
+        } catch (Exception e) {
+            UtilLogger.error(this.getClass().getName() + ".getByNotBorrado", e);
+            return null;
+        }
+    }
 
 }

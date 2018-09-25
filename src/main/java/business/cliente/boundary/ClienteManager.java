@@ -46,7 +46,7 @@ public class ClienteManager extends GenericImpl<Cliente, Integer> {
 
             return ((List<Cliente>) query.getResultList());
         } catch (Exception e) {
-            UtilLogger.error(this.getClass().getName() + ".getByTecnico", e);
+            UtilLogger.error(this.getClass().getName() + ".getByNotBorrado", e);
             return null;
         }
     }

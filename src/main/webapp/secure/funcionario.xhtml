@@ -76,8 +76,15 @@ and open the template in the editor.
                                 </p:commandButton>
                             </p:column>
                             <p:commandButton 
+                                icon="ui-icon-folder-collapsed" 
+                                title="#{msg['funcionario.btn.orden']}"
+                                actionListener="#{funcionarioBean.verOrdenTrabajo(funcionario)}"
+                                id="botonTrabajo">
+                            </p:commandButton>
+                            <p:commandButton 
                                 icon="ui-icon-trash" 
                                 title="#{msg['generic.btnDelete']}"
+                                actionListener="#{funcionarioBean.delete(funcionario)}"
                                 id="botonEliminar">
                             </p:commandButton>
                         </p:column>
