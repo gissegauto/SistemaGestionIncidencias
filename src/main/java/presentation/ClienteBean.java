@@ -78,7 +78,7 @@ public class ClienteBean implements Serializable {
     public void limpiar() {
         editar = false;
         cliente = new Cliente();
-        clienteList = clienteMgr.getAll();
+        clienteList = clienteMgr.getByNotBorrado();
         ciudadList = ciudadMgr.getAll();
         ciudad = new Ciudad();
         barrio = new Barrio();
@@ -166,7 +166,8 @@ public class ClienteBean implements Serializable {
 
     public void delete(Cliente cliente) {
         try {
-            clienteMgr.delete(cliente);
+            cliente.setEstado("Borrado");
+            clienteMgr.update(cliente);
             limpiar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Cliente"));
             RequestContext.getCurrentInstance().update("clientecForm:dtCliente");

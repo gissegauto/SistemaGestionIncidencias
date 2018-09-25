@@ -120,6 +120,7 @@ and open the template in the editor.
                             </p:commandButton>
                             <p:commandButton 
                                 icon="ui-icon-trash" 
+                                rendered="#{cliente.estado eq 'Activo'}"   
                                 action="#{clienteBean.delete}"
                                 title="#{msg['generic.btnDelete']}"
                                 actionListener="#{clienteBean.delete(cliente)}"

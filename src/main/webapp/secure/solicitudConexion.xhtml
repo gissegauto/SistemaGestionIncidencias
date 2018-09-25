@@ -63,14 +63,14 @@ and open the template in the editor.
                             <h:outputText value="#{solicitudConexion.idBarrio.barrio}" />
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.fecha']}" 
-                                  width="10%" filterBy="#{solicitudConexion.fechaRegistro}"
+                                  width="9%" filterBy="#{solicitudConexion.fechaRegistro}"
                                   sortBy="#{solicitudConexion.fechaRegistro}">
                             <h:outputText value="#{solicitudConexion.fechaRegistro}" >
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.hora']}" 
-                                  width="7%" filterBy="#{solicitudConexion.fechaRegistro}"
+                                  width="6%" filterBy="#{solicitudConexion.fechaRegistro}"
                                   sortBy="#{solicitudConexion.fechaRegistro}">
                             <h:outputText value="#{solicitudConexion.fechaRegistro}" >
                                 <f:convertDateTime pattern="hh:mm" />
@@ -87,7 +87,7 @@ and open the template in the editor.
                             <h:outputText value="#{solicitudConexion.estado}" />
                         </p:column>
                         <p:column headerText="#{msg['generic.opciones']}" 
-                                  width="12%">
+                                  width="15%">
                             <p:column style="width:32px;text-align: center">
                                 <p:commandButton update=":solicitudConexionForm:solicitudConexionDetail"
                                                  oncomplete="PF('verSolicitudConexion').show('#{component.clientId}')"
@@ -107,6 +107,13 @@ and open the template in the editor.
                                 id="botonEditar" >
                                 <f:setPropertyActionListener value="#{solicitudConexion}" 
                                                              target="#{solicitudConexionBean.solicitudConexion}" />
+                            </p:commandButton>
+                            <p:commandButton 
+                                icon="ui-icon-close"
+                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"                                
+                                title="#{msg['generic.btnInactive']}"
+                                actionListener="#{solicitudConexionBean.cancelar(solicitudConexion)}"
+                                id="botonCancelar">
                             </p:commandButton>
                             <p:commandButton 
                                 rendered="#{solicitudConexion.estado eq 'Pendiente'}"

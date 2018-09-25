@@ -8,6 +8,7 @@ package business.cliente.boundary;
 import business.dao.GenericImpl;
 import business.cliente.entity.Cliente;
 import business.utils.UtilLogger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
@@ -30,6 +31,22 @@ public class ClienteManager extends GenericImpl<Cliente, Integer> {
             return ((Cliente) query.getSingleResult());
         } catch (Exception e) {
             UtilLogger.error(this.getClass().getName() + ".getByName", e);
+            return null;
+        }
+    }
+    
+    
+    /**
+     * Obtener Lista de Cliente que no tengan estado borrado
+     * @return 
+     */
+    public List<Cliente> getByNotBorrado() {
+        try {
+            Query query = em.createQuery("SELECT c FROM Cliente c where c.estado <> 'Borrado' ");
+
+            return ((List<Cliente>) query.getResultList());
+        } catch (Exception e) {
+            UtilLogger.error(this.getClass().getName() + ".getByTecnico", e);
             return null;
         }
     }

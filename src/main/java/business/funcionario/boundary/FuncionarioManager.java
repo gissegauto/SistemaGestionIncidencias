@@ -37,6 +37,7 @@ public class FuncionarioManager extends GenericImpl<Funcionario, Integer> {
 
     /**
      * Obtener Lista de Funcionarios que sean Tecnicos
+     * @return 
      */
     public List<Funcionario> getByTecnico() {
         try {

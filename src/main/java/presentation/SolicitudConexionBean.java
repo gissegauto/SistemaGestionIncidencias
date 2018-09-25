@@ -18,6 +18,7 @@ import business.solicitudes.boundary.SolicitudConexionManager;
 import business.solicitudes.entity.SolicitudConexion;
 import business.utils.UtilLogger;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -76,6 +77,8 @@ public class SolicitudConexionBean implements Serializable {
         editar = false;
         solicitudConexion = new SolicitudConexion();
         servicioList = servicioMgr.getAll();
+        servicioListSelected = new ArrayList<>();
+        solicitudConexionFilter = new ArrayList<>();
         ciudadList = ciudadMgr.getAll();
         solicitudConexionList = solicitudConexionMgr.getAll();
     }
@@ -160,6 +163,15 @@ public class SolicitudConexionBean implements Serializable {
     public void cargarClienteSolicitud() {
 //        this.solicitudConexion = solicitudC;
         RequestContext.getCurrentInstance().update("form-add:solicitudConexionGr");
+    }
+    
+     public void cancelar(SolicitudConexion solicitudConexion) {
+        solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
+        solicitudConexion.setFechaActualizacion(new Date());
+        solicitudConexion.setEstado("Cancelado");
+        solicitudConexionMgr.update(solicitudConexion);
+        limpiar();
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
     }
     
     public void buscarBarrios() {
