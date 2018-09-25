@@ -6,6 +6,7 @@
 package presentation;
 
 import business.cliente.boundary.ClienteManager;
+import business.cliente.boundary.ClienteSolicitudManager;
 import business.cliente.controller.ClienteController;
 import business.cliente.controller.HistorialClienteController;
 import business.cliente.entity.Cliente;
@@ -53,11 +54,15 @@ public class ClienteBean implements Serializable {
     @Inject
     ClienteManager clienteMgr;
     @Inject
+    ClienteSolicitudManager clienteSolicitudMgr;
+    @Inject
     HistorialClienteController historialClienteController;
     @Inject
     ClienteController clienteController;
     @Inject
     SolicitudConexionBean solicitudConexionBean;
+    @Inject
+    ClienteSolicitudBean clienteSolicitudBean;
     @Inject
     BarrioManager barrioMgr;
     @Inject
@@ -154,7 +159,8 @@ public class ClienteBean implements Serializable {
     }
 
     public String solicitudes(Cliente cliente) {
-//         clienteSolicitudBean.setSolicitudConexion(solicitudC);
+        clienteSolicitudBean.setCliente(cliente);
+        clienteSolicitudBean.setSolicitudes(clienteSolicitudMgr.getByCliente(cliente));
         return "solicitudes";
     }
 

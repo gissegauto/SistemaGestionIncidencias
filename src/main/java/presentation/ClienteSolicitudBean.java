@@ -6,6 +6,7 @@
 package presentation;
 
 import business.cliente.boundary.ClienteSolicitudManager;
+import business.cliente.entity.Cliente;
 import business.cliente.entity.ClienteSolicitud;
 import business.funcionario.boundary.FuncionarioManager;
 import business.funcionario.entity.Funcionario;
@@ -30,9 +31,11 @@ import javax.inject.Named;
 @SessionScoped
 public class ClienteSolicitudBean implements Serializable {
 
+    private Cliente cliente;
     private SolicitudConexion solicitudConexion;
     private List<Funcionario> funcionarioList;
     private List<Funcionario> funcionarioSelected;
+    private List<ClienteSolicitud> solicitudes;
 
     @Inject
     FuncionarioManager funcionarioMgr;
@@ -107,6 +110,22 @@ public class ClienteSolicitudBean implements Serializable {
 
     public void setFuncionarioSelected(List<Funcionario> funcionarioSelected) {
         this.funcionarioSelected = funcionarioSelected;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<ClienteSolicitud> getSolicitudes() {
+        return solicitudes;
+    }
+
+    public void setSolicitudes(List<ClienteSolicitud> solicitudes) {
+        this.solicitudes = solicitudes;
     }
 
 }
