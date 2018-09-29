@@ -7,8 +7,11 @@ package presentation;
 
 import business.configuracion.boundary.ArticuloManager;
 import business.configuracion.entity.Articulo;
+import business.configuracion.entity.Articulo;
+import business.utils.UtilLogger;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -45,11 +48,35 @@ public class ArticuloBean implements Serializable {
         articuloList = articuloMgr.getByNotDelete();
     }
 
-    
-    public void add() {
+    public String add() {
+        try {
+            if (null != articulo) {
+                if (articulo != null & articulo.getIdArticulo() == null) {
+                    if (articulo.getCantidad() > 0) {
+                        articulo.setEstado("En Stock");
+                    } else {
+                        articulo.setEstado("En Falta");
+                    }
+                    articulo.setUsuInsercion(session.getUsuario());
+                    articulo.setFecInsercion(new Date());
+                    articulo = articuloMgr.add(articulo);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
+                            "Articulo: " + articulo.getDescripcion()));
+                } else if (articulo != null & articulo.getIdArticulo() > 0) {
+                    articulo = articuloMgr.update(articulo);
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
+                            "Articulo: " + articulo.getDescripcion()));
+                }
+                limpiar();
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+                    "Ocurrió un error al intentar guardar el articulo "));
+            UtilLogger.error("Problemas al insertar el articulo", e);
+        }
+        return "articulo";
     }
-    
-    
+
     public void delete(Articulo articulo) {
         articulo.setEstado("Borrado");
         articuloMgr.update(articulo);

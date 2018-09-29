@@ -37,7 +37,8 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Articulo.findByDescripcion", query = "SELECT a FROM Articulo a WHERE a.descripcion = :descripcion")
     , @NamedQuery(name = "Articulo.findByEstado", query = "SELECT a FROM Articulo a WHERE a.estado = :estado")
     , @NamedQuery(name = "Articulo.findByFecInsercion", query = "SELECT a FROM Articulo a WHERE a.fecInsercion = :fecInsercion")
-    , @NamedQuery(name = "Articulo.findByFecModificacion", query = "SELECT a FROM Articulo a WHERE a.fecModificacion = :fecModificacion")})
+    , @NamedQuery(name = "Articulo.findByFecModificacion", query = "SELECT a FROM Articulo a WHERE a.fecModificacion = :fecModificacion")
+    , @NamedQuery(name = "Articulo.findByCantidad", query = "SELECT a FROM Articulo a WHERE a.cantidad = :cantidad")})
 public class Articulo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -66,6 +67,8 @@ public class Articulo implements Serializable {
     @Column(name = "fec_modificacion")
     @Temporal(TemporalType.DATE)
     private Date fecModificacion;
+    @Column(name = "cantidad")
+    private Integer cantidad;
     @JoinColumn(name = "usu_insercion", referencedColumnName = "idusuario")
     @ManyToOne
     private Usuario usuInsercion;
@@ -133,6 +136,14 @@ public class Articulo implements Serializable {
 
     public void setFecModificacion(Date fecModificacion) {
         this.fecModificacion = fecModificacion;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Usuario getUsuInsercion() {

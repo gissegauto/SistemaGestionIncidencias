@@ -173,7 +173,7 @@ public class ClienteBean implements Serializable {
             clienteMgr.update(cliente);
             limpiar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Cliente"));
-            RequestContext.getCurrentInstance().update("clientecForm:dtCliente");
+            RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el cliente "));

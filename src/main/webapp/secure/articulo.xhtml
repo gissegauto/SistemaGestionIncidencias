@@ -45,6 +45,11 @@ and open the template in the editor.
                                   sortBy="#{articulo.precio}">
                             <h:outputText value="#{articulo.precio}" />
                         </p:column>
+                        <p:column headerText="#{msg['articulo.cantidad']}" 
+                                  width="15%" filterBy="#{articulo.cantidad}"
+                                  sortBy="#{articulo.cantidad}">
+                            <h:outputText value="#{articulo.cantidad}" />
+                        </p:column>
                         <p:column headerText="#{msg['articulo.estado']}" 
                                   width="15%" filterBy="#{articulo.estado}"
                                   sortBy="#{articulo.estado}">
@@ -73,10 +78,10 @@ and open the template in the editor.
                                              value="#{articuloBean.articulo.descripcion}" />
                                 <p:outputLabel value="#{msg['articulo.add.precio']}" for="precio" style="right: 20%"/>
                                 <p:inputText id="precio" value="#{articuloBean.articulo.precio}" />
-                                <p:spacer/>
+                                <p:outputLabel value="#{msg['articulo.add.cantidad']}" for="cantidad" style="right: 20%"/>
+                                <p:inputText id="cantidad" value="#{articuloBean.articulo.cantidad}" />
                                 <p:outputLabel value="#{msg['cliente.add.estado']}" />
                                 <p:inputText id="estado" value="Activo" disabled="true" />
-                                <p:spacer/>
                                 <br />
                                 <br />
                                 <div style="align-content: center" >

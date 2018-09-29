@@ -8,6 +8,7 @@ package business.configuracion.boundary;
 import business.configuracion.entity.Servicio;
 import business.dao.GenericImpl;
 import business.utils.UtilLogger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
@@ -18,7 +19,7 @@ import javax.persistence.Query;
 @Stateless
 public class ServicioManager extends GenericImpl<Servicio, Integer> {
 
-     /**
+    /**
      * Obtener Servicio segun nombre
      *
      * @param name
@@ -33,5 +34,21 @@ public class ServicioManager extends GenericImpl<Servicio, Integer> {
             return null;
         }
     }
-    
+
+    /**
+     * Obtener Lista de Servicio que no tengan estado borrado
+     *
+     * @return
+     */
+    public List<Servicio> getByNotDelete() {
+        try {
+            Query query = em.createQuery("SELECT c FROM Servicio c where c.estado <> 'Borrado' ");
+
+            return ((List<Servicio>) query.getResultList());
+        } catch (Exception e) {
+            UtilLogger.error(this.getClass().getName() + ".getByNotDelete", e);
+            return null;
+        }
+    }
+
 }

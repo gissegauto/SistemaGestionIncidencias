@@ -30,41 +30,34 @@ and open the template in the editor.
                     </facelets>
                     <p:dataTable id="dtServicio" var="servicio" 
                                  value="#{servicioBean.servicioList}"
-                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 rows="10" paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,15"
                                  rowKey="#{servicio}"  style="font-size:12px"
-                                 editable="true" 
-                                 editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
-                        <p:ajax event="cellEdit" listener="#{servicioBean.onCellEdit}" update=":servicioForm:growl" />
                         <p:column headerText="#{msg['servicio.servicio']}" 
-                                  width="20%"
+                                  width="20%"  filterBy="#{servicio.servicio}"
                                   sortBy="#{servicio.servicio}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{servicio.servicio}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{servicio.servicio}" style="width:96%" label="servicio"/></f:facet>
-                            </p:cellEditor>
-
+                            <h:outputText value="#{servicio.servicio}" />
                         </p:column>
                         <p:column headerText="#{msg['servicio.precio']}" 
-                                  width="20%"
+                                  width="20%" filterBy="#{servicio.precio}"
                                   sortBy="#{servicio.precio}">
                             <h:outputText value="#{servicio.precio}" />
                         </p:column>
                         <p:column headerText="#{msg['cliente.estado']}" 
-                                  sortBy="#{servicio.estado}" 
+                                  sortBy="#{servicio.estado}" filterBy="#{servicio.estado}"
                                   width="10%" >
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="Activo" rendered="#{servicio.estado == 'Activo'}" /></f:facet>
-                                <f:facet name="output2"><h:outputText value="Inactivo" rendered="#{servicio.estado == 'Inactivo'}" /></f:facet>
-                                <f:facet name="input">
-                                    <p:selectOneListbox id="estado" value="#{servicio.estado}" >
-                                        <f:selectItem itemLabel="Activo" itemValue="Activo" />
-                                        <f:selectItem itemLabel="Inactivo" itemValue="Inactivo" />
-                                    </p:selectOneListbox>
-                                </f:facet>
-                            </p:cellEditor>
+                            <h:outputText value="#{servicio.estado}" />
+                        </p:column>
+                        <p:column headerText="#{msg['generic.opciones']}" 
+                                  width="20%">
+                            <p:commandButton 
+                                icon="fa fa-trash"
+                                style="color: crimson"
+                                actionListener="#{servicioBean.delete(servicio)}"
+                                id="botonEditar">
+                            </p:commandButton>
                         </p:column>
                     </p:dataTable>
                 </h:form>
@@ -78,10 +71,8 @@ and open the template in the editor.
                                 <p:outputLabel value="#{msg['servicio.add.servicio']}" for="servicio" style="right: 20%"/>
                                 <p:inputText id="servicio" required="true" requiredMessage="#{msg['requerid.descripcion']}"
                                              value="#{servicioBean.servicio.servicio}" />
-                                <p:spacer/>
                                 <p:outputLabel value="#{msg['cliente.add.estado']}" />
                                 <p:inputText id="estado" value="Activo" disabled="true" />
-                                <p:spacer/>
                                 <br />
                                 <br />
                                 <div style="align-content: center" >
