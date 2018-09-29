@@ -5,6 +5,7 @@
  */
 package business.direccion.entity;
 
+import business.configuracion.entity.Configuracion;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -39,8 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Ciudad.findByEstado", query = "SELECT c FROM Ciudad c WHERE c.estado = :estado")})
 public class Ciudad implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCiudad")
-    private List<Barrio> barrioCollection;
+    @OneToMany(mappedBy = "idCiudad")
+    private List<Configuracion> configuracionList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -58,6 +59,8 @@ public class Ciudad implements Serializable {
     @JoinColumn(name = "idDepartamento", referencedColumnName = "idDepartamento")
     @ManyToOne(optional = false)
     private Departamento idDepartamento;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCiudad")
+    private List<Barrio> barrioCollection;
 
     public Ciudad() {
     }
@@ -104,26 +107,6 @@ public class Ciudad implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idCiudad != null ? idCiudad.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ciudad)) {
-            return false;
-        }
-        Ciudad other = (Ciudad) object;
-        if ((this.idCiudad == null && other.idCiudad != null) || (this.idCiudad != null && !this.idCiudad.equals(other.idCiudad))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public String toString() {
         return "business.direccion.entity.Ciudad[ idCiudad=" + idCiudad + " ]";
     }
@@ -136,5 +119,13 @@ public class Ciudad implements Serializable {
     public void setBarrioCollection(List<Barrio> barrioCollection) {
         this.barrioCollection = barrioCollection;
     }
-    
+
+    public List<Configuracion> getConfiguracionList() {
+        return configuracionList;
+    }
+
+    public void setConfiguracionList(List<Configuracion> configuracionList) {
+        this.configuracionList = configuracionList;
+    }
+
 }

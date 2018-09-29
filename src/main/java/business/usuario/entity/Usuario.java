@@ -7,11 +7,13 @@ package business.usuario.entity;
 
 import business.cliente.entity.Cliente;
 import business.configuracion.entity.Articulo;
+import business.configuracion.entity.Configuracion;
 import business.facturacion.entity.Factura;
 import business.funcionario.entity.Funcionario;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,6 +41,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
 public class Usuario implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuInsercion")
+    private List<Configuracion> configuracionList;
+    @OneToMany(mappedBy = "usuModificacion")
+    private List<Configuracion> configuracionList1;
 
     @OneToMany(mappedBy = "usuInsercion")
     private List<Articulo> articuloList;
@@ -168,6 +175,22 @@ public class Usuario implements Serializable {
 
     public void setFuncionarioList2(List<Funcionario> funcionarioList2) {
         this.funcionarioList2 = funcionarioList2;
+    }
+
+    public List<Configuracion> getConfiguracionList() {
+        return configuracionList;
+    }
+
+    public void setConfiguracionList(List<Configuracion> configuracionList) {
+        this.configuracionList = configuracionList;
+    }
+
+    public List<Configuracion> getConfiguracionList1() {
+        return configuracionList1;
+    }
+
+    public void setConfiguracionList1(List<Configuracion> configuracionList1) {
+        this.configuracionList1 = configuracionList1;
     }
     
 }
