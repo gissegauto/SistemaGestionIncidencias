@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="articuloForm">
+                    <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['articulo.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <facelets>
+                        <div align="right">
+                            <p:commandButton process="dtArticulo" 
+                                             icon="fa fa-plus-circle" 
+                                             update=":form-add:articuloGr" 
+                                             oncomplete="PF('dlgArticuloAdd').show()" 
+                                             actionListener="#{articuloBean.actionClean}"/>
+                        </div>
+                    </facelets>
+                    <p:dataTable id="dtArticulo" var="articulo" 
+                                 value="#{articuloBean.articuloList}"
+                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"  style="font-size:12px"
+                                 rowKey="#{articulo.idArticulo}"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:column headerText="#{msg['articulo.descripcion']}" 
+                                  width="15%" filterBy="#{articulo.descripcion}"
+                                  sortBy="#{articulo.descripcion}">
+                            <h:outputText value="#{articulo.descripcion}" />
+                        </p:column>
+                        <p:column headerText="#{msg['articulo.precio']}" 
+                                  width="15%" filterBy="#{articulo.precio}"
+                                  sortBy="#{articulo.precio}">
+                            <h:outputText value="#{articulo.precio}" />
+                        </p:column>
+                        <p:column headerText="#{msg['articulo.estado']}" 
+                                  width="15%" filterBy="#{articulo.estado}"
+                                  sortBy="#{articulo.estado}">
+                            <h:outputText value="#{articulo.estado}" />
+                        </p:column>
+                        <p:column headerText="#{msg['generic.opciones']}" 
+                                  width="20%">
+                            <p:commandButton 
+                                icon="fa fa-trash"
+                                style="color: crimson"
+                                actionListener="#{articuloBean.delete(articulo)}"
+                                id="botonEditar">
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:dialog header="#{msg['articulo.add.title']}" widgetVar="dlgArticuloAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="articuloGr">   
+                                <p:outputLabel value="#{msg['articulo.add.descripcion']}" for="descripcion" style="right: 20%"/>
+                                <p:inputText id="descripcion" required="true" requiredMessage="#{msg['requerid.descripcion']}"
+                                             value="#{articuloBean.articulo.descripcion}" />
+                                <p:outputLabel value="#{msg['articulo.add.precio']}" for="precio" style="right: 20%"/>
+                                <p:inputText id="precio" value="#{articuloBean.articulo.precio}" />
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.estado']}" />
+                                <p:inputText id="estado" value="Activo" disabled="true" />
+                                <p:spacer/>
+                                <br />
+                                <br />
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="#{msg['generic.guardar']}" 
+                                        update=":articuloForm:dtArticulo" 
+                                        action="#{articuloBean.add}"
+                                        id='btn-guardar-rol' />
+                                </div>   
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

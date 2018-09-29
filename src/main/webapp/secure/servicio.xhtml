@@ -38,11 +38,6 @@ and open the template in the editor.
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:ajax event="cellEdit" listener="#{servicioBean.onCellEdit}" update=":servicioForm:growl" />
-<!--                        <p:column headerText="#{msg['generic.id']}" 
-                                  width="20%"
-                                  sortBy="#{servicio.idServicio}">
-                            <h:outputText value="#{servicio.idServicio}" />
-                        </p:column>-->
                         <p:column headerText="#{msg['servicio.servicio']}" 
                                   width="20%"
                                   sortBy="#{servicio.servicio}">
@@ -51,6 +46,11 @@ and open the template in the editor.
                                 <f:facet name="input"><p:inputText value="#{servicio.servicio}" style="width:96%" label="servicio"/></f:facet>
                             </p:cellEditor>
 
+                        </p:column>
+                        <p:column headerText="#{msg['servicio.precio']}" 
+                                  width="20%"
+                                  sortBy="#{servicio.precio}">
+                            <h:outputText value="#{servicio.precio}" />
                         </p:column>
                         <p:column headerText="#{msg['cliente.estado']}" 
                                   sortBy="#{servicio.estado}" 
@@ -78,7 +78,10 @@ and open the template in the editor.
                                 <p:outputLabel value="#{msg['servicio.add.servicio']}" for="servicio" style="right: 20%"/>
                                 <p:inputText id="servicio" required="true" requiredMessage="#{msg['requerid.descripcion']}"
                                              value="#{servicioBean.servicio.servicio}" />
-
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.estado']}" />
+                                <p:inputText id="estado" value="Activo" disabled="true" />
+                                <p:spacer/>
                                 <br />
                                 <br />
                                 <div style="align-content: center" >

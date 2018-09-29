@@ -167,8 +167,8 @@
     <navigation-rule>
         <from-view-id>/secure/*</from-view-id>
         <navigation-case>
-            <from-outcome>precio</from-outcome>
-            <to-view-id>/secure/precio.xhtml</to-view-id>
+            <from-outcome>articulo</from-outcome>
+            <to-view-id>/secure/articulo.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

@@ -6,8 +6,8 @@
 package presentation;
 
 import business.cliente.entity.Cliente;
-import business.configuracion.boundary.PrecioManager;
-import business.configuracion.entity.Precio;
+import business.configuracion.boundary.ArticuloManager;
+import business.configuracion.entity.Articulo;
 import business.facturacion.boundary.FacturaDetalleManager;
 import business.facturacion.boundary.FacturaManager;
 import business.facturacion.entity.Factura;
@@ -36,7 +36,7 @@ public class FacturacionBean implements Serializable {
     private List<Factura> facturaList;
 
     @Inject
-    PrecioManager precioMgr;
+    ArticuloManager precioMgr;
     @Inject
     FacturaManager facturaMgr;
     @Inject

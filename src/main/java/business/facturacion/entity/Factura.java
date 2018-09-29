@@ -83,6 +83,9 @@ public class Factura implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "estado")
     private String estado;
+    @Column(name = "fec_vencimiento")
+    @Temporal(TemporalType.DATE)
+    private Date fechaVencimiento;
 
     @JoinColumn(name = "id_cliente", referencedColumnName = "idCliente")
     @ManyToOne
@@ -101,15 +104,32 @@ public class Factura implements Serializable {
     public Factura() {
     }
 
+    public Factura(Integer idFactura, Date fecInsercion, Date fecModificacion, String nroFactura, String timbrado, String boleta, String nroBoleta, double total, String estado, Date fechaVencimiento, Cliente cliente, Usuario idUsuarioActualizacion, Usuario idUsuarioRegistro) {
+        this.idFactura = idFactura;
+        this.fecInsercion = fecInsercion;
+        this.fecModificacion = fecModificacion;
+        this.nroFactura = nroFactura;
+        this.timbrado = timbrado;
+        this.boleta = boleta;
+        this.nroBoleta = nroBoleta;
+        this.total = total;
+        this.estado = estado;
+        this.fechaVencimiento = fechaVencimiento;
+        this.cliente = cliente;
+        this.idUsuarioActualizacion = idUsuarioActualizacion;
+        this.idUsuarioRegistro = idUsuarioRegistro;
+    }
+
     public Factura(Integer idFactura) {
         this.idFactura = idFactura;
     }
 
-    public Factura(Integer idFactura, Date fecInsercion, double total, String estado) {
-        this.idFactura = idFactura;
-        this.fecInsercion = fecInsercion;
-        this.total = total;
-        this.estado = estado;
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
     }
 
     public Integer getIdFactura() {

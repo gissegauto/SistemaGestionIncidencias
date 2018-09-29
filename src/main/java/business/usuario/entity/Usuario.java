@@ -6,6 +6,7 @@
 package business.usuario.entity;
 
 import business.cliente.entity.Cliente;
+import business.configuracion.entity.Articulo;
 import business.facturacion.entity.Factura;
 import business.funcionario.entity.Funcionario;
 import java.io.Serializable;
@@ -38,6 +39,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByUsername", query = "SELECT u FROM Usuario u WHERE u.username = :username")
     , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
 public class Usuario implements Serializable {
+
+    @OneToMany(mappedBy = "usuInsercion")
+    private List<Articulo> articuloList;
+    @OneToMany(mappedBy = "usuModificacion")
+    private List<Articulo> articuloList1;
+    @OneToMany(mappedBy = "idUsuario")
+    private List<Funcionario> funcionarioList;
+    @OneToMany(mappedBy = "idUsuarioActualizacion")
+    private List<Funcionario> funcionarioList1;
+    @OneToMany(mappedBy = "idUsuarioRegistro")
+    private List<Funcionario> funcionarioList2;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -116,6 +128,46 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "Usuario{" + "idusuario=" + idusuario + ", username=" + username + ", password=" + password + ", idrol=" + idrol + ", idFuncionario=" + idFuncionario + '}';
+    }
+
+    public List<Articulo> getArticuloList() {
+        return articuloList;
+    }
+
+    public void setArticuloList(List<Articulo> articuloList) {
+        this.articuloList = articuloList;
+    }
+
+    public List<Articulo> getArticuloList1() {
+        return articuloList1;
+    }
+
+    public void setArticuloList1(List<Articulo> articuloList1) {
+        this.articuloList1 = articuloList1;
+    }
+
+    public List<Funcionario> getFuncionarioList() {
+        return funcionarioList;
+    }
+
+    public void setFuncionarioList(List<Funcionario> funcionarioList) {
+        this.funcionarioList = funcionarioList;
+    }
+
+    public List<Funcionario> getFuncionarioList1() {
+        return funcionarioList1;
+    }
+
+    public void setFuncionarioList1(List<Funcionario> funcionarioList1) {
+        this.funcionarioList1 = funcionarioList1;
+    }
+
+    public List<Funcionario> getFuncionarioList2() {
+        return funcionarioList2;
+    }
+
+    public void setFuncionarioList2(List<Funcionario> funcionarioList2) {
+        this.funcionarioList2 = funcionarioList2;
     }
     
 }
