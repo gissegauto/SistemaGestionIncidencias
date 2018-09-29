@@ -59,9 +59,10 @@ public class LoginBean implements Serializable {
                 .getExternalContext().getSession(false);
         session.invalidate();
 
+        loggedIn = false;
         FacesContext.getCurrentInstance().getExternalContext().redirect("../login.jsf");
         UtilLogger.info("Cerró la sessión");
-        loggedIn = false;
+
         return "login";
     }
 
@@ -75,6 +76,7 @@ public class LoginBean implements Serializable {
         if (usuario != null) {
             loggedIn = true;
         }
+      
 
         if (loggedIn) {
             UtilLogger.info("Se inició sesión como " + username);

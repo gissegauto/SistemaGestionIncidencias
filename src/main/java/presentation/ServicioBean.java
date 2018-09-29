@@ -41,21 +41,12 @@ public class ServicioBean implements Serializable {
 
     public void limpiar() {
         servicio = new Servicio();
-        servicioList = servicioMgr.getAll();
+        servicioList = servicioMgr.getByNotDelete();
     }
 
     public String add() {
         try {
             if (null != servicio) {
-                for (Servicio service : servicioList) {
-                    if (service.getServicio().trim().equalsIgnoreCase(servicio.getServicio().trim())
-                            && (servicio.getIdServicio() == null || servicio.getIdServicio() == 0)) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
-                                "El servicio " + servicio.getServicio()
-                                + " ya se encuentra registrado"));
-                        return "servicio";
-                    }
-                }
                 if (servicio != null & servicio.getIdServicio() == null) {
                     servicio.setEstado("Activo");
                     servicio = servicioMgr.add(servicio);
@@ -74,6 +65,14 @@ public class ServicioBean implements Serializable {
             UtilLogger.error("Problemas al insertar el servicio", e);
         }
         return "servicio";
+    }
+    
+    public void delete(Servicio servicio) {
+        servicio.setEstado("Borrado");
+        servicioMgr.update(servicio);
+        limpiar();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró el registro"));
+        RequestContext.getCurrentInstance().update("servicioForm:dtServicio");
     }
 
     public void onCellEdit(CellEditEvent event) {

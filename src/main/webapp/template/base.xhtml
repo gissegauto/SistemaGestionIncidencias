@@ -49,22 +49,17 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>#{msg['menu.cliente']}</a>
                             <ul class="sub-menu children dropdown-menu">
                                 <li><i class="fa fa-user"></i><a href="cliente.jsf">#{msg['menu.cliente']}</a></li>
+                                <li><i class="fa fa-user"></i><a href="facturacion.jsf">#{msg['menu.facturacion']}</a></li>
                             </ul>
                         </li>
                         <h3 class="menu-title">Solicitudes</h3><!-- /.menu-title -->
                         <li class="menu-item-has-children dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>#{msg['menu.solicitud']}</a>
                             <ul class="sub-menu children dropdown-menu">
-                                <!--<li><i class="fa fa-puzzle-piece"></i><a href="ui-buttons.html">Buttons</a></li>-->
                                 <li><i class="fa fa-book"></i><a href="solicitudConexion.jsf">#{msg['menu.solicitud.conexion']}</a></li>
                                 <li><i class="fa fa-book"></i><a href="solicitudAmpliacion.jsf">#{msg['menu.solicitud.ampliacion']}</a></li>
-                                <!--                                                                                                <li><i class="fa fa-id-card-o"></i><a href="ui-cards.html">Cards</a></li>
-                                                                                                                                <li><i class="fa fa-exclamation-triangle"></i><a href="ui-alerts.html">Alerts</a></li>
-                                                                                                                                <li><i class="fa fa-spinner"></i><a href="ui-progressbar.html">Progress Bars</a></li>
-                                                                                                                                <li><i class="fa fa-fire"></i><a href="ui-modals.html">Modals</a></li>
-                                                                                                                                <li><i class="fa fa-bars"></i><a href="ui-switches.html">Switches</a></li>
-                                                                                                                                <li><i class="fa fa-th"></i><a href="ui-grids.html">Grids</a></li>
-                                                                                                                                <li><i class="fa fa-file-word-o"></i><a href="ui-typgraphy.html">Typography</a></li>-->
+                                <li><i class="fa fa-book"></i><a href="solicitudDesconexion.jsf">#{msg['menu.solicitud.desconexion']}</a></li>
+                                <li><i class="fa fa-book"></i><a href="solicitudReconexion.jsf">#{msg['menu.solicitud.reconexion']}</a></li>
                             </ul>
                         </li>
                         <h3 class="menu-title">Funcionarios</h3><!-- /.menu-title -->
@@ -91,6 +86,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-th"></i>#{msg['menu.servicio']}</a>
                             <ul class="sub-menu children dropdown-menu">
                                 <li><i class="menu-icon fa fa-arrows"></i><a href="servicio.jsf">#{msg['menu.servicio']}</a></li>
+                                <li><i class="menu-icon fa fa-arrows"></i><a href="articulo.jsf">#{msg['menu.articulos']}</a></li>
                             </ul>
                         </li>
                         <li class="menu-item-has-children dropdown">
@@ -106,6 +102,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-legal"></i>Otros</a>
                             <ul class="sub-menu children dropdown-menu">
                                 <li><i class="menu-icon fa fa-xing"></i><a href="pais.jsf">Pais</a></li>
+                                <li><i class="menu-icon fa fa-arrows"></i><a href="configuracion.jsf">#{msg['menu.configuracion']}</a></li>
                             </ul>
                         </li>
                     </ul>

@@ -30,7 +30,6 @@ public class RolBean implements Serializable {
 
     private Rol rol;
     private List<Rol> rolList;
-    FacesContext context = FacesContext.getCurrentInstance();
     
     @Inject
     RolManager rolMgr;
@@ -80,16 +79,19 @@ public class RolBean implements Serializable {
         return "rol";
     }
 
-    public String delete() {
+    
+     public String delete() {
         try {
-            rolMgr.delete(rol);
-            context.addMessage(null, new FacesMessage("Se borró Rol"));
-            RequestContext.getCurrentInstance().update("rolForm:dtRol");
+            if (rol.getIdrol()> 0) {
+                rolMgr.delete(rol);
+                limpiar();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró el Rol"));
+                RequestContext.getCurrentInstance().update("rolForm:dtRol");
+            }
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage("Error",
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el rol"));
             UtilLogger.error("Problemas al insertar el rol", e);
-            return null;
         }
         return "rol";
     }

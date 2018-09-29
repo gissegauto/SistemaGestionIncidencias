@@ -14,54 +14,67 @@ and open the template in the editor.
     <h:body>
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
-                <p:fieldset title="Datos de Solicitud" style="margin-bottom:5px; font-size:15px " >
+                <p:fieldset title="cliente.solicitud.description" style="margin-bottom:5px; font-size:15px " >
                     <h:form id="clienteSolicitudForm">
                         <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
                         <div align="center">
                             <p:outputLabel value="#{msg['cliente.solicitud.title']} " class="card-title" style="color: #0056b3"/>
                         </div>
                         <p:fieldset style="margin-bottom:5px; font-size:15px " >
-                            <h6 style="color: #0056b3; font-weight: bold">Datos de Solicitud</h6>
+                            <h6 style="color: #0056b3; font-weight: bold">#{msg['cliente.solicitud.description']}</h6>
                             <p:separator/>
-                            <h:panelGrid columns="2" width="30%">
-                                <h:outputText value="#{msg['solicitud.conexion.nro']}"  style="right: 10%; font-weight: bold"/>
+                            <h:panelGrid columns="2" width="50%">
+                                <h:outputText value="#{msg['cliente.solicitud.nro']}"  style="right: 10%; font-weight: bold"/>
                                 <h:outputText value="#{clienteSolicitudBean.solicitudConexion.idSolicitudConexion}" />
-                                <p:outputLabel value="#{msg['solicitud.conexion.solicitante']}" style="right: 10%; font-weight: bold"/>
+
+                                <p:outputLabel value="#{msg['cliente.solicitud.solicitante']}" style="right: 10%; font-weight: bold"/>
                                 <h:outputText value="#{clienteSolicitudBean.solicitudConexion.nombre} #{clienteSolicitudBean.solicitudConexion.apellido}" />
-                                <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" style="right: 10%; font-weight: bold"/>
+
+                                <p:outputLabel value="#{msg['cliente.solicitud.estado']}" style="right: 10%; font-weight: bold"/>
                                 <h:outputText value="#{clienteSolicitudBean.solicitudConexion.estado}"
                                               style="left: 10%"/>
+                                
+                                 <p:outputLabel value="#{msg['cliente.solicitud.ciudad']}" style="right: 10%; font-weight: bold"/>
+                                 <h:outputText value="#{clienteSolicitudBean.solicitudConexion.idBarrio.idCiudad.ciudad}"
+                                              style="left: 10%"/>
+                                 
+                                 <p:outputLabel value="#{msg['cliente.solicitud.barrio']}" style="right: 10%; font-weight: bold"/>
+                                 <h:outputText value="#{clienteSolicitudBean.solicitudConexion.idBarrio.barrio}"
+                                              style="left: 10%"/>
+                                 
+                                 <p:outputLabel value="#{msg['cliente.solicitud.direccion']}" style="right: 10%; font-weight: bold"/>
+                                 <h:outputText value="#{clienteSolicitudBean.solicitudConexion.direccion}"
+                                              style="left: 10%"/>
+                                 
+                                
+                                <p:outputLabel value="#{msg['cliente.solicitud.fecha']}" style="right: 10%; font-weight: bold"/>
+                                <h:outputText value="#{clienteSolicitudBean.solicitudConexion.fechaRegistro}"
+                                              style="left: 10%">
+                                    <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                </h:outputText>   
+
                             </h:panelGrid>
                         </p:fieldset>
                         <p:fieldset style="margin-bottom:5px; font-size:15px " >
-                            <h6 style="color: #0056b3; font-weight: bold">Seleccionar Funcionario</h6>
+                            <h6 style="color: #0056b3; font-weight: bold">#{msg['cliente.solicitud.seleccionar']}</h6>
                             <p:separator/>
-                            <h:panelGrid columns="2" width="30%">  
-                                <h:outputText value="#{msg['solicitud.conexion.funcionario']}"  style="right: 10%; font-weight: bold"/>
-                                <p:selectOneMenu id="advanced" value="#{clienteSolicitudBean.funcionarioSelected}" 
-                                                 converter="funcionarioConverter" panelStyle="width:180px"
-                                                 effect="fade" var="funcionario" style="width:160px" filter="true" filterMatchMode="startsWith">
-                                    <f:selectItem itemLabel="Seleccinar" itemValue="" />
-                                    <f:selectItems value="#{clienteSolicitudBean.funcionarioList}" var="funcionario" itemLabel="#{funcionario.nombreFuncionario}" itemValue="#{funcionario}" />
-
-                                    <p:column>
-                                        <h:outputText value="#{funcionario.nombreFuncionario}" />
-                                    </p:column>
-                                </p:selectOneMenu>
-                            </h:panelGrid>
+                            <h:outputText value="#{msg['cliente.solicitud.tecnico']}"  style="right: 10%; font-weight: bold"/>
+                            <p:selectManyCheckbox id="tecnicos" value="#{clienteSolicitudBean.funcionarioSelected}" layout="responsive" columns="2">
+                                <f:selectItems value="#{clienteSolicitudBean.funcionarioList}"  var="funcionario" itemLabel="#{funcionario.nombreFuncionario} #{funcionario.apellidoFuncionario}" itemValue="#{funcionario}"/>
+                            </p:selectManyCheckbox>
                         </p:fieldset>
                         <br />
                         <br />
                         <h:panelGrid columns="2" width="30%">  
                             <p:commandButton 
                                 style="left:300px"
-                                value="Cancelar" 
+                                value="#{msg['generic.cancelar']}" 
                                 action="solicitudConexion"
                                 id='btn-cancelarSolicitudFuncionario' />
                             <p:commandButton 
                                 style="left:280px"
-                                value="Confirmar" 
-                                action="#{solicitudConexionBean.addFuncionario}"
+                                value="#{msg['generic.confirmar']}" 
+                                action="#{clienteSolicitudBean.asignarTecnicos}"
                                 id='btn-confirmarFuncionario' />
 
                         </h:panelGrid>

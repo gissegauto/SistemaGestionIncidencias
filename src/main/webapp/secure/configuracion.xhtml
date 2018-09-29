@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <p:fieldset title="#{msg['configuracion.title']}" style="margin-bottom:5px; font-size:15px " >
+                    <h:form id="configuracionForm">
+                        <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                        <div align="center">
+                            <p:outputLabel value="#{msg['configuracion.empresa.datos']} " class="card-title" style="color: #0056b3; font-size:18px; font-weight: bold"/>
+                        </div>
+                        <p:fieldset style="margin-bottom:5px; font-size:15px " title="#{msg['configuracion.empresa.datos']}" >
+                            <h:panelGrid  columns="2">
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.empresa.nombre']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.nomEmpresa}" style="margin-left: 1px" />
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.empresa.ruc']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.rucEmpresa}" style="margin-left: 1px" />
+
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.empresa.ficticio']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.nomFicticio}" style="margin-left: 1px" />
+
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.empresa.propietario']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.propietario}" style="margin-left: 1px" />
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.empresa.ciudad']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.idCiudad.ciudad}" style="margin-left: 1px" />
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.empresa.direccion']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.dirEmpresa}" style="margin-left: 1px" />
+
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <div align="center">
+                            <p:outputLabel value="#{msg['configuracion.config']} " class="card-title" style="color: #0056b3; font-size:18px; font-weight: bold"/>
+                        </div>
+                        <p:fieldset style="margin-bottom:5px; font-size:15px " >
+                            <h:panelGrid  columns="2">
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.multa']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.multa}" style="margin-left: 1px" />
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.timbrado']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.timbrado}" style="margin-left: 1px" />
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.nro.boleta']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.nroBoleta}" style="margin-left: 1px" />
+
+                                <h6 style="color: #0056b3; font-weight: bold">#{msg['configuracion.nro.factura']}</h6>
+                                <h:outputText value="#{configuracionBean.configuracion.nroFactura}" style="margin-left: 1px" />
+
+                            </h:panelGrid>
+                        </p:fieldset>
+
+                    </h:form>
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

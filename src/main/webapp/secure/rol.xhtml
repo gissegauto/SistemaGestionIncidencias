@@ -38,12 +38,7 @@ and open the template in the editor.
                                  editMode="cell"
                                  emptyMessage="#{msg['generic.empty']}">
                         <p:ajax event="cellEdit" listener="#{rolBean.onCellEdit}" update=":rolForm:growl" />
-                        <p:column headerText="#{msg['generic.id']}" 
-                                  width="20%"
-                                  sortBy="#{rol.idrol}">
-                            <h:outputText value="#{rol.idrol}" />
-                        </p:column>
-                        <p:column headerText="Descripción" 
+                        <p:column headerText="#{msg['generic.rol']}" 
                                   width="20%"
                                   sortBy="#{rol.descripcion}">
                             <p:cellEditor>
@@ -52,7 +47,7 @@ and open the template in the editor.
                             </p:cellEditor>
 
                         </p:column>
-                        <p:column headerText="Opciones" 
+                        <p:column headerText="#{msg['generic.opciones']}" 
                                   width="20%">
                             <p:commandButton 
                                 icon="fa fa-trash"
@@ -64,7 +59,7 @@ and open the template in the editor.
                         </p:column>
                     </p:dataTable>
                 </h:form>
-                <p:dialog header="Rol" widgetVar="dlgRolAdd"
+                <p:dialog header="#{msg['generic.rol']}" widgetVar="dlgRolAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                         <h:form id="form-add">

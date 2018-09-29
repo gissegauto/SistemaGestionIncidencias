@@ -24,7 +24,6 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.CellEditEvent;
 
 /**
  *
@@ -40,6 +39,7 @@ public class FuncionarioBean implements Serializable {
     private Ciudad ciudad;
     private List<Barrio> barrioList;
     private Barrio barrio;
+    private boolean tecnico = false;
 
     @Inject
     FuncionarioManager funcionarioMgr;
@@ -59,7 +59,7 @@ public class FuncionarioBean implements Serializable {
 
     public void limpiar() {
         funcionario = new Funcionario();
-        funcionarioList = funcionarioMgr.getAll();
+        funcionarioList = funcionarioMgr.getByNotBorrado();
         ciudadList = ciudadMgr.getAll();
         ciudad = new Ciudad();
         barrio = new Barrio();
@@ -77,22 +77,33 @@ public class FuncionarioBean implements Serializable {
                         return "funcionario";
                     }
                 }
+                if (tecnico) {
+                    funcionario.setTecnico("SI");
+                } else {
+                    funcionario.setTecnico("NO");
+                }
                 if (funcionario != null & funcionario.getIdFuncionario() == null) {
                     funcionario.setEstado("Activo");
                     funcionario.setFechaRegistro(new Date());
                     funcionario.setIdUsuarioRegistro(session.getUsuario());
                     funcionario = funcionarioMgr.add(funcionario);
-                    historialFuncionarioController.addHistory(funcionario);
+                    if (funcionario != null) {
+                        historialFuncionarioController.addHistory(funcionario);
+                    }
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                 } else if (funcionario != null & funcionario.getIdFuncionario() > 0) {
                     funcionario.setIdUsuarioActualizacion(session.getUsuario());
                     funcionario.setFechaActualizacion(new Date());
                     funcionario = funcionarioMgr.update(funcionario);
-                    historialFuncionarioController.addHistory(funcionario);
+
+                    if (funcionario != null) {
+                        historialFuncionarioController.addHistory(funcionario);
+                    }
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
                             "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                 }
+                limpiar();
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
@@ -103,9 +114,13 @@ public class FuncionarioBean implements Serializable {
         return "funcionario";
     }
 
-    public String delete() {
+    public String delete(Funcionario funcionario) {
         try {
-            funcionarioMgr.delete(funcionario);
+            funcionario.setIdUsuarioActualizacion(session.getUsuario());
+            funcionario.setFechaActualizacion(new Date());
+            funcionario.setEstado("Borrado");
+            funcionarioMgr.update(funcionario);
+            limpiar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Funcionario"));
             RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
         } catch (Exception e) {
@@ -115,6 +130,10 @@ public class FuncionarioBean implements Serializable {
             return null;
         }
         return "funcionario";
+    }
+
+    public String verOrdenTrabajo(Funcionario funcionario) {
+        return "ordenTrabajo";
     }
 
     public void buscarBarrios() {
@@ -172,6 +191,14 @@ public class FuncionarioBean implements Serializable {
 
     public void setBarrio(Barrio barrio) {
         this.barrio = barrio;
+    }
+
+    public boolean isTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(boolean tecnico) {
+        this.tecnico = tecnico;
     }
 
 }

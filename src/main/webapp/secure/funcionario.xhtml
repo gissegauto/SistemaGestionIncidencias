@@ -50,18 +50,18 @@ and open the template in the editor.
                                   sortBy="#{funcionario.apellidoFuncionario}">
                             <h:outputText value="#{funcionario.apellidoFuncionario}" />
                         </p:column>
-                        <p:column headerText="#{msg['funcionario.direccion']}" 
-                                  width="10%" filterBy="#{funcionario.direccion}"
-                                  sortBy="#{funcionario.direccion}">
-                            <h:outputText value="#{funcionario.direccion}" />
+                        <p:column headerText="#{msg['funcionario.tecnico']}" 
+                                  width="8%" 
+                                  sortBy="#{funcionario.tecnico}">
+                            <h:outputText value="#{funcionario.tecnico}" />
                         </p:column>
-                        <p:column headerText="#{msg['funcionario.telefono']}" 
-                                  width="10%" filterBy="#{funcionario.telefono}"
-                                  sortBy="#{funcionario.telefono}">
-                            <h:outputText value="#{funcionario.telefono}" />
+                        <p:column headerText="#{msg['funcionario.celular']}" 
+                                  width="10%" filterBy="#{funcionario.celular}"
+                                  sortBy="#{funcionario.celular}">
+                            <h:outputText value="#{funcionario.celular}" />
                         </p:column>
                         <p:column headerText="#{msg['funcionario.estado']}" 
-                                  width="10%" filterBy="#{funcionario.estado}"
+                                  width="10%"
                                   sortBy="#{funcionario.estado}">
                             <h:outputText value="#{funcionario.estado}" />
                         </p:column>
@@ -76,20 +76,30 @@ and open the template in the editor.
                                 </p:commandButton>
                             </p:column>
                             <p:commandButton 
+                                icon="ui-icon-folder-collapsed" 
+                                title="#{msg['funcionario.btn.orden']}"
+                                actionListener="#{funcionarioBean.verOrdenTrabajo(funcionario)}"
+                                id="botonTrabajo">
+                            </p:commandButton>
+                            <p:commandButton 
                                 icon="ui-icon-trash" 
-                                id="botonEditar">
-                                <f:setPropertyActionListener target="#{funcionarioBean.funcionario}" value="funcionario" />
+                                title="#{msg['generic.btnDelete']}"
+                                actionListener="#{funcionarioBean.delete(funcionario)}"
+                                id="botonEliminar">
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
                     <p:overlayPanel widgetVar="dlgVerFuncionario" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
                         <p:fieldset  style="margin-bottom:5px; font-size:12px " >
-                            <p:outputPanel id="clienteDetail">
+                            <p:outputPanel id="funcionarioDetail">
                                 <h:panelGrid  columns="2" rendered="#{not empty funcionarioBean.funcionario}" columnClasses="label,value">
                                     <p:outputLabel value="#{msg['funcionario.add.id']}"  style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{funcionarioBean.funcionario.idFuncionario}" />
                                     <p:outputLabel value="#{msg['funcionario.add.funcionario']}"  style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{funcionarioBean.funcionario.nombreFuncionario} #{funcionarioBean.funcionario.apellidoFuncionario}" />
+                                    <p:outputLabel value="#{msg['funcionario.add.tecnico']}" style="right: 15%; font-weight: bold"/>
+                                    <h:outputText value="#{funcionarioBean.funcionario.tecnico}" />
+
                                     <p:outputLabel value="#{msg['funcionario.add.direccion']}" style="right: 15%; font-weight: bold"/>
                                     <h:outputText value="#{funcionarioBean.funcionario.direccion}" />
                                     <p:outputLabel value="#{msg['funcionario.add.ciudad']}" style="right: 15%; font-weight: bold"/>
@@ -176,7 +186,7 @@ and open the template in the editor.
                                         <f:selectItems value="#{funcionarioBean.ciudadList}" 
                                                        var="ciudad" itemLabel="#{ciudad.ciudad}" 
                                                        itemValue="#{ciudad}" />
-                                         
+
                                     </p:selectOneMenu>                                                             
                                     <p:spacer/>     
 
@@ -189,6 +199,10 @@ and open the template in the editor.
                                                        var="barrio" itemLabel="#{barrio.barrio}" 
                                                        itemValue="#{barrio}"/>
                                     </p:selectOneMenu>
+                                    <p:spacer/>
+                                    <p:outputLabel value="#{msg['funcionario.add.tecnico']}" style="right: 15%"/>
+                                    <p:selectBooleanButton id="value2" value="#{funcionarioBean.tecnico}" onLabel="Si" offLabel="No" 
+                                                           onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:60px"/>
                                     <p:spacer/>
                                     <p:outputLabel value="#{msg['funcionario.add.estado']}" style="right: 15%"/>
                                     <p:inputText id="estado" value="Activo" disabled="true" />

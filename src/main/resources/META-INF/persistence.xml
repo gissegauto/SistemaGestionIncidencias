@@ -3,7 +3,7 @@
   <persistence-unit name="mitvPU" transaction-type="JTA">
     <jta-data-source>jdbc/mitv</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
+    <shared-cache-mode>ALL</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
     </properties>

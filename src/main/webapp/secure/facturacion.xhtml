@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="facturacionForm">
+                    <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" escape="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['facturacion.title']} " class="card-title" style="color: #0056b3"/>
+                    </div> 
+                    <p:dataTable id="dtFactura" var="factura" widgetVar="facturaTable"
+                                 value="#{facturacionBean.facturaList}"
+                                 rows="15" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="15,20,50"
+                                 style="font-size:12px"
+                                 emptyMessage="#{msg['generic.empty']}">
+
+                        <p:column headerText="#{msg['generic.id']}" 
+                                  width="5%"
+                                  sortBy="#{factura.idFactura}">
+                            <h:outputText value="#{factura.idFactura}" />
+                        </p:column>
+                        <p:column headerText="#{msg['facturacion.nro.cliente']}" 
+                                   width="10%" filterBy="#{factura.cliente.idCliente}"
+                                  sortBy="#{factura.cliente.idCliente}">
+                            <h:outputText value="#{factura.cliente.idCliente}" />
+                        </p:column>
+                        <p:column headerText="#{msg['facturacion.cliente']}" 
+                                  width="10%" filterBy="#{factura.cliente.nombre} #{factura.cliente.apellido}"
+                                  sortBy="#{factura.cliente.nombre} #{factura.cliente.apellido}">
+                            <h:outputText value="#{factura.cliente.nombre} #{factura.cliente.apellido}" />
+                        </p:column>
+                        <p:column headerText="#{msg['facturacion.fecha']}" 
+                                  width="10%" filterBy="#{factura.fecInsercion}"
+                                  sortBy="#{factura.fecInsercion}">
+                            <h:outputText value="#{factura.fecInsercion}" >
+                                <f:convertDateTime pattern="dd-MMM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['facturacion.total']}" 
+                                  width="10%" filterBy="#{factura.total}"
+                                  sortBy="#{factura.total}">
+                            <h:outputText value="#{factura.total}" >
+                                <f:convertNumber pattern="#0" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['facturacion.estado']}" 
+                                  width="10%" filterBy="#{factura.estado}"
+                                  sortBy="#{factura.estado}">
+                            <h:outputText value="#{factura.estado}" />
+                        </p:column>
+                        <p:column headerText="Opciones" 
+                                  width="20%">
+                            <p:column style="width:32px;text-align: center">
+                                <p:column style="width:32px;text-align: center">
+                                <p:commandButton 
+                                    icon="ui-icon-search" title="#{msg['facturacion.btn.ver']}">
+                                </p:commandButton>
+                            </p:column>
+                                <p:commandButton 
+                                    icon="ui-icon-pencil"
+                                    rendered="#{factura.estado eq 'Pendiente'}" 
+                                    title="#{msg['generic.btnUpdate']}"
+                                    id="botonEditar">
+                                </p:commandButton>
+                            </p:column>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

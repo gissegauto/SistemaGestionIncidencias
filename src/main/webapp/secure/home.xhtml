@@ -32,7 +32,10 @@
                     <h:form>
                         <p:growl id="messages" showDetail="true" />
                         <h5 style="margin-top: 0">#{msg['generic.welcome']} </h5>
-
+                        <h:panelGrid columns="1" columnClasses="left,right" style="width:100%">
+                            <!--<p:chart type="line" model="#{chartBean.animatedModel1}" style="width:400px;" />-->
+                            <p:chart type="bar" model="#{chartBean.animatedModel2}" style="width:1000px;" />
+                        </h:panelGrid>
                     </h:form>
                 </p:panel>
             </ui:define>

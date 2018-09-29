@@ -39,12 +39,15 @@ public class ClienteSolicitud implements Serializable {
     @Basic(optional = false)
     @Column(name = "idClienteSolicitud")
     private Integer idClienteSolicitud;
+    
     @JoinColumn(name = "idSolicitudConexion", referencedColumnName = "idSolicitudConexion")
     @ManyToOne(optional = false)
     private SolicitudConexion idSolicitudConexion;
+   
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Cliente idCliente;
+   
     @JoinColumn(name = "idFuncionario", referencedColumnName = "idFuncionario")
     @ManyToOne(optional = false)
     private Funcionario idFuncionario;

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <p:fieldset title="solicitudes.title" style="margin-bottom:5px; font-size:15px " >
+                    <h:form id="solicitudesForm">
+                        <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                        <div align="center">
+                            <p:outputLabel value="#{msg['solicitudes.title']} " class="card-title" style="color: #0056b3"/>
+                        </div>
+                        <p:fieldset style="margin-bottom:5px; font-size:15px " >
+                            <h6 style="color: #0056b3; font-weight: bold">#{msg['solicitudes.datos']}</h6>
+                            <p:separator/>
+                            <h:panelGrid columns="2" width="50%">
+                                <h:outputText value="#{msg['solicitudes.nro.cliente']}"  style="right: 10%; font-weight: bold"/>
+                                <h:outputText value="#{clienteSolicitudBean.cliente.idCliente}" />
+                                <h:outputText value="#{msg['solicitudes.nombre']}"  style="right: 10%; font-weight: bold"/>
+                                <h:outputText value="#{clienteSolicitudBean.cliente.nombre}" />
+                                <h:outputText value="#{msg['solicitudes.apellido']}"  style="right: 10%; font-weight: bold"/>
+                                <h:outputText value="#{clienteSolicitudBean.cliente.apellido}" />
+                                <h:outputText value="#{msg['solicitudes.cliente.desde']}"  style="right: 10%; font-weight: bold"/>
+                                <h:outputText value="#{clienteSolicitudBean.cliente.fechaRegistro}" >
+                                    <f:convertDateTime pattern="dd-MMM-yyyy" />
+                                </h:outputText>
+                            </h:panelGrid>
+
+                        </p:fieldset>
+                        <p:fieldset style="margin-bottom:5px; font-size:15px " >
+                            <h6 style="color: #0056b3; font-weight: bold">#{msg['solicitudes.title2']}</h6>
+                            <p:separator/>
+                            <p:dataTable id="dtCliente" var="solicitudes" widgetVar="solicitudesTable"
+                                         value="#{clienteSolicitudBean.solicitudes}"
+                                         rows="15" paginator="true" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="15,20,50"
+                                         style="font-size:12px"
+                                         rowKey="#{solicitudes.idClienteSolicitud}"
+                                         emptyMessage="#{msg['generic.empty']}">
+                                <p:column headerText="#{msg['generic.id']}" 
+                                          width="5%"
+                                          sortBy="#{solicitudes.idClienteSolicitud}">
+                                    <h:outputText value="#{solicitudes.idClienteSolicitud}" />
+                                </p:column>
+
+                                <p:column headerText="#{msg['solicitudes.fecha.conexion']}" 
+                                          width="10%"
+                                          sortBy="#{solicitudes.idSolicitudConexion.fechaRegistro}">
+                                    <h:outputText value="#{solicitudes.idSolicitudConexion.fechaRegistro}" >
+                                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msg['solicitudes.funcionario']}" 
+                                          width="10%"
+                                          sortBy="#{solicitudes.idFuncionario.nombreFuncionario} #{solicitudes.idFuncionario.apellidoFuncionario}">
+                                    <h:outputText value="#{solicitudes.idFuncionario.nombreFuncionario} #{solicitudes.idFuncionario.apellidoFuncionario}" />
+                                </p:column>
+                                <p:column headerText="Opciones" 
+                                          width="20%"></p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+                    </h:form>   
+                </p:fieldset>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

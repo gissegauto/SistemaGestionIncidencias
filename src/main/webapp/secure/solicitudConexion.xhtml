@@ -63,14 +63,14 @@ and open the template in the editor.
                             <h:outputText value="#{solicitudConexion.idBarrio.barrio}" />
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.fecha']}" 
-                                  width="10%" filterBy="#{solicitudConexion.fechaRegistro}"
+                                  width="9%" filterBy="#{solicitudConexion.fechaRegistro}"
                                   sortBy="#{solicitudConexion.fechaRegistro}">
                             <h:outputText value="#{solicitudConexion.fechaRegistro}" >
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.hora']}" 
-                                  width="7%" filterBy="#{solicitudConexion.fechaRegistro}"
+                                  width="6%" filterBy="#{solicitudConexion.fechaRegistro}"
                                   sortBy="#{solicitudConexion.fechaRegistro}">
                             <h:outputText value="#{solicitudConexion.fechaRegistro}" >
                                 <f:convertDateTime pattern="hh:mm" />
@@ -87,7 +87,7 @@ and open the template in the editor.
                             <h:outputText value="#{solicitudConexion.estado}" />
                         </p:column>
                         <p:column headerText="#{msg['generic.opciones']}" 
-                                  width="12%">
+                                  width="15%">
                             <p:column style="width:32px;text-align: center">
                                 <p:commandButton update=":solicitudConexionForm:solicitudConexionDetail"
                                                  oncomplete="PF('verSolicitudConexion').show('#{component.clientId}')"
@@ -98,9 +98,10 @@ and open the template in the editor.
                             </p:column>
 
                             <p:commandButton 
+                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"
                                 icon="ui-icon-pencil"
                                 update=":form-add:solicitudConexionGr"
-                                title="Editar"
+                                title="#{msg['generic.btnUpdate']}"
                                 action="#{solicitudConexionBean.edicion}"
                                 oncomplete="PF('dlgSolicitudConexionAdd').show('#{component.clientId}')"
                                 id="botonEditar" >
@@ -108,12 +109,32 @@ and open the template in the editor.
                                                              target="#{solicitudConexionBean.solicitudConexion}" />
                             </p:commandButton>
                             <p:commandButton 
+                                icon="ui-icon-close"
+                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"                                
+                                title="#{msg['generic.btnCancelar']}"
+                                actionListener="#{solicitudConexionBean.cancelar(solicitudConexion)}"
+                                id="botonCancelar">
+                            </p:commandButton>
+                            <p:commandButton 
                                 rendered="#{solicitudConexion.estado eq 'Pendiente'}"
-                                icon="ui-icon-check"
+                                icon="ui-icon-arrowrefresh-1-e"
                                 process="dtSolicitudConexion"
-                                title="Cambiar de estado"
+                                title="#{msg['solicitud.conexion.btn.asignar']}"
                                 action="#{solicitudConexionBean.clienteSolicitud(solicitudConexion)}"
                                 id="botonCambiarEstado" />
+                            <p:commandButton 
+                                rendered="#{solicitudConexion.estado eq 'En Curso'}"
+                                icon="ui-icon-check"
+                                title="#{msg['solicitud.conexion.btn.finalizar']}"
+                                action="#{solicitudConexionBean.addCliente(solicitudConexion)}"
+                                id="botonFinalizadoEstado" />
+                            <p:commandButton 
+                                rendered="#{solicitudConexion.estado eq 'Finalizado'}"
+                                icon="ui-icon-document" 
+                                process="dtSolicitudConexion"
+                                title="#{msg['solicitud.conexion.btn.generar']}"
+                                action="#{solicitudConexionBean.generarFactura(solicitudConexion)}"
+                                id="botonGenerarFactura" />
                         </p:column>
                     </p:dataTable>
                     <p:overlayPanel widgetVar="verSolicitudConexion" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
@@ -124,6 +145,10 @@ and open the template in the editor.
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.idSolicitudConexion}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.solicitante']}"  style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.nombre} #{solicitudConexionBean.solicitudConexion.apellido}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.fecha.solicitud']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.fechaRegistro}" >
+                                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                                    </h:outputText>
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.direccion']}" style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.direccion}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.referencia']}" style="right: 10%; font-weight: bold"/>
@@ -134,12 +159,19 @@ and open the template in the editor.
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.idBarrio.barrio}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.celular']}" style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.celular}" />
-                                    <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" style="right: 10%; font-weight: bold"/>
-                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.telefono}" />
-                                    <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}"  style="right: 10%; font-weight: bold"/>
-                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.observacion}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.telefono ne ''}"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.telefono}" rendered="#{solicitudConexionBean.solicitudConexion.telefono ne ''}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" />
+
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}"  style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.observacion}" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.estado}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.fecha.finalizado']}" style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.estado eq 'Finalizado'}"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.fechaActualizacion}" rendered="#{solicitudConexionBean.solicitudConexion.estado eq 'Finalizado'}">
+                                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                                    </h:outputText> 
                                 </h:panelGrid>
                             </p:outputPanel>
                             <br />
@@ -147,7 +179,7 @@ and open the template in the editor.
                                 <p:commandButton 
                                     value="#{msg['generic.imprimir']}" 
                                     id='btn-imprimir' />
-                                
+
                                 <p:commandButton 
                                     value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('verSolicitudConexion').hide()" 
@@ -190,6 +222,9 @@ and open the template in the editor.
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" for="telefono" style="right: 10%"/>
                                 <p:inputText id="telefono" value="#{solicitudConexionBean.solicitudConexion.telefono}" />
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" for="cantidadtv" style="right: 10%"/>
+                                <p:inputText id="cantidadtv" value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" />
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}" for="observacion" style="right: 10%"/>
                                 <p:inputText id="observacion" value="#{solicitudConexionBean.solicitudConexion.observacion}" />
@@ -240,6 +275,97 @@ and open the template in the editor.
                         </h:form>
                     </p:fieldset>
                 </p:dialog>
+
+                <p:dialog header="#{msg['solicitud.conexion.add.cliente']}" widgetVar="dlgClienteAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add-cliente" >
+                            <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
+                            <h:panelGrid id="clienteNewGr" columns="3" columnClasses="column" >
+                                <p:outputLabel value="#{msg['cliente.add.nombre']}" for="nombre" style="left:10%"/>
+                                <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
+                                             value="#{clienteBean.cliente.nombre}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.apellido']}" for="apellido" style="right: 10%"/>
+                                <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
+                                             value="#{clienteBean.cliente.apellido}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.tipoDocumento']}" for="tipoDocumento"  />
+                                <p:selectOneMenu id="tipoDocumento" value="#{clienteBean.cliente.tipoDocumento}" style="width:125px">
+                                    <f:selectItem itemLabel="CI" itemValue="CI" />
+                                    <f:selectItem itemLabel="RUC" itemValue="RUC" />
+                                    <f:selectItem itemLabel="DNI" itemValue="DNI" />
+                                </p:selectOneMenu>
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.nroDocumento']}" for="nroDocumento" />
+                                <p:inputText id="nroDocumento"  value="#{clienteBean.cliente.nroDocumento}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.direccion']}" for="direccion" style="right: 10%"/>
+                                <p:inputText id="direccion" 
+                                             value="#{clienteBean.cliente.direccion}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.telefono']}" for="telefono" style="right: 10%"/>
+                                <p:inputText id="telefono" 
+                                             value="#{clienteBean.cliente.telefono}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.celular']}" for="celular" style="right: 10%"/>
+                                <p:inputMask id="celular" mask="(9999) 999-999"
+                                             value="#{clienteBean.cliente.celular}" />
+                                <p:spacer/>
+
+                                <p:outputLabel value="#{msg['cliente.add.ciudad']}" for="ciudad" />
+                                <p:selectOneMenu id="ciudad" value="#{clienteBean.ciudad}" 
+                                                 effect="fold" editable="false"
+                                                 validatorMessage="Debe seleccionar una ciudad"
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 converter="ciudadConverter" >
+                                    <p:ajax  process="ciudad"  event="change"
+                                             update=":form-add:barrio"
+                                             listener="#{clienteBean.buscarBarrios}"/> 
+                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{clienteBean.ciudadList}" 
+                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                   itemValue="#{ciudad}" />
+
+                                </p:selectOneMenu>                                                             
+                                <p:spacer/>     
+
+                                <p:outputLabel value="#{msg['cliente.add.barrio']}" for="barrio" />
+                                <p:selectOneMenu id="barrio" value="#{clienteBean.cliente.idBarrio}" 
+                                                 effect="fold" editable="false" 
+                                                 filter="true" filterMatchMode="startsWith"
+                                                 converter="barrioConverter" >
+                                    <f:selectItems value="#{clienteBean.barrioList}" 
+                                                   var="barrio" itemLabel="#{barrio.barrio}" 
+                                                   itemValue="#{barrio}"/>
+                                </p:selectOneMenu>
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.observaciones']}" for="observaciones" style="right: 10%"/>
+                                <p:inputText id="observaciones" 
+                                             value="#{clienteBean.cliente.observaciones}" />
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['cliente.add.estado']}" />
+                                <p:inputText id="estado" value="Activo" disabled="true" />
+                                <p:spacer/>
+                                <div style="align-content: center" >
+                                    <p:commandButton 
+                                        value="#{msg['generic.guardar']}" 
+                                        oncomplete="PF('dlgClienteAdd').hide()" 
+                                        update="clienteNewGr"
+                                        actionListener="#{clienteBean.addCliente}"
+                                        id='btn-guardar-clie' />
+                                </div>
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+
             </ui:define>
         </ui:composition>
     </h:body>

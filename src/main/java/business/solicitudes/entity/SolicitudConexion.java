@@ -10,8 +10,8 @@ import business.configuracion.entity.Servicio;
 import business.direccion.entity.Barrio;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,10 +27,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -53,12 +51,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "SolicitudConexion.findByObservacion", query = "SELECT s FROM SolicitudConexion s WHERE s.observacion = :observacion")
     , @NamedQuery(name = "SolicitudConexion.findByEstado", query = "SELECT s FROM SolicitudConexion s WHERE s.estado = :estado")})
 public class SolicitudConexion implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
-    private Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
-    private Collection<ClienteSolicitud> clienteSolicitudCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -94,6 +86,8 @@ public class SolicitudConexion implements Serializable {
     @Size(max = 15)
     @Column(name = "celular")
     private String celular;
+    @Column(name = "tv_cantidad")
+    private Integer cantidadTv;
     @Size(max = 100)
     @Column(name = "observacion")
     private String observacion;
@@ -114,6 +108,12 @@ public class SolicitudConexion implements Serializable {
     @ManyToOne(optional = false)
     private Servicio idServicio;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
+    private List<HistorialSolicitudConexion> historialSolicitudConexionList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
+    private List<ClienteSolicitud> clienteSolicitudList;
+
     public SolicitudConexion() {
     }
 
@@ -121,13 +121,12 @@ public class SolicitudConexion implements Serializable {
         this.idSolicitudConexion = idSolicitudConexion;
     }
 
-    public SolicitudConexion(Integer idSolicitudConexion, String nombre, String apellido, String direccion, Date fechaRegistro, String estado) {
-        this.idSolicitudConexion = idSolicitudConexion;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.direccion = direccion;
-        this.fechaRegistro = fechaRegistro;
-        this.estado = estado;
+    public Integer getCantidadTv() {
+        return cantidadTv;
+    }
+
+    public void setCantidadTv(Integer cantidadTv) {
+        this.cantidadTv = cantidadTv;
     }
 
     public Integer getIdSolicitudConexion() {
@@ -250,24 +249,20 @@ public class SolicitudConexion implements Serializable {
         this.idServicio = idServicio;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idSolicitudConexion != null ? idSolicitudConexion.hashCode() : 0);
-        return hash;
+    public List<HistorialSolicitudConexion> getHistorialSolicitudConexionList() {
+        return historialSolicitudConexionList;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SolicitudConexion)) {
-            return false;
-        }
-        SolicitudConexion other = (SolicitudConexion) object;
-        if ((this.idSolicitudConexion == null && other.idSolicitudConexion != null) || (this.idSolicitudConexion != null && !this.idSolicitudConexion.equals(other.idSolicitudConexion))) {
-            return false;
-        }
-        return true;
+    public void setHistorialSolicitudConexionList(List<HistorialSolicitudConexion> historialSolicitudConexionList) {
+        this.historialSolicitudConexionList = historialSolicitudConexionList;
+    }
+
+    public List<ClienteSolicitud> getClienteSolicitudList() {
+        return clienteSolicitudList;
+    }
+
+    public void setClienteSolicitudList(List<ClienteSolicitud> clienteSolicitudList) {
+        this.clienteSolicitudList = clienteSolicitudList;
     }
 
     @Override
@@ -275,22 +270,4 @@ public class SolicitudConexion implements Serializable {
         return "business.solicitudes.entity.SolicitudConexion[ idSolicitudConexion=" + idSolicitudConexion + " ]";
     }
 
-    @XmlTransient
-    public Collection<ClienteSolicitud> getClienteSolicitudCollection() {
-        return clienteSolicitudCollection;
-    }
-
-    public void setClienteSolicitudCollection(Collection<ClienteSolicitud> clienteSolicitudCollection) {
-        this.clienteSolicitudCollection = clienteSolicitudCollection;
-    }
-
-    @XmlTransient
-    public Collection<HistorialSolicitudConexion> getHistorialSolicitudConexionCollection() {
-        return historialSolicitudConexionCollection;
-    }
-
-    public void setHistorialSolicitudConexionCollection(Collection<HistorialSolicitudConexion> historialSolicitudConexionCollection) {
-        this.historialSolicitudConexionCollection = historialSolicitudConexionCollection;
-    }
-    
 }

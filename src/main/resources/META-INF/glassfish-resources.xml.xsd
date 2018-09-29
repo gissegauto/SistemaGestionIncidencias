@@ -11,7 +11,7 @@
                           non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" 
                           statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" 
                           validation-table-name="DUAL" wrap-jdbc-objects="false">
-        <property name="URL" value="jdbc:mysql://localhost:3306/mitv"/>
+        <property name="URL" value="jdbc:mysql://localhost:3306/mitv?createDatabaseIfNotExist=true"/>
         <property name="User" value="root"/>
         <property name="Password" value="admin"/>
     </jdbc-connection-pool>

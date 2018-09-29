@@ -58,12 +58,12 @@ and open the template in the editor.
                         <p:column headerText="#{msg['cliente.ciudad']}"
                                   width="10%" filterBy="#{cliente.idBarrio.idCiudad.ciudad}"
                                   sortBy="#{cliente.idBarrio.idCiudad.ciudad}">
-                            <f:facet name="filter">
-                                <p:selectCheckboxMenu label="Ciudades" onchange="PF('clienteTable').filter()" panelStyle="width:150px" class="text-primary" scrollHeight="100">
-                                    <f:selectItems value="#{clienteBean.ciudadList}" var="ciudad" itemLabel="#{ciudad.ciudad}" 
-                                                   itemValue="#{ciudad}" />
-                                </p:selectCheckboxMenu>
-                            </f:facet>
+                            <!--                            <f:facet name="filter">
+                                                            <p:selectCheckboxMenu label="Ciudades" onchange="PF('clienteTable').filter()" panelStyle="width:150px" class="text-primary" scrollHeight="100">
+                                                                <f:selectItems value="#{clienteBean.ciudadList}" var="ciudad" itemLabel="#{ciudad.ciudad}" 
+                                                                               itemValue="#{ciudad}" />
+                                                            </p:selectCheckboxMenu>
+                                                        </f:facet>-->
                             <h:outputText value="#{cliente.idBarrio.idCiudad.ciudad}" />
                         </p:column>
 
@@ -101,8 +101,8 @@ and open the template in the editor.
                                 rendered="#{cliente.estado eq 'Activo'}" 
                                 title="#{msg['generic.btnUpdate']}"
                                 oncomplete="PF('dlgClienteAdd').show()" 
+                                actionListener="#{clienteBean.editCliente(cliente)}"
                                 id="botonEditar">
-                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="cliente" />
                             </p:commandButton>
                             <p:commandButton 
                                 rendered="#{cliente.estado eq 'Inactivo'}"
@@ -120,13 +120,22 @@ and open the template in the editor.
                             </p:commandButton>
                             <p:commandButton 
                                 icon="ui-icon-trash" 
+                                rendered="#{cliente.estado eq 'Activo'}"   
                                 action="#{clienteBean.delete}"
                                 title="#{msg['generic.btnDelete']}"
                                 actionListener="#{clienteBean.delete(cliente)}"
                                 id="botonEliminar">
                             </p:commandButton>
+                             <p:commandButton 
+                                icon="ui-icon-folder-collapsed" 
+                                process="dtCliente"
+                                title="#{msg['cliente.btn.solicitud']}"
+                                action="#{clienteBean.solicitudes(cliente)}"
+                                id="botonSolicitud">
+                            </p:commandButton>
                             <p:commandButton 
                                 icon="ui-icon-contact" 
+                                title="#{msg['cliente.btn.contrato']}"
                                 rendered="#{cliente.estado eq 'Activo'}" 
                                 oncomplete="PF('dlgClienteContrato').show()"
                                 id="botonContrato">
@@ -170,6 +179,9 @@ and open the template in the editor.
                             </p:outputPanel>
                             <br />
                             <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="#{msg['generic.imprimir']}" 
+                                    id='btn-imprimir' />
                                 <p:commandButton 
                                     value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('dlgVerCliente').hide()" 

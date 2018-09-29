@@ -5,6 +5,11 @@
  */
 package presentation;
 
+import business.cliente.boundary.ClienteManager;
+import business.cliente.boundary.ClienteSolicitudManager;
+import business.cliente.controller.HistorialClienteController;
+import business.cliente.entity.Cliente;
+import business.cliente.entity.ClienteSolicitud;
 import business.configuracion.boundary.ServicioManager;
 import business.configuracion.entity.Servicio;
 import business.direccion.boundary.BarrioManager;
@@ -15,13 +20,13 @@ import business.solicitudes.boundary.SolicitudConexionManager;
 import business.solicitudes.entity.SolicitudConexion;
 import business.utils.UtilLogger;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
@@ -43,12 +48,24 @@ public class SolicitudConexionBean implements Serializable {
     private Ciudad ciudad;
     private List<Barrio> barrioList;
     private boolean editar;
+    private Cliente cliente;
+
     @Inject
     SolicitudConexionManager solicitudConexionMgr;
     @Inject
     ServicioManager servicioMgr;
     @Inject
+    ClienteManager clienteMgr;
+    @Inject
+    ClienteSolicitudManager clienteSolicitudMgr;
+    @Inject
+    HistorialClienteController historialClienteController;
+    @Inject
     ClienteSolicitudBean clienteSolicitudBean;
+    @Inject
+    FacturacionBean facturacionBean;
+    @Inject
+    ClienteBean clienteBean;
     @Inject
     BarrioManager barrioMgr;
     @Inject
@@ -66,6 +83,8 @@ public class SolicitudConexionBean implements Serializable {
         editar = false;
         solicitudConexion = new SolicitudConexion();
         servicioList = servicioMgr.getAll();
+        servicioListSelected = new ArrayList<>();
+        solicitudConexionFilter = new ArrayList<>();
         ciudadList = ciudadMgr.getAll();
         solicitudConexionList = solicitudConexionMgr.getAll();
     }
@@ -125,21 +144,58 @@ public class SolicitudConexionBean implements Serializable {
         return "clienteSolicitud";
     }
 
+    public void addCliente(SolicitudConexion solicitudC) {
+        Cliente cli = new Cliente();
+        cli.setNombre(solicitudC.getNombre());
+        cli.setApellido(solicitudC.getApellido());
+        cli.setCelular(solicitudC.getCelular());
+        cli.setDireccion(solicitudC.getDireccion());
+        cli.setIdBarrio(solicitudC.getIdBarrio() != null ? solicitudC.getIdBarrio() : null);
+        clienteBean.limpiar();
+        clienteBean.setCliente(cli);
+        clienteBean.setSolicitudConexion(solicitudC);
+        RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').show()");
+    }
+
+    public void changeStatusFinalizado(SolicitudConexion solicitudConexion) {
+        solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
+        solicitudConexion.setFechaActualizacion(new Date());
+        solicitudConexion.setEstado("Finalizado");
+        solicitudConexionMgr.update(solicitudConexion);
+        limpiar();
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+    }
+
     public void cargarClienteSolicitud() {
 //        this.solicitudConexion = solicitudC;
         RequestContext.getCurrentInstance().update("form-add:solicitudConexionGr");
     }
 
-    public void buscarBarrios() {
-        barrioList = barrioMgr.getBarriosByCiudad(ciudad);
-    }
-
-    public String addFuncionario() {
+    public void cancelar(SolicitudConexion solicitudConexion) {
         solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
         solicitudConexion.setFechaActualizacion(new Date());
-        solicitudConexion.setEstado("En Curso");
+        solicitudConexion.setEstado("Cancelado");
         solicitudConexionMgr.update(solicitudConexion);
-        return "solicitudConexion";
+        limpiar();
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+    }
+
+    public void generarFactura(SolicitudConexion solicitudConexion) {
+        solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
+        solicitudConexion.setFechaActualizacion(new Date());
+        solicitudConexion.setEstado("Facturado");
+        solicitudConexionMgr.update(solicitudConexion);
+        List<ClienteSolicitud> solicitudConexionList = clienteSolicitudMgr.getBySolicitudConexion(solicitudConexion);
+        /**
+         * TODO:
+         */
+        facturacionBean
+                .generarFacturaCliente(cliente, solicitudConexion);
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+    }
+
+    public void buscarBarrios() {
+        barrioList = barrioMgr.getBarriosByCiudad(ciudad);
     }
 
     public void actionClean() {
@@ -225,6 +281,14 @@ public class SolicitudConexionBean implements Serializable {
 
     public void setEditar(boolean editar) {
         this.editar = editar;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
 }

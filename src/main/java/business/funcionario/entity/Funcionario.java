@@ -9,14 +9,18 @@ import business.direccion.entity.Barrio;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,10 +50,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Funcionario.findByCelular", query = "SELECT f FROM Funcionario f WHERE f.celular = :celular")})
 public class Funcionario implements Serializable {
 
+    @OneToMany(mappedBy = "idFuncionario")
+    private List<Usuario> usuarioList;
+
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "idFuncionario")
     private Integer idFuncionario;
     @Basic(optional = false)
@@ -102,6 +109,11 @@ public class Funcionario implements Serializable {
     @JoinColumn(name = "idUsuarioRegistro", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
+
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "tecnico")
+    private String tecnico;
 
     public Funcionario() {
     }
@@ -238,29 +250,25 @@ public class Funcionario implements Serializable {
         this.idUsuarioRegistro = idUsuarioRegistro;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idFuncionario != null ? idFuncionario.hashCode() : 0);
-        return hash;
+    public String getTecnico() {
+        return tecnico;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Funcionario)) {
-            return false;
-        }
-        Funcionario other = (Funcionario) object;
-        if ((this.idFuncionario == null && other.idFuncionario != null) || (this.idFuncionario != null && !this.idFuncionario.equals(other.idFuncionario))) {
-            return false;
-        }
-        return true;
+    public void setTecnico(String tecnico) {
+        this.tecnico = tecnico;
     }
 
     @Override
     public String toString() {
-        return "business.cliente.entity.Funcionario[ idFuncionario=" + idFuncionario + " ]";
+        return "Funcionario{" + "idFuncionario=" + idFuncionario + ", nombreFuncionario=" + nombreFuncionario + ", apellidoFuncionario=" + apellidoFuncionario + ", tipoDocumento=" + tipoDocumento + ", nroDocumento=" + nroDocumento + ", fechaRegistro=" + fechaRegistro + ", fechaActualizacion=" + fechaActualizacion + ", estado=" + estado + ", direccion=" + direccion + ", telefono=" + telefono + ", celular=" + celular + ", idBarrio=" + idBarrio + ", idUsuario=" + idUsuario + ", idUsuarioActualizacion=" + idUsuarioActualizacion + ", idUsuarioRegistro=" + idUsuarioRegistro + ", tecnico=" + tecnico + '}';
     }
-    
+
+    public List<Usuario> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<Usuario> usuarioList) {
+        this.usuarioList = usuarioList;
+    }
+
 }

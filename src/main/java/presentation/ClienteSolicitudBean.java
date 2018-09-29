@@ -7,16 +7,19 @@ package presentation;
 
 import business.cliente.boundary.ClienteSolicitudManager;
 import business.cliente.entity.Cliente;
-import business.direccion.entity.Barrio;
-import business.direccion.entity.Ciudad;
+import business.cliente.entity.ClienteSolicitud;
 import business.funcionario.boundary.FuncionarioManager;
 import business.funcionario.entity.Funcionario;
+import business.solicitudes.boundary.SolicitudConexionManager;
 import business.solicitudes.entity.SolicitudConexion;
+import business.utils.UtilLogger;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -28,13 +31,18 @@ import javax.inject.Named;
 @SessionScoped
 public class ClienteSolicitudBean implements Serializable {
 
+    private Cliente cliente;
     private SolicitudConexion solicitudConexion;
     private List<Funcionario> funcionarioList;
-    private Funcionario funcionarioSelected;
+    private List<Funcionario> funcionarioSelected;
+    private List<ClienteSolicitud> solicitudes;
+
     @Inject
     FuncionarioManager funcionarioMgr;
     @Inject
     ClienteSolicitudManager clienteSolicitudMgr;
+    @Inject
+    SolicitudConexionManager solicitudConexionMgr;
     @Inject
     LoginBean session;
 
@@ -43,8 +51,40 @@ public class ClienteSolicitudBean implements Serializable {
         limpiar();
     }
 
+    public String asignarTecnicos() {
+        try {
+            boolean confirm = true;
+            if (funcionarioSelected != null) {
+                for (Funcionario funcionario : funcionarioSelected) {
+                    ClienteSolicitud clienteSolicitud = new ClienteSolicitud();
+                    clienteSolicitud.setIdFuncionario(funcionario);
+                    clienteSolicitud.setIdSolicitudConexion(solicitudConexion);
+                    clienteSolicitudMgr.add(clienteSolicitud);
+                }
+            }
+            if (confirm) {
+                changeStatusSolicitud();
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+                        "Ocurrió un error al intentar guardar"));
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+                    "Ocurrió un error al intentar guardar"));
+            UtilLogger.error("Problemas al asignar funcionario a la solicitud", e);
+        }
+        return "solicitudConexion";
+    }
+
+    private void changeStatusSolicitud() {
+        solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
+        solicitudConexion.setFechaActualizacion(new Date());
+        solicitudConexion.setEstado("En Curso");
+        solicitudConexionMgr.update(solicitudConexion);
+    }
+
     public void limpiar() {
-        funcionarioList = new ArrayList<>();
+        funcionarioList = funcionarioMgr.getByTecnico();
         solicitudConexion = new SolicitudConexion();
     }
 
@@ -64,12 +104,28 @@ public class ClienteSolicitudBean implements Serializable {
         this.solicitudConexion = solicitudConexion;
     }
 
-    public Funcionario getFuncionarioSelected() {
+    public List<Funcionario> getFuncionarioSelected() {
         return funcionarioSelected;
     }
 
-    public void setFuncionarioSelected(Funcionario funcionarioSelected) {
+    public void setFuncionarioSelected(List<Funcionario> funcionarioSelected) {
         this.funcionarioSelected = funcionarioSelected;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<ClienteSolicitud> getSolicitudes() {
+        return solicitudes;
+    }
+
+    public void setSolicitudes(List<ClienteSolicitud> solicitudes) {
+        this.solicitudes = solicitudes;
     }
 
 }
