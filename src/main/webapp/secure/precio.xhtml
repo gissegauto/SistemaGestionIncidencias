@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:body>
+        <ui:composition template="/template/base.xhtml">
+            <ui:define name="content">
+                <h:form id="rolForm">
+                    <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                    <div align="center">
+                        <p:outputLabel value="#{msg['precio.title']} " class="card-title" style="color: #0056b3"/>
+                    </div>
+                    <facelets>
+                        <div align="right">
+                            <p:commandButton process="dtPrecio" 
+                                             icon="fa fa-plus-circle"
+                                             oncomplete="PF('dlgPrecioAdd').show()" 
+                                             actionListener="#{precioBean.actionClean}"/>
+                        </div>
+                    </facelets>
+                    <p:dataTable id="dtPrecio" var="precio" 
+                                 value="#{precioBean.precioList}"
+                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,15"  style="font-size:12px"
+                                 rowKey="#{precio.idPrecio}"
+                                 emptyMessage="#{msg['generic.empty']}">
+                        <p:column headerText="#{msg['precio.descripcion']}" 
+                                  width="15%" filterBy="#{precio.descripcion}"
+                                  sortBy="#{precio.descripcion}">
+                            <h:outputText value="#{precio.descripcion}" />
+                        </p:column>
+                        <p:column headerText="#{msg['precio.precio']}" 
+                                  width="15%" filterBy="#{precio.precio}"
+                                  sortBy="#{precio.precio}">
+                            <h:outputText value="#{precio.precio}" />
+                        </p:column>
+                        <p:column headerText="#{msg['generic.opciones']}" 
+                                  width="20%">
+                            <p:commandButton 
+                                icon="fa fa-trash"
+                                style="color: crimson"
+                                id="botonEditar">
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                
+                <p:dialog header="#{msg['precio.add.title']}" widgetVar="dlgPrecioAdd"
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                        <h:form id="form-add">
+                            <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
+                            <h:panelGrid columns="2" columnClasses="column" id="rolGr">   
+                            </h:panelGrid>
+                        </h:form>
+                    </p:fieldset>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
