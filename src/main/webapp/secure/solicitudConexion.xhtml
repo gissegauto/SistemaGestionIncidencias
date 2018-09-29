@@ -128,6 +128,13 @@ and open the template in the editor.
                                 title="#{msg['solicitud.conexion.btn.finalizar']}"
                                 action="#{solicitudConexionBean.addCliente(solicitudConexion)}"
                                 id="botonFinalizadoEstado" />
+                            <p:commandButton 
+                                rendered="#{solicitudConexion.estado eq 'Finalizado'}"
+                                icon="ui-icon-document" 
+                                process="dtSolicitudConexion"
+                                title="#{msg['solicitud.conexion.btn.generar']}"
+                                action="#{solicitudConexionBean.generarFactura(solicitudConexion)}"
+                                id="botonGenerarFactura" />
                         </p:column>
                     </p:dataTable>
                     <p:overlayPanel widgetVar="verSolicitudConexion" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
@@ -156,7 +163,7 @@ and open the template in the editor.
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.telefono}" rendered="#{solicitudConexionBean.solicitudConexion.telefono ne ''}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" />
-                                    
+
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}"  style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.observacion}" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" style="right: 10%; font-weight: bold"/>
@@ -172,7 +179,7 @@ and open the template in the editor.
                                 <p:commandButton 
                                     value="#{msg['generic.imprimir']}" 
                                     id='btn-imprimir' />
-                                
+
                                 <p:commandButton 
                                     value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('verSolicitudConexion').hide()" 
@@ -268,7 +275,7 @@ and open the template in the editor.
                         </h:form>
                     </p:fieldset>
                 </p:dialog>
-                
+
                 <p:dialog header="#{msg['solicitud.conexion.add.cliente']}" widgetVar="dlgClienteAdd"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
@@ -279,7 +286,7 @@ and open the template in the editor.
                                 <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
                                              value="#{clienteBean.cliente.nombre}" />
                                 <p:spacer/>
-                                
+
                                 <p:outputLabel value="#{msg['cliente.add.apellido']}" for="apellido" style="right: 10%"/>
                                 <p:inputText id="apellido" required="true" requiredMessage="#{msg['requerid.apellido']}"
                                              value="#{clienteBean.cliente.apellido}" />
@@ -358,7 +365,7 @@ and open the template in the editor.
                         </h:form>
                     </p:fieldset>
                 </p:dialog>
-                
+
             </ui:define>
         </ui:composition>
     </h:body>

@@ -68,6 +68,7 @@ public class FacturacionBean implements Serializable {
 
             factura.setIdUsuarioRegistro(session.getUsuario());
             factura.setFecInsercion(new Date());
+            facturaMgr.add(factura);
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar generar la factura del cliente "));
