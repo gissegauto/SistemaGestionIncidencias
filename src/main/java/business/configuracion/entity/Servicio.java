@@ -5,10 +5,9 @@
  */
 package business.configuracion.entity;
 
-import business.solicitudes.entity.HistorialSolicitudConexion;
-import business.solicitudes.entity.SolicitudConexion;
+import business.facturacion.entity.FacturaDetalle;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +22,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,10 +33,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Servicio.findAll", query = "SELECT s FROM Servicio s")
     , @NamedQuery(name = "Servicio.findByIdServicio", query = "SELECT s FROM Servicio s WHERE s.idServicio = :idServicio")
+    , @NamedQuery(name = "Servicio.findByEstado", query = "SELECT s FROM Servicio s WHERE s.estado = :estado")
     , @NamedQuery(name = "Servicio.findByServicio", query = "SELECT s FROM Servicio s WHERE s.servicio = :servicio")
-    , @NamedQuery(name = "Servicio.findByEstado", query = "SELECT s FROM Servicio s WHERE s.estado = :estado")})
+    , @NamedQuery(name = "Servicio.findByPrecio", query = "SELECT s FROM Servicio s WHERE s.precio = :precio")})
 public class Servicio implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,13 +45,19 @@ public class Servicio implements Serializable {
     private Integer idServicio;
     @Basic(optional = false)
     @NotNull
-    @Size(max = 45)
+    @Size(min = 1, max = 10)
+    @Column(name = "estado")
+    private String estado;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "servicio")
     private String servicio;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "estado")
-    private String estado;
+    @Column(name = "precio")
+    private double precio;
+
     public Servicio() {
     }
 
@@ -61,10 +65,11 @@ public class Servicio implements Serializable {
         this.idServicio = idServicio;
     }
 
-    public Servicio(Integer idServicio, String servicio, String estado) {
+    public Servicio(Integer idServicio, String estado, String servicio, double precio) {
         this.idServicio = idServicio;
-        this.servicio = servicio;
         this.estado = estado;
+        this.servicio = servicio;
+        this.precio = precio;
     }
 
     public Integer getIdServicio() {
@@ -75,6 +80,14 @@ public class Servicio implements Serializable {
         this.idServicio = idServicio;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public String getServicio() {
         return servicio;
     }
@@ -83,12 +96,12 @@ public class Servicio implements Serializable {
         this.servicio = servicio;
     }
 
-    public String getEstado() {
-        return estado;
+    public double getPrecio() {
+        return precio;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 
     @Override
@@ -113,7 +126,7 @@ public class Servicio implements Serializable {
 
     @Override
     public String toString() {
-        return "business.configuraciones.entity.Servicio[ idServicio=" + idServicio + " ]";
+        return "business.configuracion.entity.Servicio[ idServicio=" + idServicio + " ]";
     }
-    
+
 }

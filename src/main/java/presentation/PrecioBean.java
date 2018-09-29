@@ -5,15 +5,19 @@
  */
 package presentation;
 
+import business.configuracion.boundary.PrecioManager;
 import business.configuracion.entity.Precio;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -26,7 +30,8 @@ public class PrecioBean implements Serializable {
     private Precio precio;
     private List<Precio> precioList;
 
-
+    @Inject
+    PrecioManager precioMgr;
     @Inject
     LoginBean session;
 
@@ -37,12 +42,20 @@ public class PrecioBean implements Serializable {
 
     public void limpiar() {
         precio = new Precio();
-        precioList = new ArrayList<>();
+        precioList = precioMgr.getByNotBorrado();
+    }
+
+    public void delete(Precio precio) {
+        precio.setEstado("Borrado");
+        precioMgr.update(precio);
+        limpiar();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró el registro"));
+        RequestContext.getCurrentInstance().update("precioForm:dtPrecio");
     }
 
     public void actionClean(ActionEvent actionEvent) {
         this.precio = new Precio();
-//        RequestContext.getCurrentInstance().update("rolForm:dtRol");
+        RequestContext.getCurrentInstance().update("precioForm:dtPrecio");
     }
 
     public Precio getPrecio() {

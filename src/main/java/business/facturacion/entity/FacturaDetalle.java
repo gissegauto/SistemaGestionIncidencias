@@ -5,6 +5,7 @@
  */
 package business.facturacion.entity;
 
+import business.configuracion.entity.Servicio;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,7 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -27,16 +27,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "fac_detalle")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "FacturaDetalle.findAll", query = "SELECT f FROM FacturaDetalle f")
-    , @NamedQuery(name = "FacturaDetalle.findByIdFacDetalle", query = "SELECT f FROM FacturaDetalle f WHERE f.idFacturaDetalle = :idFacturaDetalle")
+    , @NamedQuery(name = "FacturaDetalle.findByIdFacturaDetalle", query = "SELECT f FROM FacturaDetalle f WHERE f.idFacturaDetalle = :idFacturaDetalle")
     , @NamedQuery(name = "FacturaDetalle.findByPreUnitario", query = "SELECT f FROM FacturaDetalle f WHERE f.preUnitario = :preUnitario")
     , @NamedQuery(name = "FacturaDetalle.findByCantidad", query = "SELECT f FROM FacturaDetalle f WHERE f.cantidad = :cantidad")
     , @NamedQuery(name = "FacturaDetalle.findByTotal", query = "SELECT f FROM FacturaDetalle f WHERE f.total = :total")
     , @NamedQuery(name = "FacturaDetalle.findByTotMulta", query = "SELECT f FROM FacturaDetalle f WHERE f.totMulta = :totMulta")
     , @NamedQuery(name = "FacturaDetalle.findByMulta", query = "SELECT f FROM FacturaDetalle f WHERE f.multa = :multa")
-    , @NamedQuery(name = "FacturaDetalle.findByEstado", query = "SELECT f FROM FacturaDetalle f WHERE f.estado = :estado")})
+    , @NamedQuery(name = "FacturaDetalle.findByEstado", query = "SELECT f FROM FacturaDetalle f WHERE f.estado = :estado")
+    , @NamedQuery(name = "FacturaDetalle.findByDescripcion", query = "SELECT f FROM FacturaDetalle f WHERE f.descripcion = :descripcion")})
 public class FacturaDetalle implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -68,23 +68,17 @@ public class FacturaDetalle implements Serializable {
     @Size(max = 45)
     @Column(name = "estado")
     private String estado;
+    @Size(max = 255)
+    @Column(name = "descripcion")
+    private String descripcion;
+    @JoinColumn(name = "id_servicio", referencedColumnName = "idServicio")
+    @ManyToOne(optional = false)
+    private Servicio idServicio;
     @JoinColumn(name = "id_factura", referencedColumnName = "id_factura")
     @ManyToOne
     private Factura idFactura;
 
     public FacturaDetalle() {
-    }
-
-    public FacturaDetalle(Integer idFacturaDetalle) {
-        this.idFacturaDetalle = idFacturaDetalle;
-    }
-
-    public FacturaDetalle(Integer idFacturaDetalle, double preUnitario, int cantidad, double total, String multa) {
-        this.idFacturaDetalle = idFacturaDetalle;
-        this.preUnitario = preUnitario;
-        this.cantidad = cantidad;
-        this.total = total;
-        this.multa = multa;
     }
 
     public Integer getIdFacturaDetalle() {
@@ -93,6 +87,19 @@ public class FacturaDetalle implements Serializable {
 
     public void setIdFacturaDetalle(Integer idFacturaDetalle) {
         this.idFacturaDetalle = idFacturaDetalle;
+    }
+
+    public FacturaDetalle(Integer idFacturaDetalle, double preUnitario, int cantidad, double total, Double totMulta, String multa, String estado, String descripcion, Servicio idServicio, Factura idFactura) {
+        this.idFacturaDetalle = idFacturaDetalle;
+        this.preUnitario = preUnitario;
+        this.cantidad = cantidad;
+        this.total = total;
+        this.totMulta = totMulta;
+        this.multa = multa;
+        this.estado = estado;
+        this.descripcion = descripcion;
+        this.idServicio = idServicio;
+        this.idFactura = idFactura;
     }
 
     public double getPreUnitario() {
@@ -143,6 +150,22 @@ public class FacturaDetalle implements Serializable {
         this.estado = estado;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Servicio getIdServicio() {
+        return idServicio;
+    }
+
+    public void setIdServicio(Servicio idServicio) {
+        this.idServicio = idServicio;
+    }
+
     public Factura getIdFactura() {
         return idFactura;
     }
@@ -153,8 +176,7 @@ public class FacturaDetalle implements Serializable {
 
     @Override
     public String toString() {
-        return "FacturaDetalle{" + "idFacturaDetalle=" + idFacturaDetalle + ", preUnitario=" + preUnitario + ", cantidad=" + cantidad + ", total=" + total + ", totMulta=" + totMulta + ", multa=" + multa + ", estado=" + estado + ", idFactura=" + idFactura + '}';
+        return "business.facturacion.entity.FacDetalle[ idFacDetalle=" + idFacturaDetalle + " ]";
     }
 
-    
 }

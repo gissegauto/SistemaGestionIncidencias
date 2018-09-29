@@ -64,6 +64,8 @@ public class ClienteBean implements Serializable {
     @Inject
     ClienteSolicitudBean clienteSolicitudBean;
     @Inject
+    FacturacionBean facturacionBean;
+    @Inject
     BarrioManager barrioMgr;
     @Inject
     CiudadManager ciudadMgr;
@@ -149,6 +151,7 @@ public class ClienteBean implements Serializable {
                 limpiar();
                 RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').hide()");
                 solicitudConexionBean.changeStatusFinalizado(solicitudConexion);
+                facturacionBean.generarFacturaCliente(cliente, solicitudConexion);
             }
 
         } catch (Exception e) {

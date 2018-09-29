@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -24,6 +25,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "precio")
+@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Precio.findAll", query = "SELECT p FROM Precio p")
     , @NamedQuery(name = "Precio.findByIdPrecio", query = "SELECT p FROM Precio p WHERE p.idPrecio = :idPrecio")
@@ -40,9 +42,8 @@ public class Precio implements Serializable {
     private Integer idPrecio;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "precio")
-    private String precio;
+    private double precio;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -61,7 +62,7 @@ public class Precio implements Serializable {
         this.idPrecio = idPrecio;
     }
 
-    public Precio(Integer idPrecio, String precio, String descripcion, String estado) {
+    public Precio(Integer idPrecio, double precio, String descripcion, String estado) {
         this.idPrecio = idPrecio;
         this.precio = precio;
         this.descripcion = descripcion;
@@ -76,11 +77,11 @@ public class Precio implements Serializable {
         this.idPrecio = idPrecio;
     }
 
-    public String getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(String precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 

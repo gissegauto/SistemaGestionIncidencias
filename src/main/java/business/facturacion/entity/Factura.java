@@ -6,11 +6,8 @@
 package business.facturacion.entity;
 
 import business.cliente.entity.Cliente;
-import business.configuracion.entity.Servicio;
-import business.direccion.entity.Barrio;
 import business.usuario.entity.Usuario;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -99,7 +96,7 @@ public class Factura implements Serializable {
     private Usuario idUsuarioRegistro;
 
     @OneToMany(mappedBy = "idFactura")
-    private List<FacturaDetalle> facDetalleList;
+    private List<FacturaDetalle> facturaDetalleList;
 
     public Factura() {
     }
@@ -187,14 +184,6 @@ public class Factura implements Serializable {
         this.estado = estado;
     }
 
-    public List<FacturaDetalle> getFacDetalleList() {
-        return facDetalleList;
-    }
-
-    public void setFacDetalleList(List<FacturaDetalle> facDetalleList) {
-        this.facDetalleList = facDetalleList;
-    }
-
     public Cliente getCliente() {
         return cliente;
     }
@@ -219,9 +208,12 @@ public class Factura implements Serializable {
         this.idUsuarioRegistro = idUsuarioRegistro;
     }
 
-    @Override
-    public String toString() {
-        return "Factura{" + "idFactura=" + idFactura + ", fecInsercion=" + fecInsercion + ", fecModificacion=" + fecModificacion + ", nroFactura=" + nroFactura + ", timbrado=" + timbrado + ", boleta=" + boleta + ", nroBoleta=" + nroBoleta + ", total=" + total + ", estado=" + estado + ", facDetalleList=" + facDetalleList + '}';
+    public List<FacturaDetalle> getFacturaDetalleList() {
+        return facturaDetalleList;
+    }
+
+    public void setFacturaDetalleList(List<FacturaDetalle> facturaDetalleList) {
+        this.facturaDetalleList = facturaDetalleList;
     }
 
 }

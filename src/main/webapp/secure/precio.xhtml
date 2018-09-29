@@ -14,7 +14,7 @@ and open the template in the editor.
     <h:body>
         <ui:composition template="/template/base.xhtml">
             <ui:define name="content">
-                <h:form id="rolForm">
+                <h:form id="precioForm">
                     <p:growl id="growl"  autoUpdate="true" showDetail="true" sticky="true" />
                     <div align="center">
                         <p:outputLabel value="#{msg['precio.title']} " class="card-title" style="color: #0056b3"/>
@@ -44,11 +44,17 @@ and open the template in the editor.
                                   sortBy="#{precio.precio}">
                             <h:outputText value="#{precio.precio}" />
                         </p:column>
+                        <p:column headerText="#{msg['precio.estado']}" 
+                                  width="15%" filterBy="#{precio.estado}"
+                                  sortBy="#{precio.estado}">
+                            <h:outputText value="#{precio.estado}" />
+                        </p:column>
                         <p:column headerText="#{msg['generic.opciones']}" 
                                   width="20%">
                             <p:commandButton 
                                 icon="fa fa-trash"
                                 style="color: crimson"
+                                actionListener="#{precioBean.delete(precio)}"
                                 id="botonEditar">
                             </p:commandButton>
                         </p:column>
