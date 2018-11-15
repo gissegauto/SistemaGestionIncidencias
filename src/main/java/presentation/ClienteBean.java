@@ -128,21 +128,13 @@ public class ClienteBean implements Serializable {
     public void addCliente() {
         try {
             if (null != cliente) {
-                for (Cliente clie : clienteList) {
-                    if ((cliente.getIdCliente() == null || cliente.getIdCliente() == 0)
-                            && cliente.getNroDocumento().trim().equalsIgnoreCase(clie.getNroDocumento().trim())) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
-                                "El cliente " + cliente.getNombre() + " " + cliente.getApellido()
-                                + " ya se encuentra registrado"));
-                        RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').hide()");
-                    }
-                }
                 if (cliente != null & cliente.getIdCliente() == null) {
                     cliente.setFechaRegistro(new Date());
                     cliente.setIdUsuarioRegistro(session.getUsuario());
                     cliente.setEstado("Activo");
                     cliente = clienteMgr.add(cliente);
                     historialClienteController.addHistory(cliente);
+                    
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
                 }

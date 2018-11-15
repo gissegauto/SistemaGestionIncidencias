@@ -153,6 +153,7 @@ public class SolicitudConexionBean implements Serializable {
         cli.setIdBarrio(solicitudC.getIdBarrio() != null ? solicitudC.getIdBarrio() : null);
         clienteBean.limpiar();
         clienteBean.setCliente(cli);
+        clienteBean.setCiudad(solicitudC.getIdBarrio().getIdCiudad());
         clienteBean.setSolicitudConexion(solicitudC);
         RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').show()");
     }

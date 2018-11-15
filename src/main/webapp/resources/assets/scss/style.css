@@ -1603,8 +1603,8 @@ header .form-inline {
 
 .login-form {
   background: #ffffff;
-  padding: 30px 30px 20px;
-  border-radius: 2px; }
+  padding: 20px 20px 20px;
+  border-radius: 10px; }
 
 .login-form h4 {
   color: #878787;
@@ -1618,15 +1618,14 @@ header .form-inline {
   text-transform: none; }
 
 .login-form .btn {
-  width: 100%;
-  text-transform: uppercase;
-  font-size: 14px;
-  padding: 15px;
+  margin-left: 50px;
+  width: 80%;
+  font-size: 18px;
   border: 0px; }
 
 .login-form label {
   color: #878787;
-  text-transform: uppercase; }
+   }
 
 .login-form label a {
   color: #ff2e44; }
