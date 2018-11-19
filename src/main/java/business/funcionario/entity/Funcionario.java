@@ -62,25 +62,25 @@ public class Funcionario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "nombreFuncionario")
+    @Column(name = "nombre")
     private String nombreFuncionario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
-    @Column(name = "apellidoFuncionario")
+    @Column(name = "apellido")
     private String apellidoFuncionario;
     @Size(max = 45)
-    @Column(name = "tipoDocumento")
+    @Column(name = "tip_documento")
     private String tipoDocumento;
     @Size(max = 20)
-    @Column(name = "nroDocumento")
+    @Column(name = "nro_documento")
     private String nroDocumento;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "fechaRegistro")
+    @Column(name = "fec_registro")
     @Temporal(TemporalType.DATE)
     private Date fechaRegistro;
-    @Column(name = "fechaActualizacion")
+    @Column(name = "fec_actualizacion")
     @Temporal(TemporalType.DATE)
     private Date fechaActualizacion;
     @Basic(optional = false)
@@ -97,16 +97,16 @@ public class Funcionario implements Serializable {
     @Size(max = 15)
     @Column(name = "celular")
     private String celular;
-    @JoinColumn(name = "idBarrio", referencedColumnName = "idBarrio")
+    @JoinColumn(name = "id_barrio", referencedColumnName = "idBarrio")
     @ManyToOne
     private Barrio idBarrio;
-    @JoinColumn(name = "idUsuario", referencedColumnName = "idusuario")
+    @JoinColumn(name = "id_usuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idUsuario;
-    @JoinColumn(name = "idUsuarioActualizacion", referencedColumnName = "idusuario")
+    @JoinColumn(name = "id_usu_actualizacion", referencedColumnName = "idusuario")
     @ManyToOne
     private Usuario idUsuarioActualizacion;
-    @JoinColumn(name = "idUsuarioRegistro", referencedColumnName = "idusuario")
+    @JoinColumn(name = "id_usu_registro", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
 

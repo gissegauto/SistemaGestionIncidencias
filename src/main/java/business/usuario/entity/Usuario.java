@@ -5,10 +5,8 @@
  */
 package business.usuario.entity;
 
-import business.cliente.entity.Cliente;
 import business.configuracion.entity.Articulo;
 import business.configuracion.entity.Configuracion;
-import business.facturacion.entity.Factura;
 import business.funcionario.entity.Funcionario;
 import java.io.Serializable;
 import java.util.List;
@@ -25,6 +23,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -42,10 +41,31 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Usuario.findByPassword", query = "SELECT u FROM Usuario u WHERE u.password = :password")})
 public class Usuario implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuInsercion")
-    private List<Configuracion> configuracionList;
-    @OneToMany(mappedBy = "usuModificacion")
-    private List<Configuracion> configuracionList1;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idusuario")
+    private Integer idusuario;
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "username")
+    private String username;
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "password")
+    private String password;
+    @JoinColumn(name = "id_rol", referencedColumnName = "idrol")
+    @ManyToOne
+    private Rol idrol;
+    @JoinColumn(name = "id_funcionario", referencedColumnName = "idFuncionario")
+    @ManyToOne
+    private Funcionario idFuncionario;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1)
+    @Column(name = "estado")
+    private String estado;
 
     @OneToMany(mappedBy = "usuInsercion")
     private List<Articulo> articuloList;
@@ -57,26 +77,11 @@ public class Usuario implements Serializable {
     private List<Funcionario> funcionarioList1;
     @OneToMany(mappedBy = "idUsuarioRegistro")
     private List<Funcionario> funcionarioList2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuInsercion")
+    private List<Configuracion> configuracionList;
+    @OneToMany(mappedBy = "usuModificacion")
+    private List<Configuracion> configuracionList1;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idusuario")
-    private Integer idusuario;
-    @Size(max = 45)
-    @Column(name = "username")
-    private String username;
-    @Size(max = 45)
-    @Column(name = "password")
-    private String password;
-    @JoinColumn(name = "idrol", referencedColumnName = "idrol")
-    @ManyToOne
-    private Rol idrol;
-    @JoinColumn(name = "idFuncionario", referencedColumnName = "idFuncionario")
-    @ManyToOne
-    private Funcionario idFuncionario;
-    
     public Usuario() {
     }
 
@@ -85,7 +90,6 @@ public class Usuario implements Serializable {
         this.username = username;
         this.password = password;
     }
-    
 
     public Usuario(Integer idusuario) {
         this.idusuario = idusuario;
@@ -131,6 +135,13 @@ public class Usuario implements Serializable {
         this.idFuncionario = idFuncionario;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
 
     @Override
     public String toString() {
@@ -192,5 +203,5 @@ public class Usuario implements Serializable {
     public void setConfiguracionList1(List<Configuracion> configuracionList1) {
         this.configuracionList1 = configuracionList1;
     }
-    
+
 }

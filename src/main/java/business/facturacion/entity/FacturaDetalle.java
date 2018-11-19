@@ -71,7 +71,7 @@ public class FacturaDetalle implements Serializable {
     @Size(max = 255)
     @Column(name = "descripcion")
     private String descripcion;
-    @JoinColumn(name = "id_servicio", referencedColumnName = "idServicio")
+    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio")
     @ManyToOne(optional = false)
     private Servicio idServicio;
     @JoinColumn(name = "id_factura", referencedColumnName = "id_factura")
