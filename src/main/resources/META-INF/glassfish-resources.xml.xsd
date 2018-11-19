@@ -7,13 +7,13 @@
                           datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" fail-all-connections="false" 
                           idle-timeout-in-seconds="300" is-connection-validation-required="false" is-isolation-level-guaranteed="true" 
                           lazy-connection-association="false" lazy-connection-enlistment="false" match-connections="false" 
-                          max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="mitvPU" 
+                          max-connection-usage-count="0" max-pool-size="32" max-wait-time-in-millis="60000" name="mitv" 
                           non-transactional-connections="false" pool-resize-quantity="2" res-type="javax.sql.DataSource" 
                           statement-timeout-in-seconds="-1" steady-pool-size="8" validate-atmost-once-period-in-seconds="0" 
                           validation-table-name="DUAL" wrap-jdbc-objects="false">
         <property name="URL" value="jdbc:mysql://localhost:3306/mitv?createDatabaseIfNotExist=true"/>
         <property name="User" value="root"/>
-        <property name="Password" value="admin"/>
+        <property name="Password" value="admin123"/>
     </jdbc-connection-pool>
-    <jdbc-resource jndi-name="jdbc/mitv" pool-name="mitvPU" enabled="true" />
+    <jdbc-resource jndi-name="jdbc/mitv" pool-name="mitv" enabled="true" />
 </resources>

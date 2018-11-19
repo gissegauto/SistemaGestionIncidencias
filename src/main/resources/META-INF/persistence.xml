@@ -2,10 +2,35 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="mitvPU" transaction-type="JTA">
     <jta-data-source>jdbc/mitv</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <class>business.cliente.entity.Cliente</class>
+    <class>business.cliente.entity.ClienteSolicitud</class>
+    <class>business.cliente.entity.HistorialCliente</class>
+    <class>business.configuracion.entity.Articulo</class>
+    <class>business.configuracion.entity.Configuracion</class>
+    <class>business.configuracion.entity.Notificaciones</class>
+    <class>business.configuracion.entity.Servicio</class>
+    <class>business.direccion.entity.Barrio</class>
+    <class>business.direccion.entity.Ciudad</class>
+    <class>business.direccion.entity.Departamento</class>
+    <class>business.direccion.entity.Pais</class>
+    <class>business.direccion.entity.Zona</class>
+    <class>business.direccion.entity.ZonaBarrio</class>
+    <class>business.facturacion.entity.Factura</class>
+    <class>business.facturacion.entity.FacturaDetalle</class>
+    <class>business.funcionario.entity.Funcionario</class>
+    <class>business.funcionario.entity.HistorialFuncionario</class>
+    <class>business.solicitudes.entity.HistorialSolicitudConexion</class>
+    <class>business.solicitudes.entity.SolicitudAmpliacion</class>
+    <class>business.solicitudes.entity.SolicitudConexion</class>
+    <class>business.usuario.entity.Pantalla</class>
+    <class>business.usuario.entity.Rol</class>
+    <class>business.usuario.entity.RolPantalla</class>
+    <class>business.usuario.entity.Usuario</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <shared-cache-mode>ALL</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
 </persistence>

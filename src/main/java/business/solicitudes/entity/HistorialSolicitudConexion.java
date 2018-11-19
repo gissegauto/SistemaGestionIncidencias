@@ -92,7 +92,7 @@ public class HistorialSolicitudConexion implements Serializable {
     @JoinColumn(name = "idBarrio", referencedColumnName = "idBarrio")
     @ManyToOne
     private Barrio idBarrio;
-    @JoinColumn(name = "idServicio", referencedColumnName = "idServicio")
+    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio")
     @ManyToOne(optional = false)
     private Servicio idServicio;
     @JoinColumn(name = "idSolicitudConexion", referencedColumnName = "idSolicitudConexion")

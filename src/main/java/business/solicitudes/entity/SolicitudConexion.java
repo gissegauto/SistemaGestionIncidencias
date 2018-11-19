@@ -104,7 +104,7 @@ public class SolicitudConexion implements Serializable {
     @JoinColumn(name = "idUsuarioRegistro", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
-    @JoinColumn(name = "idServicio", referencedColumnName = "idServicio")
+    @JoinColumn(name = "id_servicio", referencedColumnName = "id_servicio")
     @ManyToOne(optional = false)
     private Servicio idServicio;
 
