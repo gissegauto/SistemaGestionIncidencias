@@ -19,7 +19,9 @@ import business.utils.UtilLogger;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -44,13 +46,14 @@ public class ClienteBean implements Serializable {
     private List<Cliente> clienteList;
     private List<Ciudad> ciudadList;
     private Ciudad ciudad;
+    private String city;
     private List<Barrio> barrioList;
     private Barrio barrio;
     private boolean editar;
     private boolean skip;
     private UploadedFile file;
     private SolicitudConexion solicitudConexion;
-
+    private Map<String, String> cities;
     @Inject
     ClienteManager clienteMgr;
     @Inject
@@ -73,6 +76,12 @@ public class ClienteBean implements Serializable {
     @PostConstruct
     public void init() {
         limpiar();
+        cities = new HashMap<String, String>();
+        ciudadList = ciudadMgr.getAll();
+        for (Ciudad ciudad : ciudadList) {
+            cities.put(ciudad.getCiudad(), ciudad.getCiudad());
+        }
+
     }
 
     public void limpiar() {
@@ -134,7 +143,7 @@ public class ClienteBean implements Serializable {
                     cliente.setEstado("Activo");
                     cliente = clienteMgr.add(cliente);
                     historialClienteController.addHistory(cliente);
-                    
+
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
                 }
@@ -164,7 +173,7 @@ public class ClienteBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Cliente"));
             RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Error",
                     "Ocurrió un error al intentar guardar el cliente "));
             UtilLogger.error("Problemas al insertar el cliente", e);
         }
@@ -232,7 +241,13 @@ public class ClienteBean implements Serializable {
     }
 
     public void buscarBarrios() {
-        barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        if (city != null) {
+            ciudad = ciudadMgr.getByName(city);
+            barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+                    "Al seleccionar ciudad. Intente de nuevo"));
+        }
     }
 
     public Cliente getCliente() {
@@ -305,6 +320,22 @@ public class ClienteBean implements Serializable {
 
     public void setSolicitudConexion(SolicitudConexion solicitudConexion) {
         this.solicitudConexion = solicitudConexion;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Map<String, String> getCities() {
+        return cities;
+    }
+
+    public void setCities(Map<String, String> cities) {
+        this.cities = cities;
     }
 
 }

@@ -49,6 +49,7 @@ public class SolicitudConexionBean implements Serializable {
     private List<Barrio> barrioList;
     private boolean editar;
     private Cliente cliente;
+    private boolean tv = false;
 
     @Inject
     SolicitudConexionManager solicitudConexionMgr;
@@ -82,7 +83,7 @@ public class SolicitudConexionBean implements Serializable {
     public void limpiar() {
         editar = false;
         solicitudConexion = new SolicitudConexion();
-        servicioList = servicioMgr.getAll();
+        servicioList = servicioMgr.getByNotDelete();
         servicioListSelected = new ArrayList<>();
         solicitudConexionFilter = new ArrayList<>();
         ciudadList = ciudadMgr.getAll();
@@ -107,21 +108,12 @@ public class SolicitudConexionBean implements Serializable {
                         limpiar();
                     }
                 }
-
-                // else if (solicitudConexion.getIdSolicitudConexion() > 0) {
-//                    solicitudConexion.setFechaActualizacion(new Date());
-//                    solicitudConexion.setIdUsuarioActualizacion(session.getUsuario());
-//                    solicitudConexion = solicitudConexionMgr.update(solicitudConexion);
-//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
-//                            "Solicitud de Conexión nro: " + solicitudConexion.getIdSolicitudConexion()));
-//                }
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar la solicitud de conexión "));
             UtilLogger.error("Problemas al insertar la solicitud de conexión", e);
         }
-//        return "solicitudConexion";
     }
 
     public String desactivar() {
@@ -168,7 +160,6 @@ public class SolicitudConexionBean implements Serializable {
     }
 
     public void cargarClienteSolicitud() {
-//        this.solicitudConexion = solicitudC;
         RequestContext.getCurrentInstance().update("form-add:solicitudConexionGr");
     }
 
@@ -193,6 +184,10 @@ public class SolicitudConexionBean implements Serializable {
         facturacionBean
                 .generarFacturaCliente(cliente, solicitudConexion);
         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+    }
+
+    public void activateTV() {
+        tv = true;
     }
 
     public void buscarBarrios() {
@@ -290,6 +285,14 @@ public class SolicitudConexionBean implements Serializable {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public boolean isTv() {
+        return tv;
+    }
+
+    public void setTv(boolean tv) {
+        this.tv = tv;
     }
 
 }

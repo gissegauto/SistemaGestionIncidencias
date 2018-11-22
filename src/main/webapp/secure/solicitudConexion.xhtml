@@ -193,7 +193,6 @@ and open the template in the editor.
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                         <h:form id="form-add" >
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
                             <h:panelGrid columns="3" columnClasses="column" id="solicitudConexionGr">
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.id']}" for="id" 
                                                style="right: 10%" rendered="#{solicitudConexionBean.editar}"/>
@@ -222,9 +221,6 @@ and open the template in the editor.
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" for="telefono" style="right: 10%"/>
                                 <p:inputText id="telefono" value="#{solicitudConexionBean.solicitudConexion.telefono}" />
-                                <p:spacer/>
-                                <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" for="cantidadtv" style="right: 10%"/>
-                                <p:inputText id="cantidadtv" value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" />
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}" for="observacion" style="right: 10%"/>
                                 <p:inputText id="observacion" value="#{solicitudConexionBean.solicitudConexion.observacion}" />
@@ -255,8 +251,13 @@ and open the template in the editor.
                                 <p:spacer/>
                                 <h:outputLabel value="#{msg['solicitud.conexion.add.servicio']}"  for="servicio" />
                                 <p:selectManyCheckbox id="servicio" value="#{solicitudConexionBean.servicioListSelected}" converter="servicioConverter" layout="responsive" columns="3">
-                                    <f:selectItems value="#{solicitudConexionBean.servicioList}" var="servicio" itemLabel="#{servicio.servicio}" itemValue="#{servicio}" />
+                                    <f:selectItems value="#{solicitudConexionBean.servicioList}" var="servicio" itemLabel="#{servicio.servicio}" itemValue="#{servicio}"/>
                                 </p:selectManyCheckbox>
+                                <p:spacer/>
+                                <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" for="cantidadtv" style="right: 10%"/>
+                                <p:inputText id="cantidadtv" value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" 
+                                             disabled="#{solicitudConexionBean.tv}">
+                                </p:inputText>
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" />
                                 <p:inputText id="estado" value="Pendiente" disabled="true" />

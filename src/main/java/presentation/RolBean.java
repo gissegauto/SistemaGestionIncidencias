@@ -30,7 +30,7 @@ public class RolBean implements Serializable {
 
     private Rol rol;
     private List<Rol> rolList;
-    
+
     @Inject
     RolManager rolMgr;
 
@@ -41,31 +41,30 @@ public class RolBean implements Serializable {
 
     public void limpiar() {
         rol = new Rol();
-        rolList = rolMgr.getAll();
+        rolList = rolMgr.getByNotBorrado();
     }
 
-    public String addRol() {
+    public void addRol() {
         try {
             FacesContext context = FacesContext.getCurrentInstance();
-            if (null != rol) {
+            if (null != rol && rol.getIdrol() == null) {
+                boolean flag = false;
                 for (Rol roles : rolList) {
                     if (roles.getDescripcion().trim().equalsIgnoreCase(rol.getDescripcion().trim())
                             && (rol.getIdrol() == null || rol.getIdrol() == 0)) {
                         context.addMessage(null, new FacesMessage("Advertencia",
                                 "La rol " + rol.getDescripcion()
                                 + " ya se encuentra registrado"));
-//                        RequestContext.getCurrentInstance().execute("PF('dlgRolAdd').hide()");
-                        return "rol";
+                        flag = true;
                     }
                 }
-                if (rol != null & rol.getIdrol() == null) {
+                if (!flag) {
+                    rol.setEstado("Activo");
                     rol = rolMgr.add(rol);
                     context.addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Rol: " + rol.getDescripcion()));
-                } else if (rol != null & rol.getIdrol() > 0) {
-                    rol = rolMgr.update(rol);
-                    context.addMessage(null, new FacesMessage("Se actualizó correctamente",
-                            "Rol: " + rol.getDescripcion()));
+                    limpiar();
+                    RequestContext.getCurrentInstance().update("rolForm:dtRol");
                 }
             }
         } catch (Exception e) {
@@ -74,22 +73,19 @@ public class RolBean implements Serializable {
                     "Ocurrió un error al intentar guardar el rol "));
             UtilLogger.error("Problemas al insertar el rol", e);
         }
-        limpiar();
-        RequestContext.getCurrentInstance().update("rolForm:dtRol");
-        return "rol";
     }
 
-    
-     public String delete() {
+    public String delete() {
         try {
-            if (rol.getIdrol()> 0) {
-                rolMgr.delete(rol);
+            if (rol.getIdrol() > 0) {
+                rol.setEstado("Borrado");
+                rolMgr.update(rol);
                 limpiar();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró el Rol"));
                 RequestContext.getCurrentInstance().update("rolForm:dtRol");
             }
         } catch (Exception e) {
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el rol"));
             UtilLogger.error("Problemas al insertar el rol", e);
         }

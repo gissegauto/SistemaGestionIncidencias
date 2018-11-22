@@ -63,7 +63,7 @@ public class Usuario implements Serializable {
     private Funcionario idFuncionario;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 1)
+    @Size(min = 1, max = 10)
     @Column(name = "estado")
     private String estado;
 

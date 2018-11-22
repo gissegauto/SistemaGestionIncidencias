@@ -60,47 +60,42 @@ public class UsuarioBean implements Serializable {
     public void limpiar() {
         usuario = new Usuario();
         usuarioSelected = new Usuario();
-        usuarioList = usuariosMgr.getAll();
+        usuarioList = usuariosMgr.getByNotBorrado();
         rolesList = rolesMgr.getAll();
     }
 
-    public String addUsuario() {
+    public void addUsuario() {
         try {
             if (null != usuario) {
+                boolean flag = false;
                 for (Usuario user : usuarioList) {
                     if ((usuario.getIdusuario() == null || usuario.getIdusuario() == 0)
                             && usuario.getUsername().trim().equalsIgnoreCase(user.getUsername().trim())) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
                                 "El usuario " + usuario.getUsername()
                                 + " ya se encuentra registrado"));
-                        RequestContext.getCurrentInstance().execute("PF('dlgUsuAdd').hide()");
-                        return "usuario";
+                        flag = true;
                     }
                 }
-                if (usuario != null & usuario.getIdusuario() == null) {
-                    usuario = usuariosMgr.add(usuario);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
-                            "Usuario: " + usuario.getUsername()));
-                } else if (usuario != null & usuario.getIdusuario() > 0) {
-                    usuario = usuariosMgr.update(usuario);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
-                            "Usuario: " + usuario.getUsername()));
-                }
-
-                if (usuario != null) {
-                    if (null == usuario.getIdusuario()) {
+                if (flag == false) {
+                    if (usuario.getIdusuario() == null) {
+                        usuario.setEstado("Activo");
                         //cifrar password
                         usuario.setPassword(MD5Generator.MD5(usuario.getPassword()));
                         usuario = usuariosMgr.add(usuario);
                         usuarioList.add(usuario);
-                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
+                                "Usuario: " + usuario.getUsername()));
+                    } else if (usuario.getIdusuario() > 0) {
                         usuario.setPassword(MD5Generator.MD5(usuario.getPassword()));
                         usuario = usuariosMgr.update(usuario);
                         usuarioList = usuariosMgr.getAll();
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
+                                "Usuario: " + usuario.getUsername()));
                     }
+                    RequestContext.getCurrentInstance().execute("PF('dlgUsuAdd').hide()");
+                    limpiar();
                 }
-                RequestContext.getCurrentInstance().execute("PF('dlgUsuAdd').hide()");
-                limpiar();
             }
 
         } catch (Exception e) {
@@ -108,15 +103,16 @@ public class UsuarioBean implements Serializable {
                     "Ocurrió un error al intentar guardar el usuario "));
             UtilLogger.error("Problemas al insertar el usuario", e);
         }
-        return "usuario";
     }
 
-    public String delete() {
+    public void delete() {
         try {
             if (usuario.getIdusuario() > 0) {
-                usuariosMgr.delete(usuario);
+                String nombre = usuario.getUsername();
+                usuario.setEstado("Borrado");
+                usuariosMgr.update(usuario);
                 limpiar();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Usuario"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Usuario : " + nombre));
                 RequestContext.getCurrentInstance().update("usuarioForm:dtUsuario");
             }
         } catch (Exception e) {
@@ -124,7 +120,6 @@ public class UsuarioBean implements Serializable {
                     "Ocurrió un error al intentar guardar el usuario "));
             UtilLogger.error("Problemas al insertar el usuario", e);
         }
-        return "usuario";
     }
 
     public void resetearPass() {
