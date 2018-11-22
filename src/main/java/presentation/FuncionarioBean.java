@@ -65,56 +65,59 @@ public class FuncionarioBean implements Serializable {
         barrio = new Barrio();
     }
 
-    public String add() {
+    public void add() {
         try {
             if (null != funcionario) {
+                boolean flag = true;
                 for (Funcionario funcionario : funcionarioList) {
                     if (funcionario.getApellidoFuncionario().trim().equalsIgnoreCase(funcionario.getApellidoFuncionario().trim())
                             && (funcionario.getIdFuncionario() == null || funcionario.getIdFuncionario() == 0)) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
                                 "El funcionario " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()
                                 + " ya se encuentra registrado"));
-                        return "funcionario";
+                        flag = false;
                     }
                 }
-                if (tecnico) {
-                    funcionario.setTecnico("SI");
-                } else {
-                    funcionario.setTecnico("NO");
-                }
-                if (funcionario != null & funcionario.getIdFuncionario() == null) {
-                    funcionario.setEstado("Activo");
-                    funcionario.setFechaRegistro(new Date());
-                    funcionario.setIdUsuarioRegistro(session.getUsuario());
-                    funcionario = funcionarioMgr.add(funcionario);
-                    if (funcionario != null) {
-                        historialFuncionarioController.addHistory(funcionario);
+                if (!flag) {
+                    if (tecnico) {
+                        funcionario.setTecnico("SI");
+                    } else {
+                        funcionario.setTecnico("NO");
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
-                            "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
-                } else if (funcionario != null & funcionario.getIdFuncionario() > 0) {
-                    funcionario.setIdUsuarioActualizacion(session.getUsuario());
-                    funcionario.setFechaActualizacion(new Date());
-                    funcionario = funcionarioMgr.update(funcionario);
+                    if (funcionario.getIdFuncionario() == null) {
+                        funcionario.setEstado("Activo");
+                        funcionario.setFechaRegistro(new Date());
+                        funcionario.setIdUsuarioRegistro(session.getUsuario());
+                        funcionario = funcionarioMgr.add(funcionario);
+                        if (funcionario != null) {
+                            historialFuncionarioController.addHistory(funcionario);
+                        }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
+                                "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
+                    } else if (funcionario.getIdFuncionario() > 0) {
+                        funcionario.setIdUsuarioActualizacion(session.getUsuario());
+                        funcionario.setFechaActualizacion(new Date());
+                        funcionario = funcionarioMgr.update(funcionario);
 
-                    if (funcionario != null) {
-                        historialFuncionarioController.addHistory(funcionario);
+                        if (funcionario != null) {
+                            historialFuncionarioController.addHistory(funcionario);
+                        }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
+                                "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                     }
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
-                            "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
+                    limpiar();
+                    RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
                 }
-                limpiar();
             }
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el funcionario "));
             UtilLogger.error("Problemas al insertar el funcionario", e);
         }
-        RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
-        return "funcionario";
+
     }
 
-    public String delete(Funcionario funcionario) {
+    public void delete(Funcionario funcionario) {
         try {
             funcionario.setIdUsuarioActualizacion(session.getUsuario());
             funcionario.setFechaActualizacion(new Date());
@@ -127,9 +130,7 @@ public class FuncionarioBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
                     "Ocurrió un error al intentar guardar el funcionario"));
             UtilLogger.error("Problemas al insertar el funcionario", e);
-            return null;
         }
-        return "funcionario";
     }
 
     public String verOrdenTrabajo(Funcionario funcionario) {

@@ -235,18 +235,15 @@ and open the template in the editor.
                                 <p:spacer/>
 
                                 <p:outputLabel value="#{msg['cliente.add.ciudad']}" for="ciudad" />
-                                <p:selectOneMenu id="ciudad" value="#{clienteBean.ciudad}" 
+                                <p:selectOneMenu id="ciudad" value="#{clienteBean.city}" 
                                                  effect="fold" editable="false"
                                                  validatorMessage="Debe seleccionar una ciudad"
                                                  filter="true" filterMatchMode="startsWith"
-                                                 converter="ciudadConverter" >
-                                    <p:ajax  process="ciudad"  event="change"
-                                             update=":form-add:barrio"
+                                                  >
+                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="false" />
+                                    <p:ajax  update=":form-add:barrio" 
                                              listener="#{clienteBean.buscarBarrios}"/> 
-                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{clienteBean.ciudadList}" 
-                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
-                                                   itemValue="#{ciudad}" />
+                                    <f:selectItems value="#{clienteBean.cities}" />
 
                                 </p:selectOneMenu>                                                             
                                 <p:spacer/>     

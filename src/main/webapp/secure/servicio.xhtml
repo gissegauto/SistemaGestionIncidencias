@@ -43,7 +43,9 @@ and open the template in the editor.
                         <p:column headerText="#{msg['servicio.precio']}" 
                                   width="20%" filterBy="#{servicio.precio}"
                                   sortBy="#{servicio.precio}">
-                            <h:outputText value="#{servicio.precio}" />
+                            <h:outputText value="#{servicio.precio}" >
+                                <f:convertNumber pattern="#0" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['cliente.estado']}" 
                                   sortBy="#{servicio.estado}" filterBy="#{servicio.estado}"
@@ -66,11 +68,16 @@ and open the template in the editor.
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
                     <p:fieldset  style="margin-bottom:5px; font-size:12px " >
                         <h:form id="form-add">
-                            <p:messages id="messages" showDetail="true" autoUpdate="true" />
                             <h:panelGrid columns="2" columnClasses="column" id="servicioGr">   
                                 <p:outputLabel value="#{msg['servicio.add.servicio']}" for="servicio" style="right: 20%"/>
                                 <p:inputText id="servicio" required="true" requiredMessage="#{msg['requerid.descripcion']}"
                                              value="#{servicioBean.servicio.servicio}" />
+                                <p:outputLabel value="#{msg['servicio.add.precio']}" for="precio" style="right: 20%"/>
+                                <p:inputText id="precio"
+                                             value="#{servicioBean.servicio.precio}" 
+                                             >
+                                    <f:convertNumber pattern="#0" />
+                                </p:inputText>
                                 <p:outputLabel value="#{msg['cliente.add.estado']}" />
                                 <p:inputText id="estado" value="Activo" disabled="true" />
                                 <br />
@@ -79,7 +86,7 @@ and open the template in the editor.
                                     <p:commandButton 
                                         value="Guardar" 
                                         update=":servicioForm:dtServicio" 
-                                        action="#{servicioBean.add}"
+                                        action="#{servicioBean.addServicio}"
                                         id='btn-guardar-rol'
                                         />
                                 </div>

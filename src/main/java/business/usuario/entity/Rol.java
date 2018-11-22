@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -31,9 +32,6 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Rol.findByDescripcion", query = "SELECT r FROM Rol r WHERE r.descripcion = :descripcion")})
 public class Rol implements Serializable {
 
-    @OneToMany(mappedBy = "idrol")
-    private List<Usuario> usuarioList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +41,13 @@ public class Rol implements Serializable {
     @Size(max = 255)
     @Column(name = "descripcion")
     private String descripcion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "estado")
+    private String estado;
+    @OneToMany(mappedBy = "idrol")
+    private List<Usuario> usuarioList;
 
     public Rol() {
     }
@@ -65,6 +70,14 @@ public class Rol implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @Override
@@ -99,5 +112,5 @@ public class Rol implements Serializable {
     public void setUsuarioList(List<Usuario> usuarioList) {
         this.usuarioList = usuarioList;
     }
-    
+
 }

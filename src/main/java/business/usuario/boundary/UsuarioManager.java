@@ -8,6 +8,7 @@ package business.usuario.boundary;
 import business.dao.GenericImpl;
 import business.usuario.entity.Usuario;
 import business.utils.UtilLogger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 
@@ -29,6 +30,22 @@ public class UsuarioManager extends GenericImpl<Usuario, Integer> {
             }
         } catch (Exception e) {
             UtilLogger.error(this.getClass().getName() + ".getByName", e);
+            return null;
+        }
+    }
+    
+    
+     /**
+     * Obtener Lista de Usuario que no estén borrados
+     * @return 
+     */
+    public List<Usuario> getByNotBorrado() {
+        try {
+            Query query = em.createQuery("SELECT c FROM Usuario c where c.estado <> 'Borrado' ");
+
+            return ((List<Usuario>) query.getResultList());
+        } catch (Exception e) {
+            UtilLogger.error(this.getClass().getName() + ".getByNotBorrado", e);
             return null;
         }
     }

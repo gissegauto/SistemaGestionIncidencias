@@ -44,19 +44,20 @@ public class ServicioBean implements Serializable {
         servicioList = servicioMgr.getByNotDelete();
     }
 
-    public String add() {
+    public void addServicio() {
         try {
             if (null != servicio) {
-                if (servicio != null & servicio.getIdServicio() == null) {
+                if (servicio.getIdServicio() == null) {
                     servicio.setEstado("Activo");
                     servicio = servicioMgr.add(servicio);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
                             "Servicio: " + servicio.getServicio()));
-                } else if (servicio != null & servicio.getIdServicio() > 0) {
+                } else if (servicio.getIdServicio() > 0) {
                     servicio = servicioMgr.update(servicio);
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
                             "Servicio: " + servicio.getServicio()));
                 }
+                RequestContext.getCurrentInstance().execute("PF('dlgServicioAdd').hide()");
                 limpiar();
             }
         } catch (Exception e) {
@@ -64,9 +65,8 @@ public class ServicioBean implements Serializable {
                     "Ocurrió un error al intentar guardar el servicio "));
             UtilLogger.error("Problemas al insertar el servicio", e);
         }
-        return "servicio";
     }
-    
+
     public void delete(Servicio servicio) {
         servicio.setEstado("Borrado");
         servicioMgr.update(servicio);

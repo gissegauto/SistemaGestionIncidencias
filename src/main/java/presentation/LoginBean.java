@@ -71,31 +71,27 @@ public class LoginBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public String login() throws IOException {
+    public void login() throws IOException {
         usuario = usuariosController.authenticate(username, password);
         if (usuario != null) {
             loggedIn = true;
         }
-      
-
         if (loggedIn) {
             UtilLogger.info("Se inició sesión como " + username);
             redirect();
-            return "usuario";
         } else {
             loggedIn = false;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error de acceso", "El usuario y la contraseña no coinciden");
             FacesContext.getCurrentInstance().addMessage(null, message);
             UtilLogger.info("Se intentó ingresar como " + username);
-            username = null;
-            password = null;
+            username = "";
+            password = "";
             RequestContext.getCurrentInstance().update("loginPage");
-            return "login";
         }
     }
 
     public void redirect() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("secure/usuario.jsf");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("secure/home.jsf");
     }
 
     public boolean getPermisoPantalla(String roles) {
