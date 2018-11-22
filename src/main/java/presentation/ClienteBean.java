@@ -99,27 +99,27 @@ public class ClienteBean implements Serializable {
                 for (Cliente clie : clienteList) {
                     if ((cliente.getIdCliente() == null || cliente.getIdCliente() == 0)
                             && cliente.getNroDocumento().trim().equalsIgnoreCase(clie.getNroDocumento().trim())) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Advertencia",
                                 "El cliente " + cliente.getNombre() + " " + cliente.getApellido()
                                 + " ya se encuentra registrado"));
                         RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').hide()");
                         return "cliente";
                     }
                 }
-                if (cliente != null & cliente.getIdCliente() == null) {
+                if (cliente.getIdCliente() == null) {
                     cliente.setFechaRegistro(new Date());
                     cliente.setIdUsuarioRegistro(session.getUsuario());
                     cliente.setEstado("Activo");
                     cliente = clienteMgr.add(cliente);
                     historialClienteController.addHistory(cliente);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Se agregó correctamente",
                             "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
-                } else if (cliente != null & cliente.getIdCliente() > 0) {
+                } else if (cliente.getIdCliente() > 0) {
                     cliente.setFechaActualizacion(new Date());
                     cliente.setIdUsuarioActualizacion(session.getUsuario());
                     cliente = clienteMgr.update(cliente);
                     historialClienteController.addHistory(cliente);
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Se actualizó correctamente",
                             "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
                 }
                 limpiar();
@@ -144,7 +144,7 @@ public class ClienteBean implements Serializable {
                     cliente = clienteMgr.add(cliente);
                     historialClienteController.addHistory(cliente);
 
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Se agregó correctamente",
                             "Cliente: " + cliente.getNombre() + " " + cliente.getApellido()));
                 }
                 limpiar();
@@ -153,7 +153,7 @@ public class ClienteBean implements Serializable {
             }
 
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",
                     "Ocurrió un error al intentar guardar el cliente "));
             UtilLogger.error("Problemas al insertar el cliente", e);
         }
