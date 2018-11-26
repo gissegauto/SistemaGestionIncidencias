@@ -67,11 +67,19 @@ public class ServicioBean implements Serializable {
         }
     }
 
-    public void delete(Servicio servicio) {
-        servicio.setEstado("Borrado");
+    public void desactivarServicio(Servicio servicio) {
+        servicio.setEstado("Inactivo");
         servicioMgr.update(servicio);
         limpiar();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró el registro"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Se actualizó el servicio"));
+        RequestContext.getCurrentInstance().update("servicioForm:dtServicio");
+    }
+    
+    public void activarServicio(Servicio servicio) {
+        servicio.setEstado("Activo");
+        servicioMgr.update(servicio);
+        limpiar();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Se actualizó el servicio"));
         RequestContext.getCurrentInstance().update("servicioForm:dtServicio");
     }
 

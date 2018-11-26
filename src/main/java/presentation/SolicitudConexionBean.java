@@ -96,7 +96,7 @@ public class SolicitudConexionBean implements Serializable {
     public void limpiar() {
         editar = false;
         solicitudConexion = new SolicitudConexion();
-        servicioList = servicioMgr.getByNotDelete();
+        servicioList = servicioMgr.getByEstadoActivo();
         servicioListSelected = new ArrayList<>();
         solicitudConexionFilter = new ArrayList<>();
         ciudadList = ciudadMgr.getAll();
@@ -254,7 +254,7 @@ public class SolicitudConexionBean implements Serializable {
         editar = true;
         ciudad = new Ciudad();
         barrioList = new ArrayList<>();
-        servicioList = servicioMgr.getByNotDelete();
+        servicioList = servicioMgr.getByEstadoActivo();
         servicioListSelected.add(solicitud.getIdServicio());
         if (solicitud.getIdBarrio() != null) {
             city = solicitud.getIdBarrio().getIdCiudad().getCiudad();

@@ -55,11 +55,19 @@ and open the template in the editor.
                         <p:column headerText="#{msg['generic.opciones']}" 
                                   width="20%">
                             <p:commandButton 
-                                icon="fa fa-trash"
+                                icon="ui-icon-close"
+                                rendered="#{servicio.estado eq 'Activo'}"  
                                 style="color: crimson"
-                                actionListener="#{servicioBean.delete(servicio)}"
+                                 title="#{msg['generic.btnInactive']}"
+                                actionListener="#{servicioBean.desactivarServicio(servicio)}"
                                 id="botonEditar">
                             </p:commandButton>
+                            <p:commandButton 
+                                rendered="#{servicio.estado eq 'Inactivo'}"
+                                icon="ui-icon-check"
+                                title="#{msg['generic.btnActive']}"
+                                actionListener="#{servicioBean.activarServicio(servicio)}"
+                                id="botonActivar" />
                         </p:column>
                     </p:dataTable>
                 </h:form>
