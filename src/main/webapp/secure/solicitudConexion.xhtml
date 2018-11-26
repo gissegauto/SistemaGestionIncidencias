@@ -243,10 +243,13 @@ and open the template in the editor.
                                                    itemValue="#{barrio}"/>
                                 </p:selectOneMenu>
                                 <p:spacer/>
-                                <h:outputLabel value="#{msg['solicitud.conexion.add.servicio']}"  for="servicio" />
-                                <p:selectManyCheckbox id="servicio" value="#{solicitudConexionBean.servicioListSelected}" converter="servicioConverter" layout="responsive" columns="3">
-                                    <f:selectItems value="#{solicitudConexionBean.servicioList}" var="servicio" itemLabel="#{servicio.servicio}" itemValue="#{servicio}"/>
-                                </p:selectManyCheckbox>
+                                <h:outputLabel value="#{msg['solicitud.conexion.add.servicio']}"  for="servicios" />
+                                <p:selectOneRadio id="servicios" value="#{solicitudConexionBean.servicioListSelected}" 
+                                                      converter="servicioConverter" layout="responsive" columns="3">
+                                    <f:selectItems value="#{solicitudConexionBean.servicioList}" 
+                                                   var="servicio" itemLabel="#{servicio.servicio}" 
+                                                   itemValue="#{servicio}"/>
+                                </p:selectOneRadio>
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" for="cantidadtv" style="right: 10%"/>
                                 <p:inputText id="cantidadtv" value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" 

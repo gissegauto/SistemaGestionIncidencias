@@ -115,16 +115,44 @@ public class SolicitudConexionBean implements Serializable {
                             solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
                             solicitudConexion.setEstado("Pendiente");
                             solicitudConexion = solicitudConexionMgr.add(solicitudConexion);
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se agregó correctamente",
                                     "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
                         }
                         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
                         limpiar();
                     }
+                } else {
+                    if (!servicioListSelected.isEmpty()) {
+                        if (servicioListSelected.size() == 1) {
+                            solicitudConexion.setIdServicio(servicioListSelected.get(0));
+                            solicitudConexion.setFechaRegistro(new Date());
+                            solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
+                            solicitudConexion.setEstado("Pendiente");
+                            solicitudConexion = solicitudConexionMgr.update(solicitudConexion);
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se editó correctamente",
+                                    "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
+                        } else {
+                            solicitudConexion.setIdSolicitudConexion(null);
+                            for (int i = 1; i < servicioListSelected.size(); i++) {
+                                if (i > 1) {
+                                    solicitudConexion.setIdServicio(servicioListSelected.get(i));
+                                    solicitudConexion.setFechaRegistro(new Date());
+                                    solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
+                                    solicitudConexion.setEstado("Pendiente");
+                                    solicitudConexion = solicitudConexionMgr.add(solicitudConexion);
+                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se editó correctamente",
+                                            "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
+                                }
+                            }
+                        }
+                        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+                        limpiar();
+                    }
+
                 }
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
                     "Ocurrió un error al intentar guardar la solicitud de conexión "));
             UtilLogger.error("Problemas al insertar la solicitud de conexión", e);
         }
@@ -134,10 +162,10 @@ public class SolicitudConexionBean implements Serializable {
         try {
             solicitudConexion.setEstado("Desactivado");
             solicitudConexionMgr.update(solicitudConexion);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se desactivó la Solicitud de Conexion"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se desactivó la Solicitud de Conexion"));
             RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
                     "Ocurrió un error al intentar desactivar la solicitud de conexión"));
             UtilLogger.error("Problemas al desactivar la solicitud de conexión", e);
             return null;
@@ -226,6 +254,8 @@ public class SolicitudConexionBean implements Serializable {
         editar = true;
         ciudad = new Ciudad();
         barrioList = new ArrayList<>();
+        servicioList = servicioMgr.getByNotDelete();
+        servicioListSelected.add(solicitud.getIdServicio());
         if (solicitud.getIdBarrio() != null) {
             city = solicitud.getIdBarrio().getIdCiudad().getCiudad();
             buscarBarrios();
