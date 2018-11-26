@@ -82,6 +82,11 @@ public class SolicitudConexionBean implements Serializable {
     @PostConstruct
     public void init() {
         limpiar();
+       limpiar();
+        initCities();
+    }
+
+    public void initCities(){
         cities = new HashMap<String, String>();
         ciudadList = ciudadMgr.getAll();
         for (Ciudad ciudad : ciudadList) {
@@ -211,10 +216,11 @@ public class SolicitudConexionBean implements Serializable {
     }
 
     public void actionClean() {
-        this.solicitudConexion = new SolicitudConexion();
-        this.cliente = new Cliente();
-        ciudad = new Ciudad();
-        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
+        limpiar();
+        initCities();
+        solicitudConexion = new SolicitudConexion();
+        RequestContext.getCurrentInstance().update("form-add");
+        RequestContext.getCurrentInstance().execute("PF('dlgSolicitudConexionAdd').show()");
     }
 
     public void edicion() {
@@ -328,7 +334,5 @@ public class SolicitudConexionBean implements Serializable {
     public void setCities(Map<String, String> cities) {
         this.cities = cities;
     }
-    
-    
 
 }

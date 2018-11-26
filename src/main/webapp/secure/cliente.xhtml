@@ -22,9 +22,10 @@ and open the template in the editor.
                     <facelets>
                         <div align="right">
                             <p:commandButton 
-                                             icon="fa fa-plus-circle" 
-                                             update=":form-add:clienteGr" 
-                                             actionListener="#{clienteBean.actionClean}"/>
+                                icon="fa fa-plus-circle" 
+                                update=":form-add:clienteGr" 
+                                title="Agregar Cliente"
+                                actionListener="#{clienteBean.actionClean}"/>
                         </div>
                     </facelets>
                     <p:dataTable id="dtCliente" var="cliente" widgetVar="clienteTable"
@@ -125,7 +126,7 @@ and open the template in the editor.
                                 actionListener="#{clienteBean.delete(cliente)}"
                                 id="botonEliminar">
                             </p:commandButton>
-                             <p:commandButton 
+                            <p:commandButton 
                                 icon="ui-icon-folder-collapsed" 
                                 process="dtCliente"
                                 title="#{msg['cliente.btn.solicitud']}"
@@ -238,7 +239,7 @@ and open the template in the editor.
                                                  effect="fold" editable="false"
                                                  validatorMessage="Debe seleccionar una ciudad"
                                                  filter="true" filterMatchMode="startsWith"
-                                                  >
+                                                 >
                                     <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="false" />
                                     <p:ajax  update=":form-add:barrio" 
                                              listener="#{clienteBean.buscarBarrios}"/> 
