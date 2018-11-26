@@ -81,14 +81,14 @@ public class FuncionarioBean implements Serializable {
     public void add() {
         try {
             if (null != funcionario) {
-                boolean flag = true;
+                boolean flag = false;
                 for (Funcionario funcionario : funcionarioList) {
                     if (funcionario.getApellidoFuncionario().trim().equalsIgnoreCase(funcionario.getApellidoFuncionario().trim())
                             && (funcionario.getIdFuncionario() == null || funcionario.getIdFuncionario() == 0)) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Advertencia",
                                 "El funcionario " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()
                                 + " ya se encuentra registrado"));
-                        flag = false;
+                        flag = true;
                     }
                 }
                 if (!flag) {
@@ -105,8 +105,8 @@ public class FuncionarioBean implements Serializable {
                         if (funcionario != null) {
                             historialFuncionarioController.addHistory(funcionario);
                         }
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se agregó correctamente",
-                                "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se agregó correctamente",
+                                "Funcionario: " + funcionario.getNombreFuncionario() + " " + funcionario.getApellidoFuncionario()));
                     } else if (funcionario.getIdFuncionario() > 0) {
                         funcionario.setIdUsuarioActualizacion(session.getUsuario());
                         funcionario.setFechaActualizacion(new Date());
@@ -115,7 +115,7 @@ public class FuncionarioBean implements Serializable {
                         if (funcionario != null) {
                             historialFuncionarioController.addHistory(funcionario);
                         }
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se actualizó correctamente",
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se actualizó correctamente",
                                 "Funcionario: " + funcionario.getNombreFuncionario() + funcionario.getApellidoFuncionario()));
                     }
                     limpiar();
@@ -123,7 +123,7 @@ public class FuncionarioBean implements Serializable {
                 }
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
                     "Ocurrió un error al intentar guardar el funcionario "));
             UtilLogger.error("Problemas al insertar el funcionario", e);
         }
@@ -137,10 +137,10 @@ public class FuncionarioBean implements Serializable {
             funcionario.setEstado("Borrado");
             funcionarioMgr.update(funcionario);
             limpiar();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Funcionario"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se borró Funcionario"));
             RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
                     "Ocurrió un error al intentar guardar el funcionario"));
             UtilLogger.error("Problemas al insertar el funcionario", e);
         }

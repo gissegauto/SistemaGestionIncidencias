@@ -23,7 +23,7 @@ and open the template in the editor.
                         <div align="right">
                             <p:commandButton process="dtFuncionario" 
                                              icon="fa fa-plus-circle" 
-                                             update=":form-add:FuncionarioGr" 
+                                             update=":form-add:funcionarioGr" 
                                              oncomplete="PF('dlgFuncionarioAdd').show()" 
                                              actionListener="#{funcionarioBean.actionClean}"/>
                         </div>
@@ -141,7 +141,7 @@ and open the template in the editor.
                         <h:form id="form-add">
                             <p:growl id="growl" autoUpdate="true" showDetail="true" sticky="true" />
                             <h:panelGroup>
-                                <h:panelGrid columns="3" columnClasses="column" id="FuncionarioGr">   
+                                <h:panelGrid columns="3" columnClasses="column" id="funcionarioGr">   
                                     <p:outputLabel value="#{msg['funcionario.nombre']}" for="nombre" style="left:  20%"/>
                                     <p:inputText id="nombre" required="true" requiredMessage="#{msg['requerid.nombre']}"
                                                  value="#{funcionarioBean.funcionario.nombreFuncionario}" />
@@ -211,7 +211,8 @@ and open the template in the editor.
                                     <div style="align-content: center" >
                                         <p:commandButton 
                                             value="#{msg['generic.guardar']}" 
-                                            update="FuncionarioGr,:funcionarioForm:dtFuncionario" 
+                                             oncomplete="PF('dlgFuncionarioAdd').hide()" 
+                                            update="funcionarioGr,:funcionarioForm:dtFuncionario" 
                                             action="#{funcionarioBean.add}"
                                             id='btn-guardar-funcionario'
                                             />
