@@ -95,18 +95,16 @@ and open the template in the editor.
                                                                  target="#{solicitudConexionBean.solicitudConexion}" />
                                 </p:commandButton>
                             </p:column>
-
-                            <p:commandButton 
-                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"
+                             <p:commandButton 
                                 icon="ui-icon-pencil"
-                                update=":form-add:solicitudConexionGr"
+                                update=":form-add:solicitudConexionGr" 
+                                rendered="#{solicitudConexion.estado eq 'Pendiente'}" 
                                 title="#{msg['generic.btnUpdate']}"
-                                action="#{solicitudConexionBean.edicion}"
-                                oncomplete="PF('dlgSolicitudConexionAdd').show('#{component.clientId}')"
-                                id="botonEditar" >
-                                <f:setPropertyActionListener value="#{solicitudConexion}" 
-                                                             target="#{solicitudConexionBean.solicitudConexion}" />
+                                oncomplete="PF('dlgSolicitudConexionAdd').show()" 
+                                actionListener="#{solicitudConexionBean.edicion(solicitudConexion)}"
+                                id="botonEditar">
                             </p:commandButton>
+                            
                             <p:commandButton 
                                 icon="ui-icon-close"
                                 rendered="#{solicitudConexion.estado eq 'Pendiente'}"                                
