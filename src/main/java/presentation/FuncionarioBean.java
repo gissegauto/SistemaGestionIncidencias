@@ -15,7 +15,9 @@ import business.funcionario.entity.Funcionario;
 import business.utils.UtilLogger;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -40,6 +42,8 @@ public class FuncionarioBean implements Serializable {
     private List<Barrio> barrioList;
     private Barrio barrio;
     private boolean tecnico = false;
+    private String city;
+    private Map<String, String> cities;
 
     @Inject
     FuncionarioManager funcionarioMgr;
@@ -55,6 +59,15 @@ public class FuncionarioBean implements Serializable {
     @PostConstruct
     public void init() {
         limpiar();
+        initCities();
+    }
+
+    public void initCities() {
+        cities = new HashMap<String, String>();
+        ciudadList = ciudadMgr.getAll();
+        for (Ciudad ciudad : ciudadList) {
+            cities.put(ciudad.getCiudad(), ciudad.getCiudad());
+        }
     }
 
     public void limpiar() {
@@ -138,7 +151,13 @@ public class FuncionarioBean implements Serializable {
     }
 
     public void buscarBarrios() {
-        barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        if (city != null) {
+            ciudad = ciudadMgr.getByName(city);
+            barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+                    "Al seleccionar ciudad. Intente de nuevo"));
+        }
     }
 
     public void actionClean(ActionEvent actionEvent) {
@@ -200,6 +219,22 @@ public class FuncionarioBean implements Serializable {
 
     public void setTecnico(boolean tecnico) {
         this.tecnico = tecnico;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Map<String, String> getCities() {
+        return cities;
+    }
+
+    public void setCities(Map<String, String> cities) {
+        this.cities = cities;
     }
 
 }
