@@ -21,12 +21,11 @@ and open the template in the editor.
                     </div>
                     <facelets>
                         <div align="right">
-                            <p:commandButton process="dtSolicitudConexion" 
-                                             icon="fa fa-plus-circle" 
-                                             title="Agregar Solicitud"
-                                             update=":form-add:solicitudConexionGr" 
-                                             oncomplete="PF('dlgSolicitudConexionAdd').show()" 
-                                             actionListener="#{solicitudConexionBean.actionClean}"/>
+                            <p:commandButton 
+                                icon="fa fa-plus-circle" 
+                                update=":form-add:solicitudConexionGr" 
+                                title="Agregar Solicitud"
+                                actionListener="#{solicitudConexionBean.actionClean}"/>
                         </div>
                     </facelets>
                     <p:dataTable id="dtSolicitudConexion" var="solicitudConexion" 
