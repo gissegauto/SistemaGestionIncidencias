@@ -226,16 +226,13 @@ and open the template in the editor.
                                 <p:inputText id="observacion" value="#{solicitudConexionBean.solicitudConexion.observacion}" />
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.ciudad']}" for="ciudad" />
-                                <p:selectOneMenu id="ciudad" value="#{solicitudConexionBean.ciudad}" 
+                                <p:selectOneMenu id="ciudad" value="#{solicitudConexionBean.city}" 
                                                  effect="fold" editable="false"
                                                  validatorMessage="Debe seleccionar una ciudad"
-                                                 filter="true" filterMatchMode="startsWith"
-                                                 converter="ciudadConverter" >
-                                    <p:ajax listener="#{solicitudConexionBean.buscarBarrios}" update="barrio"/> 
-                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
-                                    <f:selectItems value="#{solicitudConexionBean.ciudadList}" 
-                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
-                                                   itemValue="#{ciudad}"/>
+                                                 filter="true" filterMatchMode="startsWith" >
+                                    <p:ajax listener="#{solicitudConexionBean.buscarBarrios}" update=":form-add:barrio" /> 
+                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="false" />
+                                    <f:selectItems value="#{solicitudConexionBean.cities}" />
                                 </p:selectOneMenu>
                                 <p:spacer/>
                                 <p:outputLabel value="#{msg['solicitud.conexion.add.barrio']}" for="barrio" />
@@ -327,7 +324,7 @@ and open the template in the editor.
                                                  filter="true" filterMatchMode="startsWith"
                                                  converter="ciudadConverter" >
                                     <p:ajax  process="ciudad"  event="change"
-                                             update=":form-add:barrio"
+                                             update=":form-add-cliente:barrio"
                                              listener="#{clienteBean.buscarBarrios}"/> 
                                     <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
                                     <f:selectItems value="#{clienteBean.ciudadList}" 

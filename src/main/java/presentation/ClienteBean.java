@@ -81,7 +81,6 @@ public class ClienteBean implements Serializable {
         for (Ciudad ciudad : ciudadList) {
             cities.put(ciudad.getCiudad(), ciudad.getCiudad());
         }
-
     }
 
     public void limpiar() {
