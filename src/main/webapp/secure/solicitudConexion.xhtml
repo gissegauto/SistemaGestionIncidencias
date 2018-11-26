@@ -326,7 +326,7 @@ and open the template in the editor.
                                     <p:ajax  process="ciudad"  event="change"
                                              update=":form-add-cliente:barrio"
                                              listener="#{clienteBean.buscarBarrios}"/> 
-                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="false" />
                                     <f:selectItems value="#{clienteBean.ciudadList}" 
                                                    var="ciudad" itemLabel="#{ciudad.ciudad}" 
                                                    itemValue="#{ciudad}" />
