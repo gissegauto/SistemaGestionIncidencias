@@ -46,13 +46,13 @@ public class ClienteBean implements Serializable {
     private List<Cliente> clienteList;
     private List<Ciudad> ciudadList;
     private Ciudad ciudad;
-    private String city;
     private List<Barrio> barrioList;
     private Barrio barrio;
     private boolean editar;
     private boolean skip;
     private UploadedFile file;
     private SolicitudConexion solicitudConexion;
+    private String city;
     private Map<String, String> cities;
     @Inject
     ClienteManager clienteMgr;

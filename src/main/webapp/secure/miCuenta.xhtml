@@ -176,18 +176,15 @@ and open the template in the editor.
                                                  value="#{miCuentaBean.funcionario.nroDocumento}" />
                                     <p:spacer/>
                                     <p:outputLabel value="#{msg['funcionario.add.ciudad']}" for="ciudad" />
-                                    <p:selectOneMenu id="ciudad" value="#{miCuentaBean.ciudad}" 
+                                    <p:selectOneMenu id="ciudad" value="#{miCuentaBean.city}" 
                                                      effect="fold" editable="false"
                                                      validatorMessage="Debe seleccionar una ciudad"
-                                                     filter="true" filterMatchMode="startsWith"
-                                                     converter="ciudadConverter" >
-                                        <f:selectItems value="#{miCuentaBean.ciudadList}" 
-                                                       var="ciudad" itemLabel="#{ciudad.ciudad}" 
-                                                       itemValue="#{ciudad}" />
-                                        <p:ajax  process="ciudad"  event="change"
-                                                 update=":form-actualizar-datos:barrio"
+                                                     filter="true" filterMatchMode="startsWith">
+                                        <p:ajax  update=":form-actualizar-datos:barrio" 
                                                  listener="#{miCuentaBean.buscarBarrios}"/> 
-                                    </p:selectOneMenu>                                                             
+                                        <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="false" />
+                                        <f:selectItems value="#{miCuentaBean.cities}" />
+                                    </p:selectOneMenu>                                           
                                     <p:spacer/>     
                                     <p:outputLabel value="#{msg['funcionario.add.barrio']}" for="barrio" />
                                     <p:selectOneMenu id="barrio" value="#{miCuentaBean.barrio.idBarrio}" 
