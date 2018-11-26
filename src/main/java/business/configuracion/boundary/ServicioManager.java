@@ -50,5 +50,23 @@ public class ServicioManager extends GenericImpl<Servicio, Integer> {
             return null;
         }
     }
+    
+    
+    
+    /**
+     * Obtener Lista de Servicio que tengan estado activo
+     *
+     * @return
+     */
+    public List<Servicio> getByEstadoActivo() {
+        try {
+            Query query = em.createQuery("SELECT c FROM Servicio c where c.estado = 'Activo' ");
+
+            return ((List<Servicio>) query.getResultList());
+        } catch (Exception e) {
+            UtilLogger.error(this.getClass().getName() + ".getByEstadoActivo", e);
+            return null;
+        }
+    }
 
 }
