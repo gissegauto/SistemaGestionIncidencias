@@ -22,8 +22,10 @@ import business.utils.UtilLogger;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -45,11 +47,13 @@ public class SolicitudConexionBean implements Serializable {
     private List<Servicio> servicioList;
     private List<Servicio> servicioListSelected;
     private List<Ciudad> ciudadList;
+    private String city;
     private Ciudad ciudad;
     private List<Barrio> barrioList;
     private boolean editar;
     private Cliente cliente;
     private boolean tv = false;
+    private Map<String, String> cities;
 
     @Inject
     SolicitudConexionManager solicitudConexionMgr;
@@ -78,6 +82,11 @@ public class SolicitudConexionBean implements Serializable {
     @PostConstruct
     public void init() {
         limpiar();
+        cities = new HashMap<String, String>();
+        ciudadList = ciudadMgr.getAll();
+        for (Ciudad ciudad : ciudadList) {
+            cities.put(ciudad.getCiudad(), ciudad.getCiudad());
+        }
     }
 
     public void limpiar() {
@@ -87,6 +96,7 @@ public class SolicitudConexionBean implements Serializable {
         servicioListSelected = new ArrayList<>();
         solicitudConexionFilter = new ArrayList<>();
         ciudadList = ciudadMgr.getAll();
+        ciudad = new Ciudad();
         solicitudConexionList = solicitudConexionMgr.getAll();
     }
 
@@ -191,7 +201,13 @@ public class SolicitudConexionBean implements Serializable {
     }
 
     public void buscarBarrios() {
-        barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        if (city != null) {
+            ciudad = ciudadMgr.getByName(city);
+            barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+                    "Al seleccionar ciudad. Intente de nuevo"));
+        }
     }
 
     public void actionClean() {
@@ -294,5 +310,23 @@ public class SolicitudConexionBean implements Serializable {
     public void setTv(boolean tv) {
         this.tv = tv;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Map<String, String> getCities() {
+        return cities;
+    }
+
+    public void setCities(Map<String, String> cities) {
+        this.cities = cities;
+    }
+    
+    
 
 }
