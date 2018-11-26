@@ -135,10 +135,7 @@ public class FuncionarioBean implements Serializable {
 
     public void delete(Funcionario funcionario) {
         try {
-            funcionario.setIdUsuarioActualizacion(session.getUsuario());
-            funcionario.setFechaActualizacion(new Date());
-            funcionario.setEstado("Borrado");
-            funcionarioMgr.update(funcionario);
+            funcionarioController.cambiarEstado(funcionario, session.getUsuario(), "Borrado");
             limpiar();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Se borró Funcionario"));
             RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");

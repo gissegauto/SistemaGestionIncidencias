@@ -79,14 +79,14 @@ public class ClienteBean implements Serializable {
         initCities();
     }
 
-    public void initCities(){
+    public void initCities() {
         cities = new HashMap<String, String>();
         ciudadList = ciudadMgr.getAll();
         for (Ciudad ciudad : ciudadList) {
             cities.put(ciudad.getCiudad(), ciudad.getCiudad());
         }
     }
-    
+
     public void limpiar() {
         editar = false;
         cliente = new Cliente();
@@ -170,10 +170,9 @@ public class ClienteBean implements Serializable {
 
     public void delete(Cliente cliente) {
         try {
-            cliente.setEstado("Borrado");
-            clienteMgr.update(cliente);
+            clienteController.cambiarEstado(cliente, session.getUsuario(), "Borrado");
             limpiar();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Se borró Cliente"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"","Se borró Cliente"));
             RequestContext.getCurrentInstance().update("clienteForm:dtCliente");
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Error",
@@ -193,10 +192,10 @@ public class ClienteBean implements Serializable {
     }
 
     public void actionClean(ActionEvent actionEvent) {
-       RequestContext.getCurrentInstance().update("form-add"); 
-       cliente = new Cliente();
-       initCities();
-       RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').show()");
+        RequestContext.getCurrentInstance().update("form-add");
+        cliente = new Cliente();
+        initCities();
+        RequestContext.getCurrentInstance().execute("PF('dlgClienteAdd').show()");
     }
 
     public void desactivarCliente(Cliente cliente) {
