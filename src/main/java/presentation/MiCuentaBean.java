@@ -9,14 +9,14 @@ import business.direccion.boundary.BarrioManager;
 import business.direccion.boundary.CiudadManager;
 import business.direccion.entity.Barrio;
 import business.direccion.entity.Ciudad;
-import business.funcionario.boundary.FuncionarioManager;
 import business.funcionario.entity.Funcionario;
 import business.usuario.controller.UsuarioController;
 import business.usuario.entity.Usuario;
 import business.utils.MD5Generator;
-import business.utils.UtilLogger;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -42,6 +42,8 @@ public class MiCuentaBean implements Serializable {
     private Ciudad ciudad;
     private List<Barrio> barrioList;
     private Barrio barrio;
+    private String city;
+    private Map<String, String> cities;
 
     @Inject
     BarrioManager barrioMgr;
@@ -59,6 +61,15 @@ public class MiCuentaBean implements Serializable {
         ciudadList = ciudadMgr.getAll();
         ciudad = new Ciudad();
         barrio = new Barrio();
+        initCities();
+    }
+
+    public void initCities(){
+        cities = new HashMap<String, String>();
+        ciudadList = ciudadMgr.getAll();
+        for (Ciudad ciudad : ciudadList) {
+            cities.put(ciudad.getCiudad(), ciudad.getCiudad());
+        }
     }
 
     /**
@@ -96,7 +107,13 @@ public class MiCuentaBean implements Serializable {
     }
 
     public void buscarBarrios() {
-        barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        if (city != null) {
+            ciudad = ciudadMgr.getByName(city);
+            barrioList = barrioMgr.getBarriosByCiudad(ciudad);
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error",
+                    "Al seleccionar ciudad. Intente de nuevo"));
+        }
     }
 
     public Usuario getUsuario() {
@@ -171,4 +188,19 @@ public class MiCuentaBean implements Serializable {
         this.barrio = barrio;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Map<String, String> getCities() {
+        return cities;
+    }
+
+    public void setCities(Map<String, String> cities) {
+        this.cities = cities;
+    }
 }
