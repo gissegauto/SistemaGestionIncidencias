@@ -10,6 +10,7 @@ import business.direccion.boundary.CiudadManager;
 import business.direccion.entity.Barrio;
 import business.direccion.entity.Ciudad;
 import business.funcionario.boundary.FuncionarioManager;
+import business.funcionario.controller.FuncionarioController;
 import business.funcionario.controller.HistorialFuncionarioController;
 import business.funcionario.entity.Funcionario;
 import business.utils.UtilLogger;
@@ -49,6 +50,8 @@ public class FuncionarioBean implements Serializable {
     FuncionarioManager funcionarioMgr;
     @Inject
     HistorialFuncionarioController historialFuncionarioController;
+    @Inject
+    FuncionarioController funcionarioController;
     @Inject
     BarrioManager barrioMgr;
     @Inject
@@ -144,6 +147,18 @@ public class FuncionarioBean implements Serializable {
                     "Ocurrió un error al intentar guardar el funcionario"));
             UtilLogger.error("Problemas al insertar el funcionario", e);
         }
+    }
+
+    public void desactivarFuncionario(Funcionario funcionario) {
+        funcionarioController.cambiarEstado(funcionario, session.getUsuario(), "Inactivo");
+        limpiar();
+        RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
+    }
+
+    public void activarFuncionario(Funcionario funcionario) {
+        funcionarioController.cambiarEstado(funcionario, session.getUsuario(), "Activo");
+        limpiar();
+        RequestContext.getCurrentInstance().update("funcionarioForm:dtFuncionario");
     }
 
     public String verOrdenTrabajo(Funcionario funcionario) {
