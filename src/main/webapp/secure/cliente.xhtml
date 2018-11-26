@@ -109,7 +109,8 @@ and open the template in the editor.
                                 icon="ui-icon-check"
                                 title="#{msg['generic.btnActive']}"
                                 actionListener="#{clienteBean.activarCliente(cliente)}"
-                                id="botonActivar" />
+                                id="botonActivar" >
+                            </p:commandButton>
                             <p:commandButton 
                                 icon="ui-icon-close"
                                 rendered="#{cliente.estado eq 'Activo'}"                                

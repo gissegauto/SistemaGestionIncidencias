@@ -82,6 +82,22 @@ and open the template in the editor.
                                 id="botonTrabajo">
                             </p:commandButton>
                             <p:commandButton 
+                                rendered="#{funcionario.estado eq 'Inactivo'}"
+                                icon="ui-icon-check"
+                                update=":form-add:funcionarioGr" 
+                                title="#{msg['generic.btnActive']}"
+                                actionListener="#{funcionarioBean.activarFuncionario(funcionario)}"
+                                id="botonActivar" >
+                            </p:commandButton>
+                            <p:commandButton 
+                                icon="ui-icon-close"
+                                rendered="#{funcionario.estado eq 'Activo'}"                                
+                                update=":form-add:funcionarioGr" 
+                                title="#{msg['generic.btnInactive']}"
+                                actionListener="#{funcionarioBean.desactivarFuncionario(funcionario)}"
+                                id="botonDesactivar">
+                            </p:commandButton>
+                            <p:commandButton 
                                 icon="ui-icon-trash" 
                                 title="#{msg['generic.btnDelete']}"
                                 actionListener="#{funcionarioBean.delete(funcionario)}"
