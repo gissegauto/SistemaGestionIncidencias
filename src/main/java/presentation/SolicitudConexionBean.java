@@ -212,6 +212,8 @@ public class SolicitudConexionBean implements Serializable {
 
     public void actionClean() {
         this.solicitudConexion = new SolicitudConexion();
+        this.cliente = new Cliente();
+        ciudad = new Ciudad();
         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
     }
 
