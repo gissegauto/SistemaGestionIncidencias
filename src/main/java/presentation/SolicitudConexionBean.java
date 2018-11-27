@@ -189,8 +189,9 @@ public class SolicitudConexionBean implements Serializable {
         clienteSolicitudList.removeIf(a -> a.getEstado().equalsIgnoreCase("Borrado"));
         List<Funcionario> funcionarioList = clienteSolicitudBean.getFuncionarioList();
         for (ClienteSolicitud clienteSolicitud : clienteSolicitudList) {
-           funcionarioList.removeIf(f -> f.getIdFuncionario().equals(clienteSolicitud.getIdFuncionario()));
+           funcionarioList.removeIf(f -> f.getIdFuncionario().equals(clienteSolicitud.getIdFuncionario().getIdFuncionario()));
         }
+        clienteSolicitudBean.setFuncionarioList(new ArrayList<>());
         clienteSolicitudBean.setFuncionarioList(funcionarioList);
         return "clienteSolicitud";
     }
