@@ -174,6 +174,7 @@ public class SolicitudConexionBean implements Serializable {
     }
 
     public String clienteSolicitud(SolicitudConexion solicitudC) {
+        clienteSolicitudBean.limpiar();
         clienteSolicitudBean.setSolicitudConexion(solicitudC);
         return "clienteSolicitud";
     }
