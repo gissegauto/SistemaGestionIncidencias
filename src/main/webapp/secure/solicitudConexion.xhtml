@@ -214,6 +214,8 @@ and open the template in the editor.
                                                   width="3%">
                                             <p:commandButton 
                                                 icon="ui-icon-trash"
+                                                rendered="#{solicitudConexionBean.clienteSolicitudList.size() > 1}"
+                                                action="#{solicitudConexionBean.eliminarTecnicoAsignado(clienteSolicitud)}"
                                                 title="#{msg['generic.btnDelete']}"
                                                 id="botonBorrarFuncionario" />
                                         </p:column>

@@ -85,7 +85,7 @@ public class Funcionario implements Serializable {
     private Date fechaActualizacion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 1)
+    @Size(min = 1, max = 10)
     @Column(name = "estado")
     private String estado;
     @Size(max = 255)

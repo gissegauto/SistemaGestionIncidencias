@@ -272,8 +272,18 @@ public class SolicitudConexionBean implements Serializable {
 
     public void verTecnicoAsignado(SolicitudConexion solicitudC) {
         clienteSolicitudList = clienteSolicitudMgr.getBySolicitudConexion(solicitudC);
+        clienteSolicitudList.removeIf(a -> a.getEstado().equalsIgnoreCase("Borrado"));
         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtClienteSolicitud");
         RequestContext.getCurrentInstance().execute("PF('verTecnicoAsignado').show()");
+    }
+
+    public void eliminarTecnicoAsignado(ClienteSolicitud clienteSolicitud) {
+        clienteSolicitud.setEstado("Borrado");
+        clienteSolicitudMgr.update(clienteSolicitud);
+        clienteSolicitudList.remove(clienteSolicitud);
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtClienteSolicitud");
+        RequestContext.getCurrentInstance().execute("PF('verTecnicoAsignado').show()");
+        
     }
 
     public SolicitudConexion getSolicitudConexion() {
