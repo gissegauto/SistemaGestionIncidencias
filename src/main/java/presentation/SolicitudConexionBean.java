@@ -42,6 +42,7 @@ import org.primefaces.context.RequestContext;
 public class SolicitudConexionBean implements Serializable {
 
     private SolicitudConexion solicitudConexion;
+    private List<ClienteSolicitud> clienteSolicitudList;
     private List<SolicitudConexion> solicitudConexionList;
     private List<SolicitudConexion> solicitudConexionFilter;
     private List<Servicio> servicioList;
@@ -102,6 +103,7 @@ public class SolicitudConexionBean implements Serializable {
         ciudadList = ciudadMgr.getAll();
         ciudad = new Ciudad();
         solicitudConexionList = solicitudConexionMgr.getAll();
+        clienteSolicitudList = new ArrayList<>();
     }
 
     public void add() {
@@ -268,6 +270,12 @@ public class SolicitudConexionBean implements Serializable {
         limpiar();
     }
 
+    public void verTecnicoAsignado(SolicitudConexion solicitudC) {
+        clienteSolicitudList = clienteSolicitudMgr.getBySolicitudConexion(solicitudC);
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtClienteSolicitud");
+        RequestContext.getCurrentInstance().execute("PF('verTecnicoAsignado').show()");
+    }
+
     public SolicitudConexion getSolicitudConexion() {
         return solicitudConexion;
     }
@@ -370,6 +378,14 @@ public class SolicitudConexionBean implements Serializable {
 
     public void setCities(Map<String, String> cities) {
         this.cities = cities;
+    }
+
+    public List<ClienteSolicitud> getClienteSolicitudList() {
+        return clienteSolicitudList;
+    }
+
+    public void setClienteSolicitudList(List<ClienteSolicitud> clienteSolicitudList) {
+        this.clienteSolicitudList = clienteSolicitudList;
     }
 
 }

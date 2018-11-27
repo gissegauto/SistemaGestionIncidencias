@@ -45,7 +45,7 @@ public class ClienteSolicitudManager extends GenericImpl<ClienteSolicitud, Integ
      */
     public List<ClienteSolicitud> getBySolicitudConexion(SolicitudConexion solicitudConexion) {
         try {
-            Query query = em.createQuery("SELECT s FROM ClienteSolicitud s where s.idClienteSolicitud = :solicitudConexion ").setParameter("solicitudConexion", solicitudConexion);
+             Query query = em.createNamedQuery("ClienteSolicitud.findByIdSolicitudConexion").setParameter("idSolicitudConexion", solicitudConexion);
             return ((List<ClienteSolicitud>) query.getResultList());
         } catch (Exception e) {
             UtilLogger.error(this.getClass().getName() + ".getBySolicitudConexion", e);
