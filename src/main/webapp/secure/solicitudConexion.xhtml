@@ -126,6 +126,12 @@ and open the template in the editor.
                                 action="#{solicitudConexionBean.addCliente(solicitudConexion)}"
                                 id="botonFinalizadoEstado" />
                             <p:commandButton 
+                                rendered="#{solicitudConexion.estado eq 'En Curso' or solicitudConexion.estado eq 'Finalizado'}"
+                                icon="ui-icon-person"
+                                oncomplete="PF('verTecnicoAsignado').show()"
+                                title="#{msg['solicitud.conexion.btn.tecnico']}"
+                                id="botonVerTecnicoAsignado" />
+                            <p:commandButton 
                                 rendered="#{solicitudConexion.estado eq 'Finalizado'}"
                                 icon="ui-icon-document" 
                                 process="dtSolicitudConexion"
@@ -181,6 +187,22 @@ and open the template in the editor.
                                     value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('verSolicitudConexion').hide()" 
                                     id='btn-volver' />
+                            </div>
+                        </p:fieldset>
+                    </p:overlayPanel>
+                     <p:overlayPanel widgetVar="verTecnicoAsignado" showEffect="fade" hideEffect="fade" dismissable="false" showCloseIcon="true">
+                        <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                            <p:outputPanel id="verTecnicoAsignadoDetail">
+                                <h:panelGrid  columns="2" rendered="#{not empty solicitudConexionBean.solicitudConexion}" columnClasses="label,value">
+                                  
+                                </h:panelGrid>
+                            </p:outputPanel>
+                            <br />
+                            <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="#{msg['generic.cerrar']}" 
+                                    oncomplete="PF('verTecnicoAsignado').hide()" 
+                                    id='btn-cerrar' />
                             </div>
                         </p:fieldset>
                     </p:overlayPanel>

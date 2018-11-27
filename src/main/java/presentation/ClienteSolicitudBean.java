@@ -54,7 +54,7 @@ public class ClienteSolicitudBean implements Serializable {
     public String asignarTecnicos() {
         try {
             boolean confirm = true;
-            if (funcionarioSelected != null) {
+            if (funcionarioSelected != null && funcionarioSelected.isEmpty()) {
                 for (Funcionario funcionario : funcionarioSelected) {
                     ClienteSolicitud clienteSolicitud = new ClienteSolicitud();
                     clienteSolicitud.setIdFuncionario(funcionario);
