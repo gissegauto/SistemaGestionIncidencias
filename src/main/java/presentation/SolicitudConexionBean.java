@@ -16,6 +16,7 @@ import business.direccion.boundary.BarrioManager;
 import business.direccion.boundary.CiudadManager;
 import business.direccion.entity.Barrio;
 import business.direccion.entity.Ciudad;
+import business.funcionario.entity.Funcionario;
 import business.solicitudes.boundary.SolicitudConexionManager;
 import business.solicitudes.entity.SolicitudConexion;
 import business.utils.UtilLogger;
@@ -181,6 +182,19 @@ public class SolicitudConexionBean implements Serializable {
         return "clienteSolicitud";
     }
 
+    public String setClienteSolicitud() {
+        clienteSolicitudBean.limpiar();
+        clienteSolicitudBean.setSolicitudConexion(solicitudConexion);
+        clienteSolicitudList = clienteSolicitudMgr.getBySolicitudConexion(solicitudConexion);
+        clienteSolicitudList.removeIf(a -> a.getEstado().equalsIgnoreCase("Borrado"));
+        List<Funcionario> funcionarioList = clienteSolicitudBean.getFuncionarioList();
+        for (ClienteSolicitud clienteSolicitud : clienteSolicitudList) {
+           funcionarioList.removeIf(f -> f.getIdFuncionario().equals(clienteSolicitud.getIdFuncionario()));
+        }
+        clienteSolicitudBean.setFuncionarioList(funcionarioList);
+        return "clienteSolicitud";
+    }
+
     public void addCliente(SolicitudConexion solicitudC) {
         Cliente cli = new Cliente();
         cli.setNombre(solicitudC.getNombre());
@@ -271,6 +285,7 @@ public class SolicitudConexionBean implements Serializable {
     }
 
     public void verTecnicoAsignado(SolicitudConexion solicitudC) {
+        solicitudConexion = solicitudC;
         clienteSolicitudList = clienteSolicitudMgr.getBySolicitudConexion(solicitudC);
         clienteSolicitudList.removeIf(a -> a.getEstado().equalsIgnoreCase("Borrado"));
         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtClienteSolicitud");
@@ -283,7 +298,7 @@ public class SolicitudConexionBean implements Serializable {
         clienteSolicitudList.remove(clienteSolicitud);
         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtClienteSolicitud");
         RequestContext.getCurrentInstance().execute("PF('verTecnicoAsignado').show()");
-        
+
     }
 
     public SolicitudConexion getSolicitudConexion() {

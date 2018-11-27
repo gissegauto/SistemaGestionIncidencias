@@ -211,10 +211,9 @@ and open the template in the editor.
                                             </h:outputText> 
                                         </p:column>
                                         <p:column headerText="#{msg['generic.opciones']}" 
-                                                  width="3%">
+                                                  width="3%" rendered="#{solicitudConexionBean.clienteSolicitudList.size() > 1}">
                                             <p:commandButton 
                                                 icon="ui-icon-trash"
-                                                rendered="#{solicitudConexionBean.clienteSolicitudList.size() > 1}"
                                                 action="#{solicitudConexionBean.eliminarTecnicoAsignado(clienteSolicitud)}"
                                                 title="#{msg['generic.btnDelete']}"
                                                 id="botonBorrarFuncionario" />
@@ -224,6 +223,10 @@ and open the template in the editor.
                             </h:panelGrid>
                             <br />
                             <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="#{msg['generic.btnAdd']}" 
+                                    action="#{solicitudConexionBean.setClienteSolicitud}"
+                                    id='btn-nuevo-tecnico' />
                                 <p:commandButton 
                                     value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('verTecnicoAsignado').hide()" 
