@@ -107,7 +107,7 @@ and open the template in the editor.
 
                             <p:commandButton 
                                 icon="ui-icon-close"
-                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"                                
+                                rendered="#{solicitudConexion.estado eq 'Pendiente' or solicitudConexion.estado eq 'En Curso'}"                                
                                 title="#{msg['generic.btnCancelar']}"
                                 actionListener="#{solicitudConexionBean.cancelar(solicitudConexion)}"
                                 id="botonCancelar">
