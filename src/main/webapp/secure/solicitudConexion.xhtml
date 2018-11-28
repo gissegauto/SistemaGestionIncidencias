@@ -42,12 +42,12 @@ and open the template in the editor.
                             <h:outputText value="#{solicitudConexion.idSolicitudConexion}" />
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.nombre']}" 
-                                  width="15%" filterBy="#{solicitudConexion.nombre}" 
+                                  width="12%" filterBy="#{solicitudConexion.nombre}" 
                                   sortBy="#{solicitudConexion.nombre}">
                             <h:outputText value="#{solicitudConexion.nombre}" />
                         </p:column>
                         <p:column headerText="#{msg['solicitud.conexion.apellido']}" 
-                                  width="15%" filterBy="#{solicitudConexion.apellido}"
+                                  width="12%" filterBy="#{solicitudConexion.apellido}"
                                   sortBy="#{solicitudConexion.apellido}">
                             <h:outputText value="#{solicitudConexion.apellido}" />
                         </p:column>
@@ -96,41 +96,39 @@ and open the template in the editor.
                                 </p:commandButton>
                             </p:column>
                             <p:commandButton 
+                                icon="ui-icon-person"
+                                action="#{solicitudConexionBean.verTecnicoAsignado(solicitudConexion)}"
+                                title="#{msg['solicitud.conexion.btn.tecnico']}"
+                                id="botonVerTecnicoAsignado" />
+                            <p:commandButton 
+                                icon="ui-icon-close"
+                                rendered="#{solicitudConexion.estado eq 'Pendiente' or solicitudConexion.estado eq 'En Curso'}"                                
+                                title="#{msg['generic.btnCancelar']}"
+                                actionListener="#{solicitudConexionBean.cancelar(solicitudConexion)}"
+                                id="botonCancelar" />
+                            <p:commandButton 
                                 icon="ui-icon-pencil"
                                 update=":form-add:solicitudConexionGr" 
                                 rendered="#{solicitudConexion.estado eq 'Pendiente'}" 
                                 title="#{msg['generic.btnUpdate']}"
                                 oncomplete="PF('dlgSolicitudConexionAdd').show()" 
                                 actionListener="#{solicitudConexionBean.edicion(solicitudConexion)}"
-                                id="botonEditar">
-                            </p:commandButton>
+                                id="botonEditar" />
 
+                            <!--                            <p:commandButton 
+                                                            rendered="#{solicitudConexion.estado eq 'Pendiente'}"
+                                                            icon="ui-icon-arrowrefresh-1-e"
+                                                            process="dtSolicitudConexion"
+                                                            title="#{msg['solicitud.conexion.btn.asignar']}"
+                                                            action="#{solicitudConexionBean.clienteSolicitud(solicitudConexion)}"
+                                                            id="botonCambiarEstado" />-->
                             <p:commandButton 
-                                icon="ui-icon-close"
-                                rendered="#{solicitudConexion.estado eq 'Pendiente' or solicitudConexion.estado eq 'En Curso'}"                                
-                                title="#{msg['generic.btnCancelar']}"
-                                actionListener="#{solicitudConexionBean.cancelar(solicitudConexion)}"
-                                id="botonCancelar">
-                            </p:commandButton>
-                            <p:commandButton 
-                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"
-                                icon="ui-icon-arrowrefresh-1-e"
-                                process="dtSolicitudConexion"
-                                title="#{msg['solicitud.conexion.btn.asignar']}"
-                                action="#{solicitudConexionBean.clienteSolicitud(solicitudConexion)}"
-                                id="botonCambiarEstado" />
-                            <p:commandButton 
-                                rendered="#{solicitudConexion.estado eq 'En Curso'}"
+                                rendered="#{solicitudConexion.estado eq 'En Curso' or solicitudConexion.estado eq 'Iniciado'}"
                                 icon="ui-icon-check"
                                 title="#{msg['solicitud.conexion.btn.finalizar']}"
                                 action="#{solicitudConexionBean.addCliente(solicitudConexion)}"
                                 id="botonFinalizadoEstado" />
-                            <p:commandButton 
-                                rendered="#{solicitudConexion.estado eq 'En Curso' or solicitudConexion.estado eq 'Finalizado'}"
-                                icon="ui-icon-person"
-                                action="#{solicitudConexionBean.verTecnicoAsignado(solicitudConexion)}"
-                                title="#{msg['solicitud.conexion.btn.tecnico']}"
-                                id="botonVerTecnicoAsignado" />
+
                             <p:commandButton 
                                 rendered="#{solicitudConexion.estado eq 'Finalizado'}"
                                 icon="ui-icon-document" 
@@ -224,6 +222,7 @@ and open the template in the editor.
                             <br />
                             <div style="text-align:center;" >
                                 <p:commandButton 
+                                    rendered="#{solicitudConexionBean.solicitudConexion.estado eq 'Pendiente' or solicitudConexionBean.solicitudConexion.estado eq 'En Curso'}"
                                     value="#{msg['generic.btnAdd']}" 
                                     action="#{solicitudConexionBean.setClienteSolicitud}"
                                     id='btn-nuevo-tecnico' />
