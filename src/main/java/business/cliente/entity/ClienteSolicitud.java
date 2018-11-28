@@ -19,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ClienteSolicitud.findAll", query = "SELECT c FROM ClienteSolicitud c")
+    , @NamedQuery(name = "ClienteSolicitud.findByIdSolicitudConexion", query = "SELECT c FROM ClienteSolicitud c WHERE c.idSolicitudConexion = :idSolicitudConexion")
     , @NamedQuery(name = "ClienteSolicitud.findByIdClienteSolicitud", query = "SELECT c FROM ClienteSolicitud c WHERE c.idClienteSolicitud = :idClienteSolicitud")})
 public class ClienteSolicitud implements Serializable {
 
@@ -39,15 +42,21 @@ public class ClienteSolicitud implements Serializable {
     @Basic(optional = false)
     @Column(name = "idClienteSolicitud")
     private Integer idClienteSolicitud;
-    
+
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 10)
+    @Column(name = "estado")
+    private String estado;
+
     @JoinColumn(name = "idSolicitudConexion", referencedColumnName = "idSolicitudConexion")
     @ManyToOne(optional = false)
     private SolicitudConexion idSolicitudConexion;
-   
+
     @JoinColumn(name = "idCliente", referencedColumnName = "idCliente")
     @ManyToOne
     private Cliente idCliente;
-   
+
     @JoinColumn(name = "idFuncionario", referencedColumnName = "idFuncionario")
     @ManyToOne(optional = false)
     private Funcionario idFuncionario;
@@ -91,6 +100,14 @@ public class ClienteSolicitud implements Serializable {
         this.idFuncionario = idFuncionario;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -115,5 +132,5 @@ public class ClienteSolicitud implements Serializable {
     public String toString() {
         return "business.cliente.entity.ClienteSolicitud[ idClienteSolicitud=" + idClienteSolicitud + " ]";
     }
-    
+
 }

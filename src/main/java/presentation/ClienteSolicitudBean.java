@@ -53,27 +53,31 @@ public class ClienteSolicitudBean implements Serializable {
 
     public String asignarTecnicos() {
         try {
-            boolean confirm = true;
-            if (funcionarioSelected != null) {
+            boolean confirm = false;
+            if (funcionarioSelected != null && !funcionarioSelected.isEmpty()) {
                 for (Funcionario funcionario : funcionarioSelected) {
                     ClienteSolicitud clienteSolicitud = new ClienteSolicitud();
                     clienteSolicitud.setIdFuncionario(funcionario);
                     clienteSolicitud.setIdSolicitudConexion(solicitudConexion);
+                    clienteSolicitud.setEstado("En Curso");
                     clienteSolicitudMgr.add(clienteSolicitud);
+                    confirm = true;
                 }
             }
             if (confirm) {
                 changeStatusSolicitud();
+                return "solicitudConexion";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
-                        "Ocurrió un error al intentar guardar"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"",
+                        "Por favor seleccione al menos Técnico"));
+                return null;
             }
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error",
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error",
                     "Ocurrió un error al intentar guardar"));
             UtilLogger.error("Problemas al asignar funcionario a la solicitud", e);
+            return null;
         }
-        return "solicitudConexion";
     }
 
     private void changeStatusSolicitud() {

@@ -107,7 +107,7 @@ and open the template in the editor.
 
                             <p:commandButton 
                                 icon="ui-icon-close"
-                                rendered="#{solicitudConexion.estado eq 'Pendiente'}"                                
+                                rendered="#{solicitudConexion.estado eq 'Pendiente' or solicitudConexion.estado eq 'En Curso'}"                                
                                 title="#{msg['generic.btnCancelar']}"
                                 actionListener="#{solicitudConexionBean.cancelar(solicitudConexion)}"
                                 id="botonCancelar">
@@ -125,6 +125,12 @@ and open the template in the editor.
                                 title="#{msg['solicitud.conexion.btn.finalizar']}"
                                 action="#{solicitudConexionBean.addCliente(solicitudConexion)}"
                                 id="botonFinalizadoEstado" />
+                            <p:commandButton 
+                                rendered="#{solicitudConexion.estado eq 'En Curso' or solicitudConexion.estado eq 'Finalizado'}"
+                                icon="ui-icon-person"
+                                action="#{solicitudConexionBean.verTecnicoAsignado(solicitudConexion)}"
+                                title="#{msg['solicitud.conexion.btn.tecnico']}"
+                                id="botonVerTecnicoAsignado" />
                             <p:commandButton 
                                 rendered="#{solicitudConexion.estado eq 'Finalizado'}"
                                 icon="ui-icon-document" 
@@ -181,6 +187,50 @@ and open the template in the editor.
                                     value="#{msg['generic.cerrar']}" 
                                     oncomplete="PF('verSolicitudConexion').hide()" 
                                     id='btn-volver' />
+                            </div>
+                        </p:fieldset>
+                    </p:overlayPanel>
+                    <p:overlayPanel widgetVar="verTecnicoAsignado" showEffect="fade" hideEffect="fade" dynamic="true" 
+                                    showCloseIcon="true" modal= "true" style="width:600px">
+                        <p:fieldset  style="margin-bottom:5px; font-size:12px " >
+                            <h:panelGrid  columns="2" rendered="#{not empty solicitudConexionBean.solicitudConexion}" columnClasses="label,value">
+                                <p:outputPanel id="verTecnicoAsignadoDetail">
+                                    <p:dataTable id="dtClienteSolicitud" var="clienteSolicitud" 
+                                                 value="#{solicitudConexionBean.clienteSolicitudList}"
+                                                 style="font-size:12px"
+                                                 rowKey="#{clienteSolicitud}"
+                                                 emptyMessage="#{msg['generic.empty']}">
+                                        <p:column headerText="#{msg['solicitud.conexion.funcionario']}" 
+                                                  width="10%">
+                                            <h:outputText value="#{clienteSolicitud.idFuncionario.nombreFuncionario} #{clienteSolicitud.idFuncionario.apellidoFuncionario}" />
+                                        </p:column>
+                                        <p:column headerText="#{msg['solicitud.conexion.funcionario.fechaA']}" 
+                                                  width="10%">
+                                            <h:outputText value="#{clienteSolicitud.idFuncionario.fechaRegistro}" >
+                                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                                            </h:outputText> 
+                                        </p:column>
+                                        <p:column headerText="#{msg['generic.opciones']}" 
+                                                  width="3%" rendered="#{solicitudConexionBean.clienteSolicitudList.size() > 1}">
+                                            <p:commandButton 
+                                                icon="ui-icon-trash"
+                                                action="#{solicitudConexionBean.eliminarTecnicoAsignado(clienteSolicitud)}"
+                                                title="#{msg['generic.btnDelete']}"
+                                                id="botonBorrarFuncionario" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:outputPanel>
+                            </h:panelGrid>
+                            <br />
+                            <div style="text-align:center;" >
+                                <p:commandButton 
+                                    value="#{msg['generic.btnAdd']}" 
+                                    action="#{solicitudConexionBean.setClienteSolicitud}"
+                                    id='btn-nuevo-tecnico' />
+                                <p:commandButton 
+                                    value="#{msg['generic.cerrar']}" 
+                                    oncomplete="PF('verTecnicoAsignado').hide()" 
+                                    id='btn-cerrar' />
                             </div>
                         </p:fieldset>
                     </p:overlayPanel>
@@ -245,7 +295,7 @@ and open the template in the editor.
                                 <p:spacer/>
                                 <h:outputLabel value="#{msg['solicitud.conexion.add.servicio']}"  for="servicios" />
                                 <p:selectOneRadio id="servicios" value="#{solicitudConexionBean.servicioListSelected}" 
-                                                      converter="servicioConverter" layout="responsive" columns="3">
+                                                  converter="servicioConverter" layout="responsive" columns="3">
                                     <f:selectItems value="#{solicitudConexionBean.servicioList}" 
                                                    var="servicio" itemLabel="#{servicio.servicio}" 
                                                    itemValue="#{servicio}"/>

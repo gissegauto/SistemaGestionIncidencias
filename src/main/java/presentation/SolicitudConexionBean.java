@@ -16,6 +16,7 @@ import business.direccion.boundary.BarrioManager;
 import business.direccion.boundary.CiudadManager;
 import business.direccion.entity.Barrio;
 import business.direccion.entity.Ciudad;
+import business.funcionario.entity.Funcionario;
 import business.solicitudes.boundary.SolicitudConexionManager;
 import business.solicitudes.entity.SolicitudConexion;
 import business.utils.UtilLogger;
@@ -42,6 +43,7 @@ import org.primefaces.context.RequestContext;
 public class SolicitudConexionBean implements Serializable {
 
     private SolicitudConexion solicitudConexion;
+    private List<ClienteSolicitud> clienteSolicitudList;
     private List<SolicitudConexion> solicitudConexionList;
     private List<SolicitudConexion> solicitudConexionFilter;
     private List<Servicio> servicioList;
@@ -102,6 +104,7 @@ public class SolicitudConexionBean implements Serializable {
         ciudadList = ciudadMgr.getAll();
         ciudad = new Ciudad();
         solicitudConexionList = solicitudConexionMgr.getAll();
+        clienteSolicitudList = new ArrayList<>();
     }
 
     public void add() {
@@ -174,7 +177,22 @@ public class SolicitudConexionBean implements Serializable {
     }
 
     public String clienteSolicitud(SolicitudConexion solicitudC) {
+        clienteSolicitudBean.limpiar();
         clienteSolicitudBean.setSolicitudConexion(solicitudC);
+        return "clienteSolicitud";
+    }
+
+    public String setClienteSolicitud() {
+        clienteSolicitudBean.limpiar();
+        clienteSolicitudBean.setSolicitudConexion(solicitudConexion);
+        clienteSolicitudList = clienteSolicitudMgr.getBySolicitudConexion(solicitudConexion);
+        clienteSolicitudList.removeIf(a -> a.getEstado().equalsIgnoreCase("Borrado"));
+        List<Funcionario> funcionarioList = clienteSolicitudBean.getFuncionarioList();
+        for (ClienteSolicitud clienteSolicitud : clienteSolicitudList) {
+           funcionarioList.removeIf(f -> f.getIdFuncionario().equals(clienteSolicitud.getIdFuncionario().getIdFuncionario()));
+        }
+        clienteSolicitudBean.setFuncionarioList(new ArrayList<>());
+        clienteSolicitudBean.setFuncionarioList(funcionarioList);
         return "clienteSolicitud";
     }
 
@@ -265,6 +283,23 @@ public class SolicitudConexionBean implements Serializable {
 
     public void agregar() {
         limpiar();
+    }
+
+    public void verTecnicoAsignado(SolicitudConexion solicitudC) {
+        solicitudConexion = solicitudC;
+        clienteSolicitudList = clienteSolicitudMgr.getBySolicitudConexion(solicitudC);
+        clienteSolicitudList.removeIf(a -> a.getEstado().equalsIgnoreCase("Borrado"));
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtClienteSolicitud");
+        RequestContext.getCurrentInstance().execute("PF('verTecnicoAsignado').show()");
+    }
+
+    public void eliminarTecnicoAsignado(ClienteSolicitud clienteSolicitud) {
+        clienteSolicitud.setEstado("Borrado");
+        clienteSolicitudMgr.update(clienteSolicitud);
+        clienteSolicitudList.remove(clienteSolicitud);
+        RequestContext.getCurrentInstance().update("solicitudConexionForm:dtClienteSolicitud");
+        RequestContext.getCurrentInstance().execute("PF('verTecnicoAsignado').show()");
+
     }
 
     public SolicitudConexion getSolicitudConexion() {
@@ -369,6 +404,14 @@ public class SolicitudConexionBean implements Serializable {
 
     public void setCities(Map<String, String> cities) {
         this.cities = cities;
+    }
+
+    public List<ClienteSolicitud> getClienteSolicitudList() {
+        return clienteSolicitudList;
+    }
+
+    public void setClienteSolicitudList(List<ClienteSolicitud> clienteSolicitudList) {
+        this.clienteSolicitudList = clienteSolicitudList;
     }
 
 }
