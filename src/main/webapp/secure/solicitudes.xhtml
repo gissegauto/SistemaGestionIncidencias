@@ -70,6 +70,16 @@ and open the template in the editor.
                                           width="20%"></p:column>
                             </p:dataTable>
                         </p:fieldset>
+                        <div /> <div />
+                        <h:panelGrid columns="2" width="30%">  
+                             
+                            <p:commandButton 
+                                style="left:350px"
+                                value="#{msg['generic.cerrar']}" 
+                                action="cliente"
+                                id='btn-cerrarSolicitudes' />
+                            
+                        </h:panelGrid>
                     </h:form>   
                 </p:fieldset>
             </ui:define>

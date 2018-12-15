@@ -114,16 +114,8 @@ and open the template in the editor.
                                 oncomplete="PF('dlgSolicitudConexionAdd').show()" 
                                 actionListener="#{solicitudConexionBean.edicion(solicitudConexion)}"
                                 id="botonEditar" />
-
-                            <!--                            <p:commandButton 
-                                                            rendered="#{solicitudConexion.estado eq 'Pendiente'}"
-                                                            icon="ui-icon-arrowrefresh-1-e"
-                                                            process="dtSolicitudConexion"
-                                                            title="#{msg['solicitud.conexion.btn.asignar']}"
-                                                            action="#{solicitudConexionBean.clienteSolicitud(solicitudConexion)}"
-                                                            id="botonCambiarEstado" />-->
                             <p:commandButton 
-                                rendered="#{solicitudConexion.estado eq 'En Curso' or solicitudConexion.estado eq 'Iniciado'}"
+                                rendered="#{solicitudConexion.estado eq 'Procesado'}"
                                 icon="ui-icon-check"
                                 title="#{msg['solicitud.conexion.btn.finalizar']}"
                                 action="#{solicitudConexionBean.addCliente(solicitudConexion)}"
@@ -162,9 +154,10 @@ and open the template in the editor.
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.celular}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.telefono']}" style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.telefono ne ''}"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.telefono}" rendered="#{solicitudConexionBean.solicitudConexion.telefono ne ''}" />
+                                    <p:outputLabel value="#{msg['solicitud.conexion.add.serv']}" style="right: 10%; font-weight: bold"/>
+                                    <h:outputText value="#{solicitudConexionBean.solicitudConexion.idServicio.servicio}" />
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.tv']}" style="right: 10%; font-weight: bold"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.cantidadTv}" />
-
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.obs']}"  style="right: 10%; font-weight: bold" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
                                     <h:outputText value="#{solicitudConexionBean.solicitudConexion.observacion}" rendered="#{solicitudConexionBean.solicitudConexion.observacion ne ''}"/>
                                     <p:outputLabel value="#{msg['solicitud.conexion.add.estado']}" style="right: 10%; font-weight: bold"/>
@@ -367,21 +360,18 @@ and open the template in the editor.
                                 <p:spacer/>
 
                                 <p:outputLabel value="#{msg['cliente.add.ciudad']}" for="ciudad" />
-                                <p:selectOneMenu id="ciudad" value="#{clienteBean.ciudad}" 
+                                <p:selectOneMenu id="ciudad" value="#{clienteBean.city}" 
                                                  effect="fold" editable="false"
                                                  validatorMessage="Debe seleccionar una ciudad"
                                                  filter="true" filterMatchMode="startsWith"
-                                                 converter="ciudadConverter" >
-                                    <p:ajax  process="ciudad"  event="change"
-                                             update=":form-add-cliente:barrio"
-                                             listener="#{clienteBean.buscarBarrios}"/> 
+                                                 >
                                     <f:selectItem itemLabel="Seleccionar Ciudad" itemValue="" noSelectionOption="false" />
-                                    <f:selectItems value="#{clienteBean.ciudadList}" 
-                                                   var="ciudad" itemLabel="#{ciudad.ciudad}" 
-                                                   itemValue="#{ciudad}" />
+                                    <p:ajax  update=":form-add-cliente:barrio" 
+                                             listener="#{clienteBean.buscarBarrios}"/> 
+                                    <f:selectItems value="#{clienteBean.cities}" />
 
                                 </p:selectOneMenu>                                                             
-                                <p:spacer/>     
+                                <p:spacer/>   
 
                                 <p:outputLabel value="#{msg['cliente.add.barrio']}" for="barrio" />
                                 <p:selectOneMenu id="barrio" value="#{clienteBean.cliente.idBarrio}" 

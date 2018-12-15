@@ -47,7 +47,7 @@ public class SolicitudConexionBean implements Serializable {
     private List<SolicitudConexion> solicitudConexionList;
     private List<SolicitudConexion> solicitudConexionFilter;
     private List<Servicio> servicioList;
-    private List<Servicio> servicioListSelected;
+    private Servicio servicioListSelected;
     private List<Ciudad> ciudadList;
     private String city;
     private Ciudad ciudad;
@@ -99,7 +99,7 @@ public class SolicitudConexionBean implements Serializable {
         editar = false;
         solicitudConexion = new SolicitudConexion();
         servicioList = servicioMgr.getByEstadoActivo();
-        servicioListSelected = new ArrayList<>();
+        servicioListSelected = new Servicio();
         solicitudConexionFilter = new ArrayList<>();
         ciudadList = ciudadMgr.getAll();
         ciudad = new Ciudad();
@@ -111,43 +111,41 @@ public class SolicitudConexionBean implements Serializable {
         try {
             if (null != solicitudConexion) {
                 if (solicitudConexion.getIdSolicitudConexion() == null) {
-                    if (!servicioListSelected.isEmpty()) {
-                        for (Servicio servicio : servicioListSelected) {
-                            solicitudConexion.setIdServicio(servicio);
-                            solicitudConexion.setFechaRegistro(new Date());
-                            solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
-                            solicitudConexion.setEstado("Pendiente");
-                            solicitudConexion = solicitudConexionMgr.add(solicitudConexion);
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se agregó correctamente",
-                                    "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
-                        }
+                    if (servicioListSelected != null) {
+                        solicitudConexion.setIdServicio(servicioListSelected);
+                        solicitudConexion.setFechaRegistro(new Date());
+                        solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
+                        solicitudConexion.setEstado("Pendiente");
+                        solicitudConexion = solicitudConexionMgr.add(solicitudConexion);
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se agregó correctamente",
+                                "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
                         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
                         limpiar();
                     }
                 } else {
-                    if (!servicioListSelected.isEmpty()) {
-                        if (servicioListSelected.size() == 1) {
-                            solicitudConexion.setIdServicio(servicioListSelected.get(0));
+                    if (servicioListSelected != null) {
+                        
+                            solicitudConexion.setIdServicio(servicioListSelected);
                             solicitudConexion.setFechaRegistro(new Date());
                             solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
                             solicitudConexion.setEstado("Pendiente");
                             solicitudConexion = solicitudConexionMgr.update(solicitudConexion);
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se editó correctamente",
                                     "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
-                        } else {
-                            solicitudConexion.setIdSolicitudConexion(null);
-                            for (int i = 1; i < servicioListSelected.size(); i++) {
-                                if (i > 1) {
-                                    solicitudConexion.setIdServicio(servicioListSelected.get(i));
-                                    solicitudConexion.setFechaRegistro(new Date());
-                                    solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
-                                    solicitudConexion.setEstado("Pendiente");
-                                    solicitudConexion = solicitudConexionMgr.add(solicitudConexion);
-                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se editó correctamente",
-                                            "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
-                                }
-                            }
-                        }
+//                        } else {
+//                            solicitudConexion.setIdSolicitudConexion(null);
+//                            for (int i = 1; i < servicioListSelected.size(); i++) {
+//                                if (i > 1) {
+//                                    solicitudConexion.setIdServicio(servicioListSelected.get(i));
+//                                    solicitudConexion.setFechaRegistro(new Date());
+//                                    solicitudConexion.setIdUsuarioRegistro(session.getUsuario());
+//                                    solicitudConexion.setEstado("Pendiente");
+//                                    solicitudConexion = solicitudConexionMgr.add(solicitudConexion);
+//                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se editó correctamente",
+//                                            "Solicitud de Conexión Nro: " + solicitudConexion.getIdSolicitudConexion()));
+//                                }
+//                            }
+//                        }
                         RequestContext.getCurrentInstance().update("solicitudConexionForm:dtSolicitudConexion");
                         limpiar();
                     }
@@ -189,7 +187,7 @@ public class SolicitudConexionBean implements Serializable {
         clienteSolicitudList.removeIf(a -> a.getEstado().equalsIgnoreCase("Borrado"));
         List<Funcionario> funcionarioList = clienteSolicitudBean.getFuncionarioList();
         for (ClienteSolicitud clienteSolicitud : clienteSolicitudList) {
-           funcionarioList.removeIf(f -> f.getIdFuncionario().equals(clienteSolicitud.getIdFuncionario().getIdFuncionario()));
+            funcionarioList.removeIf(f -> f.getIdFuncionario().equals(clienteSolicitud.getIdFuncionario().getIdFuncionario()));
         }
         clienteSolicitudBean.setFuncionarioList(new ArrayList<>());
         clienteSolicitudBean.setFuncionarioList(funcionarioList);
@@ -203,7 +201,7 @@ public class SolicitudConexionBean implements Serializable {
         cli.setCelular(solicitudC.getCelular());
         cli.setDireccion(solicitudC.getDireccion());
         cli.setIdBarrio(solicitudC.getIdBarrio() != null ? solicitudC.getIdBarrio() : null);
-        clienteBean.limpiar();
+//        clienteBean.limpiar();
         clienteBean.setCliente(cli);
         clienteBean.setCiudad(solicitudC.getIdBarrio().getIdCiudad());
         clienteBean.setSolicitudConexion(solicitudC);
@@ -273,7 +271,7 @@ public class SolicitudConexionBean implements Serializable {
         ciudad = new Ciudad();
         barrioList = new ArrayList<>();
         servicioList = servicioMgr.getByEstadoActivo();
-        servicioListSelected.add(solicitud.getIdServicio());
+        servicioListSelected = solicitud.getIdServicio();
         if (solicitud.getIdBarrio() != null) {
             city = solicitud.getIdBarrio().getIdCiudad().getCiudad();
             buscarBarrios();
@@ -350,11 +348,11 @@ public class SolicitudConexionBean implements Serializable {
         this.barrioList = barrioList;
     }
 
-    public List<Servicio> getServicioListSelected() {
+    public Servicio getServicioListSelected() {
         return servicioListSelected;
     }
 
-    public void setServicioListSelected(List<Servicio> servicioListSelected) {
+    public void setServicioListSelected(Servicio servicioListSelected) {
         this.servicioListSelected = servicioListSelected;
     }
 
