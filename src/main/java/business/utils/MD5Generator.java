@@ -7,7 +7,7 @@ package business.utils;
 
 /**
  *
- * @author cbustamante
+ * @author ggauto
  */
 public class MD5Generator {
 

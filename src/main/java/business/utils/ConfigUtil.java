@@ -11,46 +11,37 @@ import java.util.Properties;
 
 /**
  *
- * @author cbustamante
+ * @author ggauto
  */
 public class ConfigUtil {
+
     private static Properties properties;
     private static boolean config;
-    public  static  String database;
-    public static  String schema;
-    
-    private static void init ()    
-   
-    {
-        try
-        {
+    public static String database;
+    public static String schema;
+
+    private static void init() {
+        try {
             FileInputStream fileInput = new FileInputStream(new File("/resources/config.properties"));
             properties = new Properties();
             properties.load(fileInput);
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println("No se encuentra el archivo de configuracion");
         }
-                
-        
+
         config = true;
     }
-    public static String getConfig (String conf)
-    {
-        if (!config)
-        {
-            init ();
+
+    public static String getConfig(String conf) {
+        if (!config) {
+            init();
         }
-        try
-        {
+        try {
             return properties.get(conf).toString().trim();
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             System.out.println("Error al retornar la propiedad:" + conf);
         }
         return "";
     }
-    
+
 }

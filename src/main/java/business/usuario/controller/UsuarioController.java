@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 /**
  *
- * @author cbustamante
+ * @author ggauto
  */
 @Stateless
 public class UsuarioController {
