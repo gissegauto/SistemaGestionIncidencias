@@ -27,6 +27,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -48,6 +52,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Funcionario.findByDireccion", query = "SELECT f FROM Funcionario f WHERE f.direccion = :direccion")
     , @NamedQuery(name = "Funcionario.findByTelefono", query = "SELECT f FROM Funcionario f WHERE f.telefono = :telefono")
     , @NamedQuery(name = "Funcionario.findByCelular", query = "SELECT f FROM Funcionario f WHERE f.celular = :celular")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Funcionario implements Serializable {
 
     @OneToMany(mappedBy = "idFuncionario")
@@ -114,161 +122,5 @@ public class Funcionario implements Serializable {
     @Size(min = 1, max = 2)
     @Column(name = "tecnico")
     private String tecnico;
-
-    public Funcionario() {
-    }
-
-    public Funcionario(Integer idFuncionario) {
-        this.idFuncionario = idFuncionario;
-    }
-
-    public Funcionario(Integer idFuncionario, String nombreFuncionario, String apellidoFuncionario, Date fechaRegistro, String estado) {
-        this.idFuncionario = idFuncionario;
-        this.nombreFuncionario = nombreFuncionario;
-        this.apellidoFuncionario = apellidoFuncionario;
-        this.fechaRegistro = fechaRegistro;
-        this.estado = estado;
-    }
-
-    public Integer getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(Integer idFuncionario) {
-        this.idFuncionario = idFuncionario;
-    }
-
-    public String getNombreFuncionario() {
-        return nombreFuncionario;
-    }
-
-    public void setNombreFuncionario(String nombreFuncionario) {
-        this.nombreFuncionario = nombreFuncionario;
-    }
-
-    public String getApellidoFuncionario() {
-        return apellidoFuncionario;
-    }
-
-    public void setApellidoFuncionario(String apellidoFuncionario) {
-        this.apellidoFuncionario = apellidoFuncionario;
-    }
-
-    public String getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
-
-    public String getNroDocumento() {
-        return nroDocumento;
-    }
-
-    public void setNroDocumento(String nroDocumento) {
-        this.nroDocumento = nroDocumento;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public Date getFechaActualizacion() {
-        return fechaActualizacion;
-    }
-
-    public void setFechaActualizacion(Date fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public Barrio getIdBarrio() {
-        return idBarrio;
-    }
-
-    public void setIdBarrio(Barrio idBarrio) {
-        this.idBarrio = idBarrio;
-    }
-
-    public Usuario getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public Usuario getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-    }
-
-    public Usuario getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    public String getTecnico() {
-        return tecnico;
-    }
-
-    public void setTecnico(String tecnico) {
-        this.tecnico = tecnico;
-    }
-
-    @Override
-    public String toString() {
-        return "Funcionario{" + "idFuncionario=" + idFuncionario + ", nombreFuncionario=" + nombreFuncionario + ", apellidoFuncionario=" + apellidoFuncionario + ", tipoDocumento=" + tipoDocumento + ", nroDocumento=" + nroDocumento + ", fechaRegistro=" + fechaRegistro + ", fechaActualizacion=" + fechaActualizacion + ", estado=" + estado + ", direccion=" + direccion + ", telefono=" + telefono + ", celular=" + celular + ", idBarrio=" + idBarrio + ", idUsuario=" + idUsuario + ", idUsuarioActualizacion=" + idUsuarioActualizacion + ", idUsuarioRegistro=" + idUsuarioRegistro + ", tecnico=" + tecnico + '}';
-    }
-
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
 
 }

@@ -280,15 +280,38 @@ and open the template in the editor.
                 </p:dialog>
                 <p:dialog header="Contrato de Cliente" widgetVar="dlgClienteContrato"
                           modal="true" showEffect="fade" hideEffect="fade" resizable="true">
-                    <p:fieldset  style="margin-bottom:5px; font-size:12px " >
-                        <h:form enctype="multipart/form-data">
-                            <p:growl id="messages" showDetail="true" />
+                    
 
-                            <p:fileUpload value="#{clienteBean.file}" mode="simple" skinSimple="true" uploadLabel="Agregar" />
+                    <h:form id="fileUpoad" prependId="false"     enctype="multipart/form-data">
 
-                            <p:commandButton value="Cargar" ajax="false" actionListener="#{clienteBean.upload}" disabled="true" />
-                        </h:form>
-                    </p:fieldset>
+                        <h:outputLabel for="txtIdName" value="Enter Your Name:" />
+                        <p:inputText id="txtIdName" required="true" value="#{clienteBean.name}"   label="Name" />
+
+                        <p:separator/>
+
+                        <!-- File Upload with  mode="advanced". multiple files can be uploaded. upload button  -->       
+
+                        <h:outputLabel for="fileIdPhoto" value="Upload Your Photo:" />
+
+                        <p:fileUpload id="fileIdPhoto"  fileUploadListener="#{clienteBean.uploadPhoto}" mode="advanced" dragDropSupport="false"
+                                      multiple="true" update="messages" sizeLimit="10000000" fileLimit="3" allowTypes="/(\.|\/)(gif|jpe?g|zip)$/"  />
+
+                        <p:messages id="messages" autoUpdate="true" closable="true" />
+
+                        <p:separator/>
+
+                         File Upload with  mode="simple". Only one file can be uploaded. upload using submit button         
+
+                        <h:outputLabel for="fileIdResume" value="Upload Your Resume:" />
+
+                        <p:fileUpload id="fileIdResume"  value="#{clienteBean.resume}" mode="simple" skinSimple="true"/>
+
+                        <p:separator/>            
+
+                        <p:commandButton value="Submit" ajax="false" action="#{clienteBean.uploadResume}"/>   
+
+                    </h:form>  
+                    <!--</p:fieldset>-->
                 </p:dialog>
 
             </ui:define>

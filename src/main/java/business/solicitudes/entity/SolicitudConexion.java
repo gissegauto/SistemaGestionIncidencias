@@ -29,6 +29,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -50,6 +54,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "SolicitudConexion.findByCelular", query = "SELECT s FROM SolicitudConexion s WHERE s.celular = :celular")
     , @NamedQuery(name = "SolicitudConexion.findByObservacion", query = "SELECT s FROM SolicitudConexion s WHERE s.observacion = :observacion")
     , @NamedQuery(name = "SolicitudConexion.findByEstado", query = "SELECT s FROM SolicitudConexion s WHERE s.estado = :estado")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class SolicitudConexion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -113,161 +121,5 @@ public class SolicitudConexion implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idSolicitudConexion")
     private List<ClienteSolicitud> clienteSolicitudList;
-
-    public SolicitudConexion() {
-    }
-
-    public SolicitudConexion(Integer idSolicitudConexion) {
-        this.idSolicitudConexion = idSolicitudConexion;
-    }
-
-    public Integer getCantidadTv() {
-        return cantidadTv;
-    }
-
-    public void setCantidadTv(Integer cantidadTv) {
-        this.cantidadTv = cantidadTv;
-    }
-
-    public Integer getIdSolicitudConexion() {
-        return idSolicitudConexion;
-    }
-
-    public void setIdSolicitudConexion(Integer idSolicitudConexion) {
-        this.idSolicitudConexion = idSolicitudConexion;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public Date getFechaActualizacion() {
-        return fechaActualizacion;
-    }
-
-    public void setFechaActualizacion(Date fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Barrio getIdBarrio() {
-        return idBarrio;
-    }
-
-    public void setIdBarrio(Barrio idBarrio) {
-        this.idBarrio = idBarrio;
-    }
-
-    public Usuario getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-    }
-
-    public Usuario getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    public Servicio getIdServicio() {
-        return idServicio;
-    }
-
-    public void setIdServicio(Servicio idServicio) {
-        this.idServicio = idServicio;
-    }
-
-    public List<HistorialSolicitudConexion> getHistorialSolicitudConexionList() {
-        return historialSolicitudConexionList;
-    }
-
-    public void setHistorialSolicitudConexionList(List<HistorialSolicitudConexion> historialSolicitudConexionList) {
-        this.historialSolicitudConexionList = historialSolicitudConexionList;
-    }
-
-    public List<ClienteSolicitud> getClienteSolicitudList() {
-        return clienteSolicitudList;
-    }
-
-    public void setClienteSolicitudList(List<ClienteSolicitud> clienteSolicitudList) {
-        this.clienteSolicitudList = clienteSolicitudList;
-    }
-
-    @Override
-    public String toString() {
-        return "business.solicitudes.entity.SolicitudConexion[ idSolicitudConexion=" + idSolicitudConexion + " ]";
-    }
 
 }

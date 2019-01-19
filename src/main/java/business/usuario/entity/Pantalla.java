@@ -20,6 +20,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -33,6 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pantalla.findByIdpantalla", query = "SELECT p FROM Pantalla p WHERE p.idpantalla = :idpantalla")
     , @NamedQuery(name = "Pantalla.findByDescripcion", query = "SELECT p FROM Pantalla p WHERE p.descripcion = :descripcion")
     , @NamedQuery(name = "Pantalla.findByCodigoPantalla", query = "SELECT p FROM Pantalla p WHERE p.codigoPantalla = :codigoPantalla")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Pantalla implements Serializable {
 
     @OneToMany(mappedBy = "idpantalla")
@@ -51,69 +59,4 @@ public class Pantalla implements Serializable {
     @Column(name = "codigo_pantalla")
     private String codigoPantalla;
 
-    public Pantalla() {
-    }
-
-    public Pantalla(Integer idpantalla) {
-        this.idpantalla = idpantalla;
-    }
-
-    public Integer getIdpantalla() {
-        return idpantalla;
-    }
-
-    public void setIdpantalla(Integer idpantalla) {
-        this.idpantalla = idpantalla;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getCodigoPantalla() {
-        return codigoPantalla;
-    }
-
-    public void setCodigoPantalla(String codigoPantalla) {
-        this.codigoPantalla = codigoPantalla;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idpantalla != null ? idpantalla.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Pantalla)) {
-            return false;
-        }
-        Pantalla other = (Pantalla) object;
-        if ((this.idpantalla == null && other.idpantalla != null) || (this.idpantalla != null && !this.idpantalla.equals(other.idpantalla))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.usuarios.entity.Pantalla[ idpantalla=" + idpantalla + " ]";
-    }
-
-    @XmlTransient
-    public Collection<RolPantalla> getRolPantallaCollection() {
-        return rolPantallaCollection;
-    }
-
-    public void setRolPantallaCollection(Collection<RolPantalla> rolPantallaCollection) {
-        this.rolPantallaCollection = rolPantallaCollection;
-    }
-    
 }

@@ -11,6 +11,8 @@ import java.util.List;
 /**
  *
  * @author ggauto
+ * @param <T>
+ * @param <K>
  */
 public interface GenericDao<T, K extends Serializable> {
 
@@ -38,6 +40,7 @@ public interface GenericDao<T, K extends Serializable> {
     void delete(T entity);
 
     T getById(K key);
+
     List<T> getAll();
 
 }

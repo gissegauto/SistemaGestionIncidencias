@@ -18,6 +18,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -32,6 +36,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Servicio.findByEstado", query = "SELECT s FROM Servicio s WHERE s.estado = :estado")
     , @NamedQuery(name = "Servicio.findByServicio", query = "SELECT s FROM Servicio s WHERE s.servicio = :servicio")
     , @NamedQuery(name = "Servicio.findByPrecio", query = "SELECT s FROM Servicio s WHERE s.precio = :precio")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Servicio implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,76 +61,5 @@ public class Servicio implements Serializable {
     @NotNull
     @Column(name = "precio")
     private double precio;
-
-    public Servicio() {
-    }
-
-    public Servicio(Integer idServicio) {
-        this.idServicio = idServicio;
-    }
-
-    public Servicio(Integer idServicio, String estado, String servicio, double precio) {
-        this.idServicio = idServicio;
-        this.estado = estado;
-        this.servicio = servicio;
-        this.precio = precio;
-    }
-
-    public Integer getIdServicio() {
-        return idServicio;
-    }
-
-    public void setIdServicio(Integer idServicio) {
-        this.idServicio = idServicio;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(String servicio) {
-        this.servicio = servicio;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idServicio != null ? idServicio.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Servicio)) {
-            return false;
-        }
-        Servicio other = (Servicio) object;
-        if ((this.idServicio == null && other.idServicio != null) || (this.idServicio != null && !this.idServicio.equals(other.idServicio))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.configuracion.entity.Servicio[ idServicio=" + idServicio + " ]";
-    }
 
 }

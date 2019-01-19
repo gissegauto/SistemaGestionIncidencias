@@ -23,6 +23,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -39,6 +43,10 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Articulo.findByFecInsercion", query = "SELECT a FROM Articulo a WHERE a.fecInsercion = :fecInsercion")
     , @NamedQuery(name = "Articulo.findByFecModificacion", query = "SELECT a FROM Articulo a WHERE a.fecModificacion = :fecModificacion")
     , @NamedQuery(name = "Articulo.findByCantidad", query = "SELECT a FROM Articulo a WHERE a.cantidad = :cantidad")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Articulo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,115 +84,4 @@ public class Articulo implements Serializable {
     @ManyToOne
     private Usuario usuModificacion;
 
-    public Articulo() {
-    }
-
-    public Articulo(Integer idArticulo) {
-        this.idArticulo = idArticulo;
-    }
-
-    public Articulo(Integer idArticulo, double precio, String descripcion, String estado) {
-        this.idArticulo = idArticulo;
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.estado = estado;
-    }
-
-    public Integer getIdArticulo() {
-        return idArticulo;
-    }
-
-    public void setIdArticulo(Integer idArticulo) {
-        this.idArticulo = idArticulo;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Date getFecInsercion() {
-        return fecInsercion;
-    }
-
-    public void setFecInsercion(Date fecInsercion) {
-        this.fecInsercion = fecInsercion;
-    }
-
-    public Date getFecModificacion() {
-        return fecModificacion;
-    }
-
-    public void setFecModificacion(Date fecModificacion) {
-        this.fecModificacion = fecModificacion;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Usuario getUsuInsercion() {
-        return usuInsercion;
-    }
-
-    public void setUsuInsercion(Usuario usuInsercion) {
-        this.usuInsercion = usuInsercion;
-    }
-
-    public Usuario getUsuModificacion() {
-        return usuModificacion;
-    }
-
-    public void setUsuModificacion(Usuario usuModificacion) {
-        this.usuModificacion = usuModificacion;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idArticulo != null ? idArticulo.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Articulo)) {
-            return false;
-        }
-        Articulo other = (Articulo) object;
-        if ((this.idArticulo == null && other.idArticulo != null) || (this.idArticulo != null && !this.idArticulo.equals(other.idArticulo))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.configuracion.entity.Articulo[ idArticulo=" + idArticulo + " ]";
-    }
-    
 }

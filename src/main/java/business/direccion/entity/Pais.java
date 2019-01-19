@@ -22,6 +22,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -35,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Pais.findByIdPais", query = "SELECT p FROM Pais p WHERE p.idPais = :idPais")
     , @NamedQuery(name = "Pais.findByNombre", query = "SELECT p FROM Pais p WHERE p.nombre = :nombre")
     , @NamedQuery(name = "Pais.findByEstado", query = "SELECT p FROM Pais p WHERE p.estado = :estado")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Pais implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -56,75 +64,5 @@ public class Pais implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPais")
     private Collection<Departamento> departamentoCollection;
-
-    public Pais() {
-    }
-
-    public Pais(Integer idPais) {
-        this.idPais = idPais;
-    }
-
-    public Pais(Integer idPais, String nombre) {
-        this.idPais = idPais;
-        this.nombre = nombre;
-    }
-
-    public Integer getIdPais() {
-        return idPais;
-    }
-
-    public void setIdPais(Integer idPais) {
-        this.idPais = idPais;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idPais != null ? idPais.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Pais)) {
-            return false;
-        }
-        Pais other = (Pais) object;
-        if ((this.idPais == null && other.idPais != null) || (this.idPais != null && !this.idPais.equals(other.idPais))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.direccion.entity.Pais[ idPais=" + idPais + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Departamento> getDepartamentoCollection() {
-        return departamentoCollection;
-    }
-
-    public void setDepartamentoCollection(Collection<Departamento> departamentoCollection) {
-        this.departamentoCollection = departamentoCollection;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 
 }

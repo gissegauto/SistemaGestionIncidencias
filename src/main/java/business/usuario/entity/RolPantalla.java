@@ -18,6 +18,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -30,6 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RolPantalla.findAll", query = "SELECT r FROM RolPantalla r")
     , @NamedQuery(name = "RolPantalla.findByIdrolPantalla", query = "SELECT r FROM RolPantalla r WHERE r.idrolPantalla = :idrolPantalla")
     , @NamedQuery(name = "RolPantalla.findByIdrol", query = "SELECT r FROM RolPantalla r WHERE r.idrol = :idrol")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class RolPantalla implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,61 +52,5 @@ public class RolPantalla implements Serializable {
     @JoinColumn(name = "idpantalla", referencedColumnName = "idpantalla")
     @ManyToOne
     private Pantalla idpantalla;
-
-    public RolPantalla() {
-    }
-
-    public RolPantalla(Integer idrolPantalla) {
-        this.idrolPantalla = idrolPantalla;
-    }
-
-    public Integer getIdrolPantalla() {
-        return idrolPantalla;
-    }
-
-    public void setIdrolPantalla(Integer idrolPantalla) {
-        this.idrolPantalla = idrolPantalla;
-    }
-
-    public Pantalla getIdpantalla() {
-        return idpantalla;
-    }
-
-    public void setIdpantalla(Pantalla idpantalla) {
-        this.idpantalla = idpantalla;
-    }
-
-    public Rol getIdRol() {
-        return idrol;
-    }
-
-    public void setIdRol(Rol idrol) {
-        this.idrol = idrol;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idrolPantalla != null ? idrolPantalla.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RolPantalla)) {
-            return false;
-        }
-        RolPantalla other = (RolPantalla) object;
-        if ((this.idrolPantalla == null && other.idrolPantalla != null) || (this.idrolPantalla != null && !this.idrolPantalla.equals(other.idrolPantalla))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.usuarios.entity.RolPantalla[ idrolPantalla=" + idrolPantalla + " ]";
-    }
 
 }

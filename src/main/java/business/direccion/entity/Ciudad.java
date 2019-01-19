@@ -24,7 +24,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -38,10 +41,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Ciudad.findByIdCiudad", query = "SELECT c FROM Ciudad c WHERE c.idCiudad = :idCiudad")
     , @NamedQuery(name = "Ciudad.findByCiudad", query = "SELECT c FROM Ciudad c WHERE c.ciudad = :ciudad")
     , @NamedQuery(name = "Ciudad.findByEstado", query = "SELECT c FROM Ciudad c WHERE c.estado = :estado")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Ciudad implements Serializable {
-
-    @OneToMany(mappedBy = "idCiudad")
-    private List<Configuracion> configuracionList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -61,71 +65,7 @@ public class Ciudad implements Serializable {
     private Departamento idDepartamento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCiudad")
     private List<Barrio> barrioCollection;
-
-    public Ciudad() {
-    }
-
-    public Ciudad(Integer idCiudad) {
-        this.idCiudad = idCiudad;
-    }
-
-    public Ciudad(Integer idCiudad, String ciudad) {
-        this.idCiudad = idCiudad;
-        this.ciudad = ciudad;
-    }
-
-    public Integer getIdCiudad() {
-        return idCiudad;
-    }
-
-    public void setIdCiudad(Integer idCiudad) {
-        this.idCiudad = idCiudad;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Departamento getIdDepartamento() {
-        return idDepartamento;
-    }
-
-    public void setIdDepartamento(Departamento idDepartamento) {
-        this.idDepartamento = idDepartamento;
-    }
-
-    @Override
-    public String toString() {
-        return "business.direccion.entity.Ciudad[ idCiudad=" + idCiudad + " ]";
-    }
-
-    @XmlTransient
-    public List<Barrio> getBarrioCollection() {
-        return barrioCollection;
-    }
-
-    public void setBarrioCollection(List<Barrio> barrioCollection) {
-        this.barrioCollection = barrioCollection;
-    }
-
-    public List<Configuracion> getConfiguracionList() {
-        return configuracionList;
-    }
-
-    public void setConfiguracionList(List<Configuracion> configuracionList) {
-        this.configuracionList = configuracionList;
-    }
+    @OneToMany(mappedBy = "idCiudad")
+    private List<Configuracion> configuracionList;
 
 }

@@ -26,6 +26,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -47,6 +51,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "HistorialSolicitudConexion.findByEstado", query = "SELECT h FROM HistorialSolicitudConexion h WHERE h.estado = :estado")
     , @NamedQuery(name = "HistorialSolicitudConexion.findByFechaRegistro", query = "SELECT h FROM HistorialSolicitudConexion h WHERE h.fechaRegistro = :fechaRegistro")
     , @NamedQuery(name = "HistorialSolicitudConexion.findByFechaActualizacion", query = "SELECT h FROM HistorialSolicitudConexion h WHERE h.fechaActualizacion = :fechaActualizacion")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class HistorialSolicitudConexion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -105,170 +113,4 @@ public class HistorialSolicitudConexion implements Serializable {
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
 
-    public HistorialSolicitudConexion() {
-    }
-
-    public HistorialSolicitudConexion(Integer idHistorialSolicitudConexion) {
-        this.idHistorialSolicitudConexion = idHistorialSolicitudConexion;
-    }
-
-    public HistorialSolicitudConexion(Integer idHistorialSolicitudConexion, String estado, Date fechaRegistro) {
-        this.idHistorialSolicitudConexion = idHistorialSolicitudConexion;
-        this.estado = estado;
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public Integer getIdHistorialSolicitudConexion() {
-        return idHistorialSolicitudConexion;
-    }
-
-    public void setIdHistorialSolicitudConexion(Integer idHistorialSolicitudConexion) {
-        this.idHistorialSolicitudConexion = idHistorialSolicitudConexion;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public String getObservacion() {
-        return observacion;
-    }
-
-    public void setObservacion(String observacion) {
-        this.observacion = observacion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public Date getFechaActualizacion() {
-        return fechaActualizacion;
-    }
-
-    public void setFechaActualizacion(Date fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
-    }
-
-    public Barrio getIdBarrio() {
-        return idBarrio;
-    }
-
-    public void setIdBarrio(Barrio idBarrio) {
-        this.idBarrio = idBarrio;
-    }
-
-    public Servicio getIdServicio() {
-        return idServicio;
-    }
-
-    public void setIdServicio(Servicio idServicio) {
-        this.idServicio = idServicio;
-    }
-
-    public SolicitudConexion getIdSolicitudConexion() {
-        return idSolicitudConexion;
-    }
-
-    public void setIdSolicitudConexion(SolicitudConexion idSolicitudConexion) {
-        this.idSolicitudConexion = idSolicitudConexion;
-    }
-
-    public Usuario getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-    }
-
-    public Usuario getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idHistorialSolicitudConexion != null ? idHistorialSolicitudConexion.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof HistorialSolicitudConexion)) {
-            return false;
-        }
-        HistorialSolicitudConexion other = (HistorialSolicitudConexion) object;
-        if ((this.idHistorialSolicitudConexion == null && other.idHistorialSolicitudConexion != null) || (this.idHistorialSolicitudConexion != null && !this.idHistorialSolicitudConexion.equals(other.idHistorialSolicitudConexion))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.solicitudes.entity.HistorialSolicitudConexion[ idHistorialSolicitudConexion=" + idHistorialSolicitudConexion + " ]";
-    }
-    
 }

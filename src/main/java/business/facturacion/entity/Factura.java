@@ -27,6 +27,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -46,6 +50,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Factura.findByNroBoleta", query = "SELECT f FROM Factura f WHERE f.nroBoleta = :nroBoleta")
     , @NamedQuery(name = "Factura.findByTotal", query = "SELECT f FROM Factura f WHERE f.total = :total")
     , @NamedQuery(name = "Factura.findByEstado", query = "SELECT f FROM Factura f WHERE f.estado = :estado")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Factura implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -100,140 +108,5 @@ public class Factura implements Serializable {
 
     @OneToMany(mappedBy = "idFactura")
     private List<FacturaDetalle> facturaDetalleList;
-
-    public Factura() {
-    }
-
-    public Factura(Integer idFactura, Date fecInsercion, Date fecModificacion, String nroFactura, String timbrado, String boleta, String nroBoleta, double total, String estado, Date fechaVencimiento, Cliente cliente, Usuario idUsuarioActualizacion, Usuario idUsuarioRegistro) {
-        this.idFactura = idFactura;
-        this.fecInsercion = fecInsercion;
-        this.fecModificacion = fecModificacion;
-        this.nroFactura = nroFactura;
-        this.timbrado = timbrado;
-        this.boleta = boleta;
-        this.nroBoleta = nroBoleta;
-        this.total = total;
-        this.estado = estado;
-        this.fechaVencimiento = fechaVencimiento;
-        this.cliente = cliente;
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    public Factura(Integer idFactura) {
-        this.idFactura = idFactura;
-    }
-
-    public Date getFechaVencimiento() {
-        return fechaVencimiento;
-    }
-
-    public void setFechaVencimiento(Date fechaVencimiento) {
-        this.fechaVencimiento = fechaVencimiento;
-    }
-
-    public Integer getIdFactura() {
-        return idFactura;
-    }
-
-    public void setIdFactura(Integer idFactura) {
-        this.idFactura = idFactura;
-    }
-
-    public Date getFecInsercion() {
-        return fecInsercion;
-    }
-
-    public void setFecInsercion(Date fecInsercion) {
-        this.fecInsercion = fecInsercion;
-    }
-
-    public Date getFecModificacion() {
-        return fecModificacion;
-    }
-
-    public void setFecModificacion(Date fecModificacion) {
-        this.fecModificacion = fecModificacion;
-    }
-
-    public String getNroFactura() {
-        return nroFactura;
-    }
-
-    public void setNroFactura(String nroFactura) {
-        this.nroFactura = nroFactura;
-    }
-
-    public String getTimbrado() {
-        return timbrado;
-    }
-
-    public void setTimbrado(String timbrado) {
-        this.timbrado = timbrado;
-    }
-
-    public String getBoleta() {
-        return boleta;
-    }
-
-    public void setBoleta(String boleta) {
-        this.boleta = boleta;
-    }
-
-    public String getNroBoleta() {
-        return nroBoleta;
-    }
-
-    public void setNroBoleta(String nroBoleta) {
-        this.nroBoleta = nroBoleta;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Usuario getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-    }
-
-    public Usuario getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    public List<FacturaDetalle> getFacturaDetalleList() {
-        return facturaDetalleList;
-    }
-
-    public void setFacturaDetalleList(List<FacturaDetalle> facturaDetalleList) {
-        this.facturaDetalleList = facturaDetalleList;
-    }
 
 }

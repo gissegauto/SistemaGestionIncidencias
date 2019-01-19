@@ -24,6 +24,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -45,6 +49,10 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Configuracion.findByDirEmpresa", query = "SELECT c FROM Configuracion c WHERE c.dirEmpresa = :dirEmpresa")
     , @NamedQuery(name = "Configuracion.findByFecModificacion", query = "SELECT c FROM Configuracion c WHERE c.fecModificacion = :fecModificacion")
     , @NamedQuery(name = "Configuracion.findByTimbrado", query = "SELECT c FROM Configuracion c WHERE c.timbrado = :timbrado")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Configuracion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -101,163 +109,4 @@ public class Configuracion implements Serializable {
     @ManyToOne
     private Usuario usuModificacion;
 
-    public Configuracion() {
-    }
-
-    public Configuracion(Integer idConfiguracion) {
-        this.idConfiguracion = idConfiguracion;
-    }
-
-    public Configuracion(Integer idConfiguracion, double multa, String nomEmpresa, String rucEmpresa) {
-        this.idConfiguracion = idConfiguracion;
-        this.multa = multa;
-        this.nomEmpresa = nomEmpresa;
-        this.rucEmpresa = rucEmpresa;
-    }
-
-    public Integer getIdConfiguracion() {
-        return idConfiguracion;
-    }
-
-    public void setIdConfiguracion(Integer idConfiguracion) {
-        this.idConfiguracion = idConfiguracion;
-    }
-
-    public double getMulta() {
-        return multa;
-    }
-
-    public void setMulta(double multa) {
-        this.multa = multa;
-    }
-
-    public String getNroFactura() {
-        return nroFactura;
-    }
-
-    public void setNroFactura(String nroFactura) {
-        this.nroFactura = nroFactura;
-    }
-
-    public String getNroBoleta() {
-        return nroBoleta;
-    }
-
-    public void setNroBoleta(String nroBoleta) {
-        this.nroBoleta = nroBoleta;
-    }
-
-    public String getNomEmpresa() {
-        return nomEmpresa;
-    }
-
-    public void setNomEmpresa(String nomEmpresa) {
-        this.nomEmpresa = nomEmpresa;
-    }
-
-    public String getRucEmpresa() {
-        return rucEmpresa;
-    }
-
-    public void setRucEmpresa(String rucEmpresa) {
-        this.rucEmpresa = rucEmpresa;
-    }
-
-    public String getPropietario() {
-        return propietario;
-    }
-
-    public void setPropietario(String propietario) {
-        this.propietario = propietario;
-    }
-
-    public String getNomFicticio() {
-        return nomFicticio;
-    }
-
-    public void setNomFicticio(String nomFicticio) {
-        this.nomFicticio = nomFicticio;
-    }
-
-    public Date getFecInsercion() {
-        return fecInsercion;
-    }
-
-    public void setFecInsercion(Date fecInsercion) {
-        this.fecInsercion = fecInsercion;
-    }
-
-    public String getDirEmpresa() {
-        return dirEmpresa;
-    }
-
-    public void setDirEmpresa(String dirEmpresa) {
-        this.dirEmpresa = dirEmpresa;
-    }
-
-    public Date getFecModificacion() {
-        return fecModificacion;
-    }
-
-    public void setFecModificacion(Date fecModificacion) {
-        this.fecModificacion = fecModificacion;
-    }
-
-    public String getTimbrado() {
-        return timbrado;
-    }
-
-    public void setTimbrado(String timbrado) {
-        this.timbrado = timbrado;
-    }
-
-    public Ciudad getIdCiudad() {
-        return idCiudad;
-    }
-
-    public void setIdCiudad(Ciudad idCiudad) {
-        this.idCiudad = idCiudad;
-    }
-
-    public Usuario getUsuInsercion() {
-        return usuInsercion;
-    }
-
-    public void setUsuInsercion(Usuario usuInsercion) {
-        this.usuInsercion = usuInsercion;
-    }
-
-    public Usuario getUsuModificacion() {
-        return usuModificacion;
-    }
-
-    public void setUsuModificacion(Usuario usuModificacion) {
-        this.usuModificacion = usuModificacion;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idConfiguracion != null ? idConfiguracion.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Configuracion)) {
-            return false;
-        }
-        Configuracion other = (Configuracion) object;
-        if ((this.idConfiguracion == null && other.idConfiguracion != null) || (this.idConfiguracion != null && !this.idConfiguracion.equals(other.idConfiguracion))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.configuracion.entity.Configuracion[ idConfiguracion=" + idConfiguracion + " ]";
-    }
-    
 }

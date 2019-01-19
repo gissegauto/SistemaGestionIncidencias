@@ -21,6 +21,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -45,6 +49,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "HistorialFuncionario.findByEstado", query = "SELECT h FROM HistorialFuncionario h WHERE h.estado = :estado")
     , @NamedQuery(name = "HistorialFuncionario.findByIdBarrio", query = "SELECT h FROM HistorialFuncionario h WHERE h.idBarrio = :idBarrio")
     , @NamedQuery(name = "HistorialFuncionario.findByDireccion", query = "SELECT h FROM HistorialFuncionario h WHERE h.direccion = :direccion")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class HistorialFuncionario implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -106,161 +114,4 @@ public class HistorialFuncionario implements Serializable {
     @Column(name = "direccion")
     private String direccion;
 
-    public HistorialFuncionario() {
-    }
-
-    public HistorialFuncionario(Integer idHistorialFuncionario) {
-        this.idHistorialFuncionario = idHistorialFuncionario;
-    }
-
-    public HistorialFuncionario(Integer idHistorialFuncionario, int idFuncionario, int idUsuario, String nombreFuncionario, String apellidoFuncionario, int idUsuarioRegistro, Date fechaRegistro, int idUsuarioActualizacion, Date fechaActualizacion, String estado) {
-        this.idHistorialFuncionario = idHistorialFuncionario;
-        this.idFuncionario = idFuncionario;
-        this.idUsuario = idUsuario;
-        this.nombreFuncionario = nombreFuncionario;
-        this.apellidoFuncionario = apellidoFuncionario;
-        this.idUsuarioRegistro = idUsuarioRegistro;
-        this.fechaRegistro = fechaRegistro;
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-        this.fechaActualizacion = fechaActualizacion;
-        this.estado = estado;
-    }
-
-    public Integer getIdHistorialFuncionario() {
-        return idHistorialFuncionario;
-    }
-
-    public void setIdHistorialFuncionario(Integer idHistorialFuncionario) {
-        this.idHistorialFuncionario = idHistorialFuncionario;
-    }
-
-    public int getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(int idFuncionario) {
-        this.idFuncionario = idFuncionario;
-    }
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public String getNombreFuncionario() {
-        return nombreFuncionario;
-    }
-
-    public void setNombreFuncionario(String nombreFuncionario) {
-        this.nombreFuncionario = nombreFuncionario;
-    }
-
-    public String getApellidoFuncionario() {
-        return apellidoFuncionario;
-    }
-
-    public void setApellidoFuncionario(String apellidoFuncionario) {
-        this.apellidoFuncionario = apellidoFuncionario;
-    }
-
-    public String getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
-
-    public String getNroDocumento() {
-        return nroDocumento;
-    }
-
-    public void setNroDocumento(String nroDocumento) {
-        this.nroDocumento = nroDocumento;
-    }
-
-    public int getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(int idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public int getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(int idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-    }
-
-    public Date getFechaActualizacion() {
-        return fechaActualizacion;
-    }
-
-    public void setFechaActualizacion(Date fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Integer getIdBarrio() {
-        return idBarrio;
-    }
-
-    public void setIdBarrio(Integer idBarrio) {
-        this.idBarrio = idBarrio;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idHistorialFuncionario != null ? idHistorialFuncionario.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof HistorialFuncionario)) {
-            return false;
-        }
-        HistorialFuncionario other = (HistorialFuncionario) object;
-        if ((this.idHistorialFuncionario == null && other.idHistorialFuncionario != null) || (this.idHistorialFuncionario != null && !this.idHistorialFuncionario.equals(other.idHistorialFuncionario))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.cliente.entity.HistorialFuncionario[ idHistorialFuncionario=" + idHistorialFuncionario + " ]";
-    }
-    
 }

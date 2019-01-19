@@ -24,6 +24,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -37,6 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Zona.findByIdZona", query = "SELECT z FROM Zona z WHERE z.idZona = :idZona")
     , @NamedQuery(name = "Zona.findByZona", query = "SELECT z FROM Zona z WHERE z.zona = :zona")
     , @NamedQuery(name = "Zona.findByEstado", query = "SELECT z FROM Zona z WHERE z.estado = :estado")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Zona implements Serializable {
 
     @Column(name = "estado")
@@ -59,85 +67,4 @@ public class Zona implements Serializable {
     @Column(name = "zona")
     private String zona;
 
-    public Zona() {
-    }
-
-    public Zona(Integer idZona) {
-        this.idZona = idZona;
-    }
-
-    public Zona(Integer idZona, String zona, int estado) {
-        this.idZona = idZona;
-        this.zona = zona;
-        this.estado = estado;
-    }
-
-    public Integer getIdZona() {
-        return idZona;
-    }
-
-    public void setIdZona(Integer idZona) {
-        this.idZona = idZona;
-    }
-
-    public String getZona() {
-        return zona;
-    }
-
-    public void setZona(String zona) {
-        this.zona = zona;
-    }
-
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idZona != null ? idZona.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Zona)) {
-            return false;
-        }
-        Zona other = (Zona) object;
-        if ((this.idZona == null && other.idZona != null) || (this.idZona != null && !this.idZona.equals(other.idZona))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.direccion.entity.Zona[ idZona=" + idZona + " ]";
-    }
-
-    @XmlTransient
-    public Collection<ZonaBarrio> getZonaBarrioCollection() {
-        return zonaBarrioCollection;
-    }
-
-    public void setZonaBarrioCollection(Collection<ZonaBarrio> zonaBarrioCollection) {
-        this.zonaBarrioCollection = zonaBarrioCollection;
-    }
-
-    public Integer getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Integer estado) {
-        this.estado = estado;
-    }
-
-    @XmlTransient
-    public List<Cliente> getClienteList() {
-        return clienteList;
-    }
-
-    public void setClienteList(List<Cliente> clienteList) {
-        this.clienteList = clienteList;
-    }
-    
 }

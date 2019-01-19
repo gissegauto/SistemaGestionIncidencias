@@ -19,6 +19,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -30,6 +34,10 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Rol.findAll", query = "SELECT r FROM Rol r")
     , @NamedQuery(name = "Rol.findByIdrol", query = "SELECT r FROM Rol r WHERE r.idrol = :idrol")
     , @NamedQuery(name = "Rol.findByDescripcion", query = "SELECT r FROM Rol r WHERE r.descripcion = :descripcion")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class Rol implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,69 +56,5 @@ public class Rol implements Serializable {
     private String estado;
     @OneToMany(mappedBy = "idrol")
     private List<Usuario> usuarioList;
-
-    public Rol() {
-    }
-
-    public Rol(Integer idrol) {
-        this.idrol = idrol;
-    }
-
-    public Integer getIdrol() {
-        return idrol;
-    }
-
-    public void setIdrol(Integer idrol) {
-        this.idrol = idrol;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idrol != null ? idrol.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Rol)) {
-            return false;
-        }
-        Rol other = (Rol) object;
-        if ((this.idrol == null && other.idrol != null) || (this.idrol != null && !this.idrol.equals(other.idrol))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.usuario.entity.Rol[ idrol=" + idrol + " ]";
-    }
-
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
 
 }

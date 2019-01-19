@@ -24,6 +24,10 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j;
 
 /**
  *
@@ -45,6 +49,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "HistorialCliente.findByFechaActualizacion", query = "SELECT h FROM HistorialCliente h WHERE h.fechaActualizacion = :fechaActualizacion")
     , @NamedQuery(name = "HistorialCliente.findByIdBarrio", query = "SELECT h FROM HistorialCliente h WHERE h.idBarrio = :idBarrio")
     , @NamedQuery(name = "HistorialCliente.findByContrato", query = "SELECT h FROM HistorialCliente h WHERE h.contrato = :contrato")})
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Log4j
 public class HistorialCliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -100,156 +108,4 @@ public class HistorialCliente implements Serializable {
     @ManyToOne(optional = false)
     private Usuario idUsuarioRegistro;
 
-    public HistorialCliente() {
-    }
-
-    public HistorialCliente(Integer idHistorialCliente) {
-        this.idHistorialCliente = idHistorialCliente;
-    }
-
-    public HistorialCliente(Integer idHistorialCliente, String nombre, String apellido, String estado, Date fechaRegistro) {
-        this.idHistorialCliente = idHistorialCliente;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.estado = estado;
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public Integer getIdHistorialCliente() {
-        return idHistorialCliente;
-    }
-
-    public void setIdHistorialCliente(Integer idHistorialCliente) {
-        this.idHistorialCliente = idHistorialCliente;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getTipoDocumento() {
-        return tipoDocumento;
-    }
-
-    public void setTipoDocumento(String tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
-    }
-
-    public String getNroDocumento() {
-        return nroDocumento;
-    }
-
-    public void setNroDocumento(String nroDocumento) {
-        this.nroDocumento = nroDocumento;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public Date getFechaRegistro() {
-        return fechaRegistro;
-    }
-
-    public void setFechaRegistro(Date fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public Date getFechaActualizacion() {
-        return fechaActualizacion;
-    }
-
-    public void setFechaActualizacion(Date fechaActualizacion) {
-        this.fechaActualizacion = fechaActualizacion;
-    }
-
-    public Integer getIdBarrio() {
-        return idBarrio;
-    }
-
-    public void setIdBarrio(Integer idBarrio) {
-        this.idBarrio = idBarrio;
-    }
-
-    public String getContrato() {
-        return contrato;
-    }
-
-    public void setContrato(String contrato) {
-        this.contrato = contrato;
-    }
-
-    public Cliente getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Cliente idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public Usuario getIdUsuarioActualizacion() {
-        return idUsuarioActualizacion;
-    }
-
-    public void setIdUsuarioActualizacion(Usuario idUsuarioActualizacion) {
-        this.idUsuarioActualizacion = idUsuarioActualizacion;
-    }
-
-    public Usuario getIdUsuarioRegistro() {
-        return idUsuarioRegistro;
-    }
-
-    public void setIdUsuarioRegistro(Usuario idUsuarioRegistro) {
-        this.idUsuarioRegistro = idUsuarioRegistro;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idHistorialCliente != null ? idHistorialCliente.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof HistorialCliente)) {
-            return false;
-        }
-        HistorialCliente other = (HistorialCliente) object;
-        if ((this.idHistorialCliente == null && other.idHistorialCliente != null) || (this.idHistorialCliente != null && !this.idHistorialCliente.equals(other.idHistorialCliente))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "business.cliente.entity.HistorialCliente[ idHistorialCliente=" + idHistorialCliente + " ]";
-    }
-    
 }

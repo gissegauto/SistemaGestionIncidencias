@@ -17,6 +17,10 @@ import business.direccion.entity.Barrio;
 import business.direccion.entity.Ciudad;
 import business.solicitudes.entity.SolicitudConexion;
 import business.utils.UtilLogger;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +35,7 @@ import org.primefaces.context.RequestContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
@@ -184,9 +189,72 @@ public class ClienteBean implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) throws Exception {
-        event.getFile().write("/home/ggauto/Escritorio");
-        FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
+//        event.getFile().write("/home/ggauto/Desktop/");
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, event.getFile().getFileName(),
+                "Cargando"));
+    }
+    
+    private String name;
+    private UploadedFile resume;
+ 
+    public UploadedFile getResume() {
+        return resume;
+    }
+ 
+    public void setResume(UploadedFile resume) {
+        this.resume = resume;
+    }
+ 
+    public String getName() {
+        return name;
+    }
+ 
+    public void setName(String name) {
+        this.name = name;
+    }
+ 
+    public String uploadResume() throws IOException{
+ 
+        UploadedFile uploadedPhoto=getResume();
+        //System.out.println("Name " + getName());
+        //System.out.println("tmp directory" System.getProperty("java.io.tmpdir"));
+        //System.out.println("File Name " + uploadedPhoto.getFileName());
+        //System.out.println("Size " + uploadedPhoto.getSize());
+        String filePath="\\opt\\";
+        byte[] bytes=null;
+ 
+            if (null!=uploadedPhoto) {
+                bytes = uploadedPhoto.getContents();
+                String filename = FilenameUtils.getName(uploadedPhoto.getFileName());
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath+filename)));
+                stream.write(bytes);
+                stream.close();
+            }
+ 
+        return "success";
+    }
+ 
+    /*  The above code is for file upload using simple mode. */
+ 
+    //This below code is for file upload with advanced mode.
+ 
+    public void uploadPhoto(FileUploadEvent e) throws IOException{
+ 
+        UploadedFile uploadedPhoto=e.getFile();
+ 
+        String filePath="/opt/";
+        byte[] bytes=null;
+ 
+            if (null!=uploadedPhoto) {
+                bytes = uploadedPhoto.getContents();
+                String filename = FilenameUtils.getName(uploadedPhoto.getFileName());
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath+filename)));
+                stream.write(bytes);
+                stream.close();
+            }
+ 
+        FacesContext.getCurrentInstance().addMessage("messages",new FacesMessage(FacesMessage.SEVERITY_INFO,"Your Photo (File Name "+ uploadedPhoto.getFileName()+ " with size "+ uploadedPhoto.getSize()+ ")  Uploaded Successfully", ""));
     }
 
     public void edicion() {
@@ -224,8 +292,11 @@ public class ClienteBean implements Serializable {
 
     public void upload() {
         if (file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName(),
+                    "Cargado Correctamente."));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "",
+                    "Intente de nuevo, por favor."));
         }
     }
 
